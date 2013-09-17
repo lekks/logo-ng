@@ -2,10 +2,13 @@ package com.ldir.logo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
 import android.util.AttributeSet;
+import android.util.Log;
+
+import com.ldir.logo.game.Game;
 
 public class FieldView extends android.view.View {
 	protected Bitmap framebuf;
@@ -45,13 +48,14 @@ public class FieldView extends android.view.View {
 		sizeX = width; sizeY = height;
 		this.fspan = Math.min((float)sizeX/(float)Game.grX, (float)sizeY/(float)Game.grY);
 		this.span = Math.round(fspan);
-		if(framebuf != null) framebuf.recycle();
-		framebuf = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        Log.i("Verbose","Size changed from "+oldw+","+oldh+" to "+width+","+height+" ;span "+span+","+"("+fspan+")");
+        if(framebuf != null) framebuf.recycle();
+        framebuf = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		frameCanvas = new Canvas(framebuf);
 	};
 	
 	
-	
+	//  Отображение простой сетки в редакторе интерфейса
 	protected void drawGrid(Canvas canvas, Paint paint) {
 		for( int i=1;i<Game.grX;i++){
 			int x = i*sizeX/Game.grX;

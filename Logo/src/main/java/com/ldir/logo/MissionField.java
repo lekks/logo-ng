@@ -7,6 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 
+import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GameMatrix;
+import com.ldir.logo.game.MissionLoader;
+
 
 public class MissionField extends FieldView {
 	private Paint paint = new Paint();
@@ -37,7 +41,7 @@ public class MissionField extends FieldView {
 		planePaint.setColor(Color.BLACK);
 	}
 
-	// Для инициализации чере XML, в других случаях другой инициализатор
+	// Р”Р»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё С‡РµСЂРµ XML, РІ РґСЂСѓРіРёС… СЃР»СѓС‡Р°СЏС… РґСЂСѓРіРѕР№ РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ
 	public MissionField(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
@@ -54,7 +58,7 @@ public class MissionField extends FieldView {
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
 		Game.goalMatrix = new GameMatrix(Game.grX,Game.grY,fspan);
-		int [][] mission=MissionLoader.get(1);
+		int [][] mission= MissionLoader.get(1);
 		Game.goalMatrix.load(mission);
 	}
 

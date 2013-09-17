@@ -1,17 +1,19 @@
-package com.ldir.logo;
+package com.ldir.logo.platform;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ldir.logo.GameField;
+import com.ldir.logo.R;
+
 public class MainActivity extends Activity {
 
 	private GameField gameField;
-	
+
 	public void clearClicked(View v) {
 		gameField.reset();
     }

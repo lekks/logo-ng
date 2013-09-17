@@ -2,9 +2,9 @@ package com.ldir.logo;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Bitmap.Config;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
@@ -31,7 +31,7 @@ public class Sprites {
 		}
 	}
 
-	static void load(Resources res){
+	public static void load(Resources res){
 		orig = new Bitmap[5];
 		orig[0] =  BitmapFactory.decodeResource(res, R.drawable.s0);
 		orig[1] =  BitmapFactory.decodeResource(res, R.drawable.s1);

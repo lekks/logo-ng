@@ -1,7 +1,9 @@
-package com.ldir.logo;
+package com.ldir.logo.platform;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.ldir.logo.Sprites;
 
 public class GameApp  extends Application{
     private static Context context;

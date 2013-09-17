@@ -1,11 +1,6 @@
 package com.ldir.logo;
 
-import java.util.Stack;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +8,11 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GameMatrix;
+
+import java.util.Stack;
 
 
 

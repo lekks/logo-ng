@@ -1,9 +1,11 @@
-package com.ldir.logo;
+package com.ldir.logo.game;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.FloatMath;
+
+import com.ldir.logo.Sprites;
 
 public class GameMatrix {
 	private Cell cells[][];
