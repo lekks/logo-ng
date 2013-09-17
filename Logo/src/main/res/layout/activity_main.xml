@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:background="@android:color/black"
+    tools:context=".MainActivity" >
+
+    <com.ldir.logo.GameField
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:id="@+id/fieldView"  />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="3"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/gamefieldLogo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/logo"
+            android:layout_above="@+id/misionView"
+            android:layout_weight="1"
+            android:layout_gravity="right|top" />
+
+        <TextView
+            android:text="LEVEL 1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView"
+            style="@style/game_text"  />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="TIME: 2:54"
+            android:id="@+id/textView2"
+            style="@style/game_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Pattern"
+            android:id="@+id/textView3"
+            style="@style/game_text"
+            android:paddingTop="60dp" />
+
+        <com.ldir.logo.MissionField
+        android:id="@+id/misionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+            android:layout_weight="4"
+            android:layout_gravity="center_horizontal"
+            android:padding="20dp" />
+
+    </LinearLayout>
+    <!--
+
+    <RelativeLayout
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:layout_weight="1"
+         android:gravity="top"
+         android:paddingBottom="50dp"
+         android:paddingLeft="5dp"
+         android:paddingRight="5dp" >
+
+
+                <Button
+                    android:id="@+id/undo_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/misionView"
+                    android:layout_alignLeft="@+id/misionView"
+                    android:layout_marginLeft="14dp"
+                    android:onClick="undoClicked"
+                    android:text="@string/undo_but" />
+
+                <Button
+                    android:id="@+id/clear_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/undo_button"
+                    android:layout_alignBottom="@+id/undo_button"
+                    android:layout_toRightOf="@+id/undo_button"
+                    android:onClick="clearClicked"
+                    android:text="@string/new_but" />
+    </RelativeLayout>
+        -->
+
+</LinearLayout>
