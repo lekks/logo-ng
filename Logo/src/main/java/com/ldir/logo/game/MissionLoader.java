@@ -2,7 +2,7 @@ package com.ldir.logo.game;
 
 public class MissionLoader {
 
-	static int levels[][][]={
+	static byte levels[][][]={
 			{
 				{0,0,0,0,0,0,0,0,0,0},
 				{0,0,0,0,1,0,0,0,0,0},
@@ -23,9 +23,9 @@ public class MissionLoader {
 		};
 	
 	
-	public static int [][] get(int i)
+	public static GameMap get(int i)
 	{
-		return levels[i];
+		return new GameMap(levels[i]);
 	}
 	
 //	static void load(){

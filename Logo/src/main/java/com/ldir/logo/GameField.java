@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GameMap;
 import com.ldir.logo.game.GameMatrix;
 
 import java.util.Stack;
@@ -23,8 +24,8 @@ public class GameField extends FieldView {
 	private Paint planePaint = new Paint();
 	private Paint fieldPaint = new Paint();
 //	private Matrix matrix;
-	private Stack<int[][]> history = new Stack<int[][]>(); // TODO Переделать на Vector;
-	
+	private Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
+
 	private void construct() {
 		paint.setStyle(Style.STROKE);
 		paint.setColor(Color.RED);
@@ -67,7 +68,7 @@ public class GameField extends FieldView {
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-            	int last[][] = Game.gameMatrix.save(null);
+                GameMap last = Game.gameMatrix.save(null);
                 if(Game.gameMatrix.click(event.getX(), event.getY())){
                 	history.add(last);
                 	if(Game.gameMatrix.isEqual(Game.goalMatrix))
@@ -88,7 +89,7 @@ public class GameField extends FieldView {
 
     public void undo(){
     	if(history.size() != 0 ){
-    		int last[][] = history.pop(); 
+    		GameMap last = history.pop();
     		Game.gameMatrix.load(last);
     		drawField();
     	}
@@ -105,7 +106,7 @@ public class GameField extends FieldView {
 //		drawGrid(canvas,fieldPaint);
 		canvas.drawBitmap(framebuf, 0, 0, borderPaint);
 		if(Game.win) canvas.drawText(String.format("WIN"), 2, 2+paint.getTextSize(), paint);
-	};
+	}
 	
 }
 

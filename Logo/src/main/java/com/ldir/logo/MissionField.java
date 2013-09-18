@@ -8,6 +8,7 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 
 import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GameMap;
 import com.ldir.logo.game.GameMatrix;
 import com.ldir.logo.game.MissionLoader;
 
@@ -58,7 +59,7 @@ public class MissionField extends FieldView {
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
 		Game.goalMatrix = new GameMatrix(Game.grX,Game.grY,fspan);
-		int [][] mission= MissionLoader.get(1);
+        GameMap mission = MissionLoader.get(1);
 		Game.goalMatrix.load(mission);
 	}
 
@@ -70,7 +71,7 @@ public class MissionField extends FieldView {
 //		drawGrid(canvas,fieldPaint);
 		Game.goalMatrix.printNumbers(canvas, borderPaint);
 		//invalidate();
-	};
+	}
 	
 }
 

@@ -48,19 +48,19 @@ public class GameMatrix {
 		return true;
 	}
 	
-	public void load(int[][] copy) {
+	public void load(GameMap map) {
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
-				cells[i][j].val = copy[i][j];
+				cells[i][j].val = map.get(i,j);
 			}
 		}
 	}
-	public int[][] save(int[][] copy) {
-		if(copy == null) 
-			copy = new int[rows][cols];
+	public GameMap save(GameMap copy) {
+		if(copy == null)
+			copy = new GameMap(rows,cols);
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
-				copy[i][j] = cells[i][j].val ;
+				copy.set(i,j,cells[i][j].val);
 			}
 		}
 		return copy;
@@ -85,7 +85,7 @@ public class GameMatrix {
 
 class Cell {
 	Rect rect=new Rect();
-	public int val;
+	public byte val;
 	float x;
 	float y;
 	float size;
