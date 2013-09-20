@@ -35,6 +35,24 @@ public class GameMap {
         if(++map[i][j]>4)map[i][j]=1;
     }
 
+    public void reset() {
+        for(int i=0;i<ROWS;i++){ // TODO Убрать цикл
+            for(int j=0;j<COLS;j++)
+                map[i][j]=0;
+        }
+    }
+
+    public boolean isEqual(GameMap other) {
+        for(int i=0;i<ROWS;i++){ // TODO Убрать цикл
+            for(int j=0;j<COLS;j++){
+                if(map[i][j] != other.map[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+
     public void gameMove(int i,int j) {
         next(i,j);
         if (i+1<ROWS) next(i+1,j);

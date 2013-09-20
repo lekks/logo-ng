@@ -9,10 +9,13 @@ import com.ldir.logo.Sprites;
 
 public class GameMatrix {
 	private Cell cells[][];
+    private GameMap map;
+
 	int cols, rows;
 	public GameMatrix(int cols, int rows, float span) {
 		this.rows=rows;
 		this.cols=cols;
+        map = new GameMap();
 		Sprites sprites = new Sprites((int) FloatMath.floor(span));
 		cells = new Cell[rows][];
 		for(int i=0;i<rows;i++){
@@ -24,34 +27,25 @@ public class GameMatrix {
 	}
 	
 	public void printNumbers(Canvas canvas, Paint paint) {
-		for (Cell[] row : cells) {
-			for (Cell cell: row) {
-				cell.draw(canvas, paint);
-			}
-		}
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                cells[i][j].draw(canvas, paint,map.get(i,j));
+            }
+        }
 	}
+
 	public void reset() {
-		for (Cell[] row : cells) {
-			for (Cell cell: row) {
-				cell.reset();
-			}
-		}
+        map.reset();
 	}
 
 	public boolean isEqual(GameMatrix other) {
-		for(int i=0;i<rows;i++){
-			for(int j=0;j<cols;j++){
-				if(cells[i][j].val != other.cells[i][j].val)
-					return false;
-			}
-		}
-		return true;
+		return map.isEqual(other.map);
 	}
 	
 	public void load(GameMap map) {
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
-				cells[i][j].val = map.get(i,j);
+				this.map.set(i,j, map.get(i,j)); // FIXME Убрать цикл!!!
 			}
 		}
 	}
@@ -60,7 +54,7 @@ public class GameMatrix {
 			copy = new GameMap(rows,cols);
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
-				copy.set(i,j,cells[i][j].val);
+				copy.set(i,j,map.get(i,j)); // FIXME Убрать цикл!!!
 			}
 		}
 		return copy;
@@ -70,11 +64,7 @@ public class GameMatrix {
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
 				if(cells[i][j].test(cX, cY)){
-					cells[i][j].next();
-					if (i+1<rows) cells[i+1][j].next();
-					if (j+1<cols) cells[i][j+1].next();
-					if (i>0) cells[i-1][j].next();
-					if (j>0) cells[i][j-1].next();
+                    map.gameMove(i,j);
 					return true;
 				}
 			}
@@ -85,7 +75,6 @@ public class GameMatrix {
 
 class Cell {
 	Rect rect=new Rect();
-	public byte val;
 	float x;
 	float y;
 	float size;
@@ -105,18 +94,12 @@ class Cell {
 		return cX > (x-hs) && cX < (x+hs) && cY > (y-hs) && cY < (y+hs);
 	}
 
-	public String  toString() {
+	public String  toString(byte val) {
 		return String.format("%d", val);
 	}
 	
-	public void reset() {
-		val=0;
-	}
-	public void next(){
-		if(++val>4)val=1;
-	}
-	
-	void draw(Canvas canvas, Paint paint){
+
+	void draw(Canvas canvas, Paint paint, byte val){
 //		canvas.drawRect(rect, paint);
 		canvas.drawBitmap(sprites.pic[val], x-size/2, y-size/2, paint);
 //		canvas.drawText(String.format("%s",toString()), x, y, paint);
