@@ -23,7 +23,7 @@ public class MissionLoader {
 		};
 	
 	
-	public static GameMap get(int i)
+	public static GameMap load(int i)
 	{
 		return new GameMap(levels[i]);
 	}

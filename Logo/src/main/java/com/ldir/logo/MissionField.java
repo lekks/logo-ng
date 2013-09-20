@@ -58,8 +58,8 @@ public class MissionField extends FieldView {
 
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
-		Game.goalMatrix = new GameMatrix(Game.grX,Game.grY,fspan);
-        GameMap mission = MissionLoader.get(1);
+		Game.goalMatrix = new GameMatrix(GameMap.COLS,GameMap.ROWS,fspan);
+        GameMap mission = MissionLoader.load(1);
 		Game.goalMatrix.load(mission);
 	}
 

@@ -7,8 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-
-import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GameMap;
 
 public class FieldView extends android.view.View {
 	protected Bitmap framebuf;
@@ -16,7 +15,7 @@ public class FieldView extends android.view.View {
 
 	protected int sizeX=1;
 	protected int sizeY=1;
-	float fspan=0;
+	float fspan=0; // Размер клетки точек
 	int span=0;
 	// Для инициализации чере XML, в других случаях другой инициализатор
 	public FieldView(Context context, AttributeSet attrs) {
@@ -34,9 +33,9 @@ public class FieldView extends android.view.View {
 
 		int height = getMeasuredHeight(); 
 		int width = getMeasuredWidth();
-		int t = width * Game.grY / Game.grX;
+		int t = width * GameMap.ROWS / GameMap.COLS;
 		if (height > t) height = t;
-		t = height * Game.grX / Game.grY;
+		t = height * GameMap.COLS / GameMap.ROWS;
 		if (width > t) width = t;
 		setMeasuredDimension(width, height);
 	}
@@ -45,10 +44,11 @@ public class FieldView extends android.view.View {
 	
 	@Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-		sizeX = width; sizeY = height;
-		this.fspan = Math.min((float)sizeX/(float)Game.grX, (float)sizeY/(float)Game.grY);
+		sizeX = width;
+        sizeY = height;
+		this.fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
 		this.span = Math.round(fspan);
-        Log.i("Verbose","Size changed from "+oldw+","+oldh+" to "+width+","+height+" ;span "+span+","+"("+fspan+")");
+        Log.i("Verbose","Field size changed from "+oldw+","+oldh+" to "+width+","+height+" ;span "+span+","+"("+fspan+")");
         if(framebuf != null) framebuf.recycle();
         framebuf = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		frameCanvas = new Canvas(framebuf);
@@ -57,12 +57,12 @@ public class FieldView extends android.view.View {
 	
 	//  Отображение простой сетки в редакторе интерфейса
 	protected void drawGrid(Canvas canvas, Paint paint) {
-		for( int i=1;i<Game.grX;i++){
-			int x = i*sizeX/Game.grX;
+		for( int i=1;i<GameMap.COLS;i++){
+			int x = i*sizeX/GameMap.COLS;
 			canvas.drawLine(x, 0, x, sizeY, paint);
 		}
-		for( int i=1;i<Game.grY;i++){
-			int y = i*sizeY/Game.grY;
+		for( int i=1;i<GameMap.ROWS;i++){
+			int y = i*sizeY/GameMap.ROWS;
 			canvas.drawLine(0, y, sizeX, y, paint);
 		}
 	};

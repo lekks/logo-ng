@@ -58,7 +58,7 @@ public class GameField extends FieldView {
 
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
-		Game.gameMatrix = new GameMatrix(Game.grX,Game.grY,fspan);
+		Game.gameMatrix = new GameMatrix(GameMap.COLS,GameMap.ROWS,fspan);
 		drawField();
 	}
 
