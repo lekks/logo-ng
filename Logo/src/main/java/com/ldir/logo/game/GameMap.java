@@ -22,6 +22,20 @@ public class GameMap {
         this.map = new byte[rows][cols];
     }
 
+    public void assign(GameMap other) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                map[i][j] = other.map[i][j]; // убрать внутренний цикл? System.arrayCopy
+            }
+        }
+    }
+
+    public GameMap clone() throws CloneNotSupportedException {
+        super.clone();
+        GameMap copy = new GameMap();
+        copy.assign(this);
+        return copy;
+    }
 
     public byte get(int x,int y) {
         return map[x][y];

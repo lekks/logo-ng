@@ -25,7 +25,7 @@ public class MissionLoader {
 	
 	public static GameMap load(int i)
 	{
-		return new GameMap(levels[i]);
+		return new GameMap(levels[i-1]);
 	}
 	
 //	static void load(){

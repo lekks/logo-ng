@@ -58,7 +58,7 @@ public class GameField extends FieldView {
 
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
-		Game.gameMatrix = new GameMatrix(GameMap.COLS,GameMap.ROWS,fspan);
+		Game.gameMatrix = new GameMatrix(fspan,null);
 		drawField();
 	}
 
@@ -90,7 +90,7 @@ public class GameField extends FieldView {
     public void undo(){
     	if(history.size() != 0 ){
     		GameMap last = history.pop();
-    		Game.gameMatrix.load(last);
+    		Game.gameMatrix.setMap(last);
     		drawField();
     	}
     }
