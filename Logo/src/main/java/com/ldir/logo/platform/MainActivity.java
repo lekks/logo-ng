@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ldir.logo.game.Game;
 import com.ldir.logo.views.GameField;
 import com.ldir.logo.R;
 
@@ -14,19 +15,7 @@ public class MainActivity extends Activity {
 
 	private GameField gameField;
 
-	public void clearClicked(View v) {
-		gameField.reset();
-    }
-	public void undoClicked(View v) {
-        Toast.makeText(this, "Undo is Selected", Toast.LENGTH_SHORT).show();
-		gameField.undo();
-    }
-	
-	public void undoClicked(MenuItem item) {
-        Toast.makeText(this, "Undo is Selected", Toast.LENGTH_SHORT).show();
-		gameField.undo();
-    }
-	
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 //    	MissionLoader.load();
@@ -44,12 +33,14 @@ public class MainActivity extends Activity {
         switch (item.getItemId())
         {
         case R.id.menu_undo:
-    		gameField.undo();
+            if(Game.undo())
+                gameField.drawField();
             return true;
  
         case R.id.menu_reset:
 //            Toast.makeText(this, "Save is Selected", Toast.LENGTH_SHORT).show();
-    		gameField.reset();
+            Game.reset();
+            gameField.drawField();
             return true;
          default:
             return super.onOptionsItemSelected(item);

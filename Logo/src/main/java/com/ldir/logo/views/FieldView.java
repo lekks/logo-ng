@@ -18,6 +18,7 @@ public class FieldView extends android.view.View {
 	protected int sizeY=1;
 	float fspan=0; // Размер клетки точек
 	int span=0;
+
 	// Для инициализации чере XML, в других случаях другой инициализатор
 	public FieldView(Context context, AttributeSet attrs) {
 		super(context, attrs);

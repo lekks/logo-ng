@@ -19,10 +19,7 @@ import java.util.Stack;
 public class GameField extends FieldView {
 	private Paint paint = new Paint();
     private FieldRender render;
-
-    private GameMap.Pos clickPos = new GameMap.Pos();
-
-	private Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
+    private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
 
 	private void construct() {
 		paint.setTextSize(25);
@@ -54,38 +51,16 @@ public class GameField extends FieldView {
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                GameMap last = new GameMap();
-                last.assign(Game.gameMap);
-
                 if(render.findCell(event.getX(), event.getY(), clickPos)){
-                    Game.gameMap.gameMove(clickPos.row, clickPos.col);
-                    if(Game.gameMap.isEqual(Game.goalMap)) {
-                        Game.win = true;
-                    }
-                    history.add(last);
+                    Game.makeMove(clickPos);
+                    drawField();
                 }
-                drawField();
                 break;
         }
         return true;
     }
 
-    public void reset(){
-    	Game.gameMap.reset();
-    	history.clear();
-    	Game.win = false;
-    	drawField();
-    }
-
-    public void undo(){
-    	if(history.size() != 0 ){
-    		GameMap last = history.pop();
-            Game.gameMap.assign(last);
-    		drawField();
-    	}
-    }
-    
-	private void drawField() {
+	public void drawField() {
 		render.printNumbers(frameCanvas, paint);
 		invalidate();
 	}
