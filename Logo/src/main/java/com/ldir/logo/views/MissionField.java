@@ -1,4 +1,4 @@
-package com.ldir.logo;
+package com.ldir.logo.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,9 +8,7 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 
 import com.ldir.logo.game.Game;
-import com.ldir.logo.game.GameMap;
-import com.ldir.logo.game.GameMatrix;
-import com.ldir.logo.game.MissionLoader;
+import com.ldir.logo.graphics.FieldRender;
 
 
 public class MissionField extends FieldView {
@@ -18,23 +16,14 @@ public class MissionField extends FieldView {
 	private Paint borderPaint = new Paint();
 	private Paint planePaint = new Paint();
 	private Paint fieldPaint = new Paint();
-//	private Matrix matrix;
+    FieldRender render;
 
-//	int def[][]={
-//			{0,0,0,0,0,0,0,0,0,0},
-//			{0,0,0,0,1,0,0,0,0,0},
-//			{0,0,0,1,2,1,0,0,0,0},
-//			{0,0,0,1,2,1,0,0,0,0},
-//			{0,0,0,0,1,0,0,0,0,0},
-//			{0,0,0,0,0,0,0,0,0,0},
-//		};
-//	
 	private void init() {
 		paint.setStyle(Style.STROKE);
 		paint.setColor(Color.RED);
 		paint.setStrokeWidth(1);
 		paint.setAlpha(255);
-		borderPaint.setStyle(Style.STROKE);
+		borderPaint.setStyle(Style.STROKE);// Зачем это?
 		borderPaint.setColor(Color.BLACK);
 		borderPaint.setStrokeWidth(1);
 		fieldPaint.setColor(Color.BLUE);
@@ -58,8 +47,7 @@ public class MissionField extends FieldView {
 
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
-        GameMap mission = MissionLoader.load(1);
-		Game.goalMatrix = new GameMatrix(fspan,mission);
+		render = new FieldRender(fspan,Game.goalMap);
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -68,7 +56,7 @@ public class MissionField extends FieldView {
 		paint.setTextSize(10);
 //		canvas.drawText(String.format("Hello "), 2, 2+paint.getTextSize(), paint);
 //		drawGrid(canvas,fieldPaint);
-		Game.goalMatrix.printNumbers(canvas, borderPaint);
+		render.printNumbers(canvas, borderPaint);
 		//invalidate();
 	}
 	

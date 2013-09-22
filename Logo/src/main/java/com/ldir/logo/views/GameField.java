@@ -1,4 +1,4 @@
-package com.ldir.logo;
+package com.ldir.logo.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.game.GameMatrix;
+import com.ldir.logo.graphics.FieldRender;
 
 import java.util.Stack;
 
@@ -23,7 +23,10 @@ public class GameField extends FieldView {
 	private Paint borderPaint = new Paint();
 	private Paint planePaint = new Paint();
 	private Paint fieldPaint = new Paint();
-//	private Matrix matrix;
+    private FieldRender render;
+
+    private GameMap.Pos clickPos = new GameMap.Pos();
+
 	private Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
 
 	private void construct() {
@@ -58,7 +61,7 @@ public class GameField extends FieldView {
 
 	@Override protected void onSizeChanged(int width, int height, int oldw, int oldh) {
 		super.onSizeChanged(width, height, oldw, oldh);
-		Game.gameMatrix = new GameMatrix(fspan,null);
+		render = new FieldRender(fspan,Game.gameMap);
 		drawField();
 	}
 
@@ -68,11 +71,15 @@ public class GameField extends FieldView {
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                GameMap last = Game.gameMatrix.save(null);
-                if(Game.gameMatrix.click(event.getX(), event.getY())){
-                	history.add(last);
-                	if(Game.gameMatrix.isEqual(Game.goalMatrix))
-                		Game.win = true;
+                GameMap last = new GameMap();
+                last.assign(Game.gameMap);
+
+                if(render.findCell(event.getX(), event.getY(), clickPos)){
+                    Game.gameMap.gameMove(clickPos.row, clickPos.col);
+                    if(Game.gameMap.isEqual(Game.goalMap)) {
+                        Game.win = true;
+                    }
+                    history.add(last);
                 }
                 drawField();
                 break;
@@ -81,7 +88,7 @@ public class GameField extends FieldView {
     }
 
     public void reset(){
-    	Game.gameMatrix.reset();
+    	Game.gameMap.reset();
     	history.clear();
     	Game.win = false;
     	drawField();
@@ -90,13 +97,13 @@ public class GameField extends FieldView {
     public void undo(){
     	if(history.size() != 0 ){
     		GameMap last = history.pop();
-    		Game.gameMatrix.setMap(last);
+            Game.gameMap.assign(last);
     		drawField();
     	}
     }
     
 	private void drawField() {
-		Game.gameMatrix.printNumbers(frameCanvas, borderPaint);
+		render.printNumbers(frameCanvas, borderPaint);
 		invalidate();
 	}
     protected void onDraw(Canvas canvas) {

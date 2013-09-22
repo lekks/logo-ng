@@ -1,19 +1,19 @@
-package com.ldir.logo.game;
+package com.ldir.logo.graphics;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.FloatMath;
 
-import com.ldir.logo.Sprites;
+import com.ldir.logo.game.GameMap;
 
-public class GameMatrix {
+public class FieldRender {
 	private Cell cells[][];
     private GameMap map;
     private Sprites sprites;
     private float hsize;
     private int cols, rows;
 
-    class Cell {
+    private class Cell {
         //	Rect rect=new Rect();
         private float x;
         private float y;
@@ -44,38 +44,16 @@ public class GameMatrix {
         }
 	}
 
-	public void reset() {
-        map.reset();
-	}
-
-	public boolean isEqual(GameMatrix other) {
-		return map.isEqual(other.map);
-	}
 
     public void setMap(GameMap map) {
         this.map = map;
     }
-    public GameMap  getMap() {
-        return map;
-    }
 
-	public void load(GameMap map) {
-        this.map.assign(map);
-	}
-
-	public GameMap save(GameMap copy) {
-		if(copy == null)
-            copy = new GameMap();
-        copy.assign(this.map);
-		return copy;
-	}
-
-
-	public boolean click(float cX,float cY) {
+	public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
 		for(int i=0;i<rows;i++){
 			for(int j=0;j<cols;j++){
 				if(cells[i][j].test(cX, cY)){
-                    map.gameMove(i,j);
+                    retPos.set(i,j);
 					return true;
 				}
 			}
@@ -84,11 +62,9 @@ public class GameMatrix {
 	}
 
 
-    public GameMatrix(float span, GameMap gameMap) {
-        if(gameMap != null)
-            this.map=gameMap;
-        else
-            this.map = new GameMap();
+    public FieldRender(float span, GameMap gameMap) {
+        if(gameMap==null) gameMap=new GameMap(); // Для дизаянера интерфейса
+        this.map=gameMap;
         this.rows=gameMap.ROWS;
         this.cols=gameMap.COLS;
         hsize = span/2;

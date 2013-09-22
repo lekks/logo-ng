@@ -10,7 +10,17 @@ public class GameMap {
     public static int COLS =7;
     public static int ROWS =7;
 
-    GameMap() {
+    public static class Pos {
+        public int row;
+        public int col;
+        public void set(int i,int j) {
+            row = i;
+            col = j;
+        }
+    }
+
+
+    public GameMap() {
         this.map = new byte[ROWS][COLS];
     }
 
@@ -50,14 +60,14 @@ public class GameMap {
     }
 
     public void reset() {
-        for(int i=0;i<ROWS;i++){ // TODO Убрать цикл
+        for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++)
                 map[i][j]=0;
         }
     }
 
     public boolean isEqual(GameMap other) {
-        for(int i=0;i<ROWS;i++){ // TODO Убрать цикл
+        for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
                 if(map[i][j] != other.map[i][j])
                     return false;
@@ -74,5 +84,6 @@ public class GameMap {
         if (i>0) next(i-1,j);
         if (j>0) next(i,j-1);
     }
+
 
 }

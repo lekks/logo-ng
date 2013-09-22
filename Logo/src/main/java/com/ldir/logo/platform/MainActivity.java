@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.ldir.logo.GameField;
+import com.ldir.logo.views.GameField;
 import com.ldir.logo.R;
 
 public class MainActivity extends Activity {

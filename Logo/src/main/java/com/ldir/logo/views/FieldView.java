@@ -1,4 +1,4 @@
-package com.ldir.logo;
+package com.ldir.logo.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+
 import com.ldir.logo.game.GameMap;
 
 public class FieldView extends android.view.View {
