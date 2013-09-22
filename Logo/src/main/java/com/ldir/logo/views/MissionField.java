@@ -13,22 +13,10 @@ import com.ldir.logo.graphics.FieldRender;
 
 public class MissionField extends FieldView {
 	private Paint paint = new Paint();
-	private Paint borderPaint = new Paint();
-	private Paint planePaint = new Paint();
-	private Paint fieldPaint = new Paint();
     FieldRender render;
 
 	private void init() {
-		paint.setStyle(Style.STROKE);
-		paint.setColor(Color.RED);
-		paint.setStrokeWidth(1);
-		paint.setAlpha(255);
-		borderPaint.setStyle(Style.STROKE);// Зачем это?
-		borderPaint.setColor(Color.BLACK);
-		borderPaint.setStrokeWidth(1);
-		fieldPaint.setColor(Color.BLUE);
-		fieldPaint.setStrokeWidth(3);
-		planePaint.setColor(Color.BLACK);
+
 	}
 
 	// Для инициализации чере XML, в других случаях другой инициализатор
@@ -52,12 +40,8 @@ public class MissionField extends FieldView {
 
 	protected void onDraw(Canvas canvas) {
 		
-		canvas.drawColor(Color.WHITE);
-		paint.setTextSize(10);
-//		canvas.drawText(String.format("Hello "), 2, 2+paint.getTextSize(), paint);
-//		drawGrid(canvas,fieldPaint);
-		render.printNumbers(canvas, borderPaint);
-		//invalidate();
+		canvas.drawColor(Color.WHITE); // предварительная заливка фона сглаживает неровности. TODO подобрать ширину спрайта
+		render.printNumbers(canvas, paint);
 	}
 	
 }

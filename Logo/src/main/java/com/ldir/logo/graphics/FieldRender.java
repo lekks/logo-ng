@@ -31,7 +31,9 @@ public class FieldRender {
 
         void draw(Canvas canvas, Paint paint, byte val){
             //canvas.drawRect(rect, paint);
-            canvas.drawBitmap(sprites.pic[val], x- hsize, y- hsize, paint);
+            canvas.drawBitmap(sprites.pic[0], x- hsize, y- hsize, paint);
+            if(val>0)
+                canvas.drawBitmap(sprites.pic[val], x- hsize, y- hsize, paint);
             //canvas.drawText(String.format("%i",val), x, y, paint);
         }
     }
@@ -63,7 +65,10 @@ public class FieldRender {
 
 
     public FieldRender(float span, GameMap gameMap) {
-        if(gameMap==null) gameMap=new GameMap(); // Для дизаянера интерфейса
+        if(gameMap==null) {
+            gameMap=new GameMap(); // Для дизаянера интерфейса
+            gameMap.set(2,2,(byte)2);
+        }
         this.map=gameMap;
         this.rows=gameMap.ROWS;
         this.cols=gameMap.COLS;

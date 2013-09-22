@@ -16,13 +16,8 @@ import com.ldir.logo.graphics.FieldRender;
 import java.util.Stack;
 
 
-
-
 public class GameField extends FieldView {
 	private Paint paint = new Paint();
-	private Paint borderPaint = new Paint();
-	private Paint planePaint = new Paint();
-	private Paint fieldPaint = new Paint();
     private FieldRender render;
 
     private GameMap.Pos clickPos = new GameMap.Pos();
@@ -30,19 +25,7 @@ public class GameField extends FieldView {
 	private Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
 
 	private void construct() {
-		paint.setStyle(Style.STROKE);
-		paint.setColor(Color.RED);
-		paint.setStrokeWidth(1);
-		paint.setAlpha(255);
-		borderPaint.setStyle(Style.STROKE);
-		borderPaint.setColor(Color.MAGENTA);
-		borderPaint.setStrokeWidth(3);
-		borderPaint.setTextAlign(Align.CENTER);
-		borderPaint.setTextSize(25);
-
-		fieldPaint.setColor(Color.BLUE);
-		fieldPaint.setStrokeWidth(3);
-		planePaint.setColor(Color.BLACK);
+		paint.setTextSize(25);
 	}
 
 	// Для инициализации чере XML, в других случаях другой инициализатор
@@ -103,15 +86,11 @@ public class GameField extends FieldView {
     }
     
 	private void drawField() {
-		render.printNumbers(frameCanvas, borderPaint);
+		render.printNumbers(frameCanvas, paint);
 		invalidate();
 	}
     protected void onDraw(Canvas canvas) {
-//		canvas.drawColor(Color.YELLOW);
-//		canvas.drawColor(Color.WHITE);
-
-//		drawGrid(canvas,fieldPaint);
-		canvas.drawBitmap(framebuf, 0, 0, borderPaint);
+		canvas.drawBitmap(framebuf, 0, 0, paint);
 		if(Game.win) canvas.drawText(String.format("WIN"), 2, 2+paint.getTextSize(), paint);
 	}
 	

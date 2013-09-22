@@ -56,17 +56,17 @@ public class FieldView extends android.view.View {
 	};
 	
 	
-	//  Отображение простой сетки в редакторе интерфейса
-	protected void drawGrid(Canvas canvas, Paint paint) {
-		for( int i=1;i<GameMap.COLS;i++){
-			int x = i*sizeX/GameMap.COLS;
-			canvas.drawLine(x, 0, x, sizeY, paint);
-		}
-		for( int i=1;i<GameMap.ROWS;i++){
-			int y = i*sizeY/GameMap.ROWS;
-			canvas.drawLine(0, y, sizeX, y, paint);
-		}
-	};
+//	//  Отображение простой сетки в редакторе интерфейса
+//	protected void drawGrid(Canvas canvas, Paint paint) {
+//		for( int i=1;i<GameMap.COLS;i++){
+//			int x = i*sizeX/GameMap.COLS;
+//			canvas.drawLine(x, 0, x, sizeY, paint);
+//		}
+//		for( int i=1;i<GameMap.ROWS;i++){
+//			int y = i*sizeY/GameMap.ROWS;
+//			canvas.drawLine(0, y, sizeX, y, paint);
+//		}
+//	};
 	
 
 }
