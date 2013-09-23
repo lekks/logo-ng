@@ -1,11 +1,8 @@
-package com.ldir.logo.views;
+package com.ldir.logo.fieldviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -13,13 +10,20 @@ import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.graphics.FieldRender;
 
-import java.util.Stack;
-
 
 public class GameField extends FieldView {
 	private Paint paint = new Paint();
     private FieldRender render;
     private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
+    private FieldPressHandler fieldPressHandler;
+
+    public interface FieldPressHandler {
+        void onPress(GameMap.Pos retPos);
+    }
+
+    public void setFieldPressHandler(FieldPressHandler handler){
+        fieldPressHandler = handler;
+    }
 
 	private void construct() {
 		paint.setTextSize(25);
@@ -52,8 +56,8 @@ public class GameField extends FieldView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if(render.findCell(event.getX(), event.getY(), clickPos)){
-                    Game.makeMove(clickPos);
-                    drawField();
+                    if(fieldPressHandler != null)
+                        fieldPressHandler.onPress(clickPos);
                 }
                 break;
         }

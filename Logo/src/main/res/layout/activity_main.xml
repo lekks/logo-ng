@@ -8,7 +8,7 @@
     android:background="@android:color/black"
     tools:context=".MainActivity" >
 
-    <com.ldir.logo.views.GameField
+    <com.ldir.logo.fieldviews.GameField
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_margin="5dp"
@@ -54,7 +54,7 @@
             style="@style/game_text"
             android:paddingTop="20dp" />
 
-        <com.ldir.logo.views.MissionField
+        <com.ldir.logo.fieldviews.MissionField
             android:id="@+id/misionView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

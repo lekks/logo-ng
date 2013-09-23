@@ -7,7 +7,7 @@ public class Game {
 
     public static GameMap goalMap;
     public static GameMap gameMap;
-//	static int level;
+	static int level;
 	public static boolean win;
     private static Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
 
@@ -40,8 +40,9 @@ public class Game {
     public static void startGame()
     {
         Game.gameMap = new GameMap();
-        Game.goalMap = MissionLoader.load(1);
-        win = false;
+        level = 0;
+        Game.goalMap = MissionLoader.load(level);
+        reset();
     }
 
 }

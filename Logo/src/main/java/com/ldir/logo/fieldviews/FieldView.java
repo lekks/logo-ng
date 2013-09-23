@@ -1,10 +1,9 @@
-package com.ldir.logo.views;
+package com.ldir.logo.fieldviews;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -54,7 +53,7 @@ public class FieldView extends android.view.View {
         if(framebuf != null) framebuf.recycle();
         framebuf = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		frameCanvas = new Canvas(framebuf);
-	};
+	}
 	
 	
 //	//  Отображение простой сетки в редакторе интерфейса
