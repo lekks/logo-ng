@@ -42,9 +42,17 @@ public class MissionLoader {
 		};
 	
 	
-	public static GameMap load(int i)
+	public static boolean load(GameMap map, int n)
 	{
-		return new GameMap(levels[i]);
+		if (n <levels.length) {
+            for (int i = 0; i < levels[n].length; i++) {
+                for (int j = 0; j < levels[n][i].length; j++) {
+                    map.set(i,j,levels[n][i][j]);
+                }
+            }
+            return true;
+        } else
+            return false;
 	}
 	
 //	static void load(){

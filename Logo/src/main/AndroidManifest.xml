@@ -11,16 +11,23 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" android:name=".platform.GameApp">
+
         <activity
             android:name=".platform.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".platform.NextLevelActivity"
+            android:theme="@android:style/Theme.Dialog"
+            android:label="Level Complete"
+        />
+
     </application>
 
 </manifest>

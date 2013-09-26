@@ -5,8 +5,8 @@ import java.util.Stack;
 public class Game {
 //	INSTANCE;
 
-    public static GameMap goalMap;
-    public static GameMap gameMap;
+    public static GameMap goalMap = new GameMap();
+    public static GameMap gameMap = new GameMap();
 	static int level;
 	public static boolean win;
     private static Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
@@ -26,6 +26,15 @@ public class Game {
         Game.win = false;
     }
 
+    public static boolean nextlevel(){
+        if(MissionLoader.load(goalMap,level+1)) {
+            ++level;
+            reset();
+            return true;
+        } else
+            return false;
+    }
+
     public static void makeMove(GameMap.Pos clickPos){
         GameMap last = new GameMap();
         last.assign(Game.gameMap);
@@ -39,9 +48,8 @@ public class Game {
 
     public static void startGame()
     {
-        Game.gameMap = new GameMap();
         level = 0;
-        Game.goalMap = MissionLoader.load(level);
+        MissionLoader.load(goalMap,level);
         reset();
     }
 

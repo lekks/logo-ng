@@ -24,10 +24,6 @@ public class GameMap {
         this.map = new byte[ROWS][COLS];
     }
 
-    GameMap(byte map[][]) {
-        this.map = map;
-    }
-
     GameMap(int rows, int cols) {
         this.map = new byte[rows][cols];
     }

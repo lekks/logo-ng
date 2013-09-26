@@ -4,6 +4,6 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
     <item android:id="@+id/menu_undo" android:title="@string/menu_undo"></item>
-    <item android:id="@+id/menu_reset" android:title="@string/menu_reset" 
-        android:onClick="undoClicked"></item>
+    <item android:id="@+id/menu_reset" android:title="@string/menu_reset"></item>
+    <item android:id="@+id/menu_newgame" android:title="New game"></item>
 </menu>

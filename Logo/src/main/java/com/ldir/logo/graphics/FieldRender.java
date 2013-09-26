@@ -1,7 +1,18 @@
 package com.ldir.logo.graphics;
 
+/*
+    Вариант алгоритма отрисовки анимации:
+    Рендер работает в отдельном потоке и рисует в битмап. По завершению обменивается картинками с GameField и вызывает
+    ему ivalidate
+
+
+ */
+
+
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.FloatMath;
 
 import com.ldir.logo.game.GameMap;
@@ -32,8 +43,11 @@ public class FieldRender {
         void draw(Canvas canvas, Paint paint, byte val){
             //canvas.drawRect(rect, paint);
             canvas.drawBitmap(sprites.pic[0], x- hsize, y- hsize, paint);
-            if(val>0)
+            if(val>0) {
                 canvas.drawBitmap(sprites.pic[val], x- hsize, y- hsize, paint);
+//                RectF dst = new RectF(x-hsize, y-hsize,x+hsize , y+ hsize);
+//                canvas.drawBitmap(sprites.pic[val], null,dst, paint);
+            }
             //canvas.drawText(String.format("%i",val), x, y, paint);
         }
     }
@@ -47,9 +61,9 @@ public class FieldRender {
 	}
 
 
-    public void setMap(GameMap map) {
-        this.map = map;
-    }
+//    public void setMap(GameMap map) {
+//        this.map = map;
+//    }
 
 	public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
 		for(int i=0;i<rows;i++){
@@ -60,7 +74,7 @@ public class FieldRender {
 				}
 			}
 		}
-		return false;
+        return false;
 	}
 
 
