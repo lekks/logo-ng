@@ -1,15 +1,13 @@
 package com.ldir.logo.graphics;
 
 
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.FloatMath;
 
 import com.ldir.logo.game.GameMap;
 
-public class FieldRender {
+public class StaticRender {
 	private Cell cells[][];
     private GameMap map;
     private Sprites sprites;
@@ -70,7 +68,7 @@ public class FieldRender {
 	}
 
 
-    public FieldRender(float span, GameMap gameMap) {
+    public StaticRender(float span, GameMap gameMap) {
         if(gameMap==null) {
             gameMap=new GameMap(); // Для дизаянера интерфейса
             gameMap.set(2,2,(byte)2);

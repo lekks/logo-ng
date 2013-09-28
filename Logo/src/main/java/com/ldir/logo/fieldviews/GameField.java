@@ -12,19 +12,18 @@ import android.view.SurfaceView;
 
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.graphics.SurfaceRender;
+import com.ldir.logo.graphics.DynamicRender;
 
 /**
  * Created by Ldir on 27.09.13.
  */
-public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
+public class GameField extends SurfaceView implements SurfaceHolder.Callback{
 
-    private SurfaceRender render;
+    private DynamicRender render;
 
     protected int sizeX=1;
     protected int sizeY=1;
     float fspan=0; // Размер клетки точек
-    int span=0;
 
     private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
     private FieldPressHandler fieldPressHandler;
@@ -37,37 +36,28 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
         fieldPressHandler = handler;
     }
 
-
     protected void init(){
         getHolder().addCallback(this);
     }
 
-    public FieldSurface(Context context) {
+    public GameField(Context context) {
         super(context);
         init();
     }
-
-    public FieldSurface(Context context, AttributeSet attrs) {
+    public GameField(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-
-    public FieldSurface(Context context, AttributeSet attrs, int defStyle) {
+    public GameField(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int height = getMeasuredHeight();
-        int width = getMeasuredWidth();
-        int t = width * GameMap.ROWS / GameMap.COLS;
-        if (height > t) height = t;
-        t = height * GameMap.COLS / GameMap.ROWS;
-        if (width > t) width = t;
-        setMeasuredDimension(width, height);
+        int[] constraints = { getMeasuredWidth(),getMeasuredHeight()};
+        GameMap.fitWidhHeight(constraints);
+        setMeasuredDimension(constraints[0], constraints[1]);
     }
 
 
@@ -77,8 +67,7 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
         sizeX = width;
         sizeY = height;
         this.fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
-        this.span = Math.round(fspan);
-        Log.i("Verbose", "Field surface size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + span + "," + "(" + fspan + ")");
+        Log.i("Verbose", "Field surface size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
     }
 
 
@@ -88,7 +77,7 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.i("Verbose", "surfaceCreated");
-        render = new SurfaceRender(getHolder(), Game.gameMap,fspan);
+        render = new DynamicRender(getHolder(), Game.gameMap,fspan);
         render.start();
 
     }

@@ -20,6 +20,16 @@ public class GameMap {
     }
 
 
+    static public void fitWidhHeight(int[] size)
+    {
+        int t = size[0] * GameMap.ROWS / GameMap.COLS;
+        if (size[1] > t) size[1] = t;
+        t = size[1] * GameMap.COLS / GameMap.ROWS;
+        if (size[0] > t) size[0] = t;
+
+    }
+
+
     public GameMap() {
         this.map = new byte[ROWS][COLS];
     }

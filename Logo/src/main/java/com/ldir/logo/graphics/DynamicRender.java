@@ -11,7 +11,7 @@ import com.ldir.logo.game.GameMap;
 /**
  * Created by Ldir on 27.09.13.
  */
-public class SurfaceRender extends Thread {
+public class DynamicRender extends Thread {
     private boolean mRun;
     private SurfaceHolder surfaceHolder;
     private Object  refresh = new Object();
@@ -73,7 +73,7 @@ public class SurfaceRender extends Thread {
     }
 
 
-    public SurfaceRender (SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize ) {
+    public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize) {
         this.surfaceHolder = surfaceHolder;
         cSize = sellSize;
         map = gameMap;

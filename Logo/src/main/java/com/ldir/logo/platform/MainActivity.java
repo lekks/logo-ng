@@ -8,17 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.ldir.logo.fieldviews.FieldSurface;
+import com.ldir.logo.R;
+import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.R;
 
 public class MainActivity extends Activity {
 
     private final int NEXT_LEVEL_ACTIVITY = 1;
 
-	private FieldSurface gameField;
+	private GameField gameField;
 	private MissionField missionField;
 
     private void processFieldChange()
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class OnFieldPressed implements FieldSurface.FieldPressHandler
+    private class OnFieldPressed implements GameField.FieldPressHandler
     {
         @Override
         public void onPress(GameMap.Pos clickPos) {
@@ -127,7 +127,7 @@ public class MainActivity extends Activity {
 //    	MissionLoader.load();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameField = (FieldSurface)findViewById(R.id.fieldSurface);
+        gameField = (GameField)findViewById(R.id.fieldSurface);
         gameField.setFieldPressHandler(new OnFieldPressed());
         missionField = (MissionField)findViewById(R.id.misionView);
     }
