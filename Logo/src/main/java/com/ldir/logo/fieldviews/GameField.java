@@ -70,7 +70,7 @@ public class GameField extends FieldView {
 	}
     protected void onDraw(Canvas canvas) {
 		canvas.drawBitmap(framebuf, 0, 0, paint);
-		if(Game.win) canvas.drawText(String.format("WIN"), 2, 2+paint.getTextSize(), paint);
+//		if(Game.win) canvas.drawText(String.format("WIN"), 2, 2+paint.getTextSize(), paint);
 	}
 	
 }

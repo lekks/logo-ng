@@ -14,6 +14,12 @@
         android:layout_margin="5dp"
         android:id="@+id/fieldView"  />
 
+    <com.ldir.logo.fieldviews.FieldSurface
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_margin="5dp"
+        android:id="@+id/fieldSurface"  />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"

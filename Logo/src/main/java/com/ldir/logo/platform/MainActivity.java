@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ldir.logo.fieldviews.FieldSurface;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
 
 	private GameField gameField;
 	private MissionField missionField;
+	private FieldSurface suface;
 
     private void processFieldChange()
     {
@@ -91,6 +93,7 @@ public class MainActivity extends Activity {
         public void onPress(GameMap.Pos clickPos) {
             Log.i("Verbose","Field pressed"+clickPos.row+","+clickPos.col);
             makeMove(clickPos);
+            suface.repaintView();
         }
     }
 
@@ -130,5 +133,6 @@ public class MainActivity extends Activity {
         gameField = (GameField) findViewById(R.id.fieldView);
         gameField.setFieldPressHandler(new OnFieldPressed());
         missionField = (MissionField)findViewById(R.id.misionView);
+        suface = (FieldSurface)findViewById(R.id.fieldSurface);
     }
 }
