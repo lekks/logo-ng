@@ -1,13 +1,5 @@
 package com.ldir.logo.graphics;
 
-/*
-    Вариант алгоритма отрисовки анимации:
-    Рендер работает в отдельном потоке и рисует в битмап. По завершению обменивается картинками с GameField и вызывает
-    ему ivalidate
-
-
- */
-
 
 
 import android.graphics.Canvas;

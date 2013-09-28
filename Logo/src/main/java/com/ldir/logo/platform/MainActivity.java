@@ -12,16 +12,14 @@ import com.ldir.logo.fieldviews.FieldSurface;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.R;
 
 public class MainActivity extends Activity {
 
     private final int NEXT_LEVEL_ACTIVITY = 1;
 
-	private GameField gameField;
+	private FieldSurface gameField;
 	private MissionField missionField;
-	private FieldSurface suface;
 
     private void processFieldChange()
     {
@@ -87,13 +85,12 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class OnFieldPressed implements GameField.FieldPressHandler
+    private class OnFieldPressed implements FieldSurface.FieldPressHandler
     {
         @Override
         public void onPress(GameMap.Pos clickPos) {
             Log.i("Verbose","Field pressed"+clickPos.row+","+clickPos.col);
             makeMove(clickPos);
-            suface.repaintView();
         }
     }
 
@@ -130,9 +127,8 @@ public class MainActivity extends Activity {
 //    	MissionLoader.load();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        gameField = (GameField) findViewById(R.id.fieldView);
+        gameField = (FieldSurface)findViewById(R.id.fieldSurface);
         gameField.setFieldPressHandler(new OnFieldPressed());
         missionField = (MissionField)findViewById(R.id.misionView);
-        suface = (FieldSurface)findViewById(R.id.fieldSurface);
     }
 }

@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.graphics.SurfaceRender;
 
@@ -17,12 +19,24 @@ import com.ldir.logo.graphics.SurfaceRender;
  */
 public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
 
-    private SurfaceRender drawThread;
+    private SurfaceRender render;
 
     protected int sizeX=1;
     protected int sizeY=1;
     float fspan=0; // Размер клетки точек
     int span=0;
+
+    private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
+    private FieldPressHandler fieldPressHandler;
+
+    public interface FieldPressHandler {
+        void onPress(GameMap.Pos retPos);
+    }
+
+    public void setFieldPressHandler(FieldPressHandler handler){
+        fieldPressHandler = handler;
+    }
+
 
     protected void init(){
         getHolder().addCallback(this);
@@ -74,8 +88,8 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.i("Verbose", "surfaceCreated");
-        drawThread = new SurfaceRender(getHolder());
-        drawThread.start();
+        render = new SurfaceRender(getHolder(), Game.gameMap,fspan);
+        render.start();
 
     }
 
@@ -83,6 +97,9 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         Log.i("Verbose", "surfaceChanged " + format + "," + width + "," + height);
+
+        // FIXME Старую убить, новую создать
+
     }
 
     //SurfaceHolder.Callback
@@ -91,16 +108,32 @@ public class FieldSurface extends SurfaceView implements SurfaceHolder.Callback{
         Log.i("Verbose", "surfaceDestroyed");
         boolean retry = true;
         // завершаем работу потока
-        drawThread.close();
-        drawThread = null;
+        render.close();
+        render = null;
     }
 
-    public void repaintView()
+    public void drawField()
     {
-        if(drawThread!=null)
-            drawThread.repaint();
+        if(render !=null)
+            render.repaint();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if(render.findCell(event.getX(), event.getY(), clickPos)){
+                    if(fieldPressHandler != null)
+                        fieldPressHandler.onPress(clickPos);
+                }
+                break;
+        }
+        return true;
+    }
+
+
+    // Для дизайнера инерфейса
     @Override
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();

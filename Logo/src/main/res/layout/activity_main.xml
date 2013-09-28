@@ -8,15 +8,9 @@
     android:background="@android:color/black"
     tools:context=".MainActivity" >
 
-    <com.ldir.logo.fieldviews.GameField
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_margin="5dp"
-        android:id="@+id/fieldView"  />
-
     <com.ldir.logo.fieldviews.FieldSurface
-        android:layout_width="100px"
-        android:layout_height="100px"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_margin="5dp"
         android:id="@+id/fieldSurface"  />
 
@@ -62,8 +56,8 @@
 
         <com.ldir.logo.fieldviews.MissionField
             android:id="@+id/misionView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_weight="4"
