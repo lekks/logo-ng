@@ -24,25 +24,6 @@ public class DynamicRender extends Thread {
     private Transition cells[][];
 
 
-    public void printNumbers(Canvas canvas, Paint paint) {
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                cells[i][j].draw(canvas, paint,map.get(i,j));
-            }
-        }
-    }
-
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
-        int row= (int) (cY/cSize);
-        int col= (int) (cX/cSize);
-        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
-            retPos.set(row,col);
-            return true;
-        } else
-            return false;
-    }
-
-
     public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize) {
         this.surfaceHolder = surfaceHolder;
         cSize = sellSize;
@@ -58,12 +39,16 @@ public class DynamicRender extends Thread {
             cells[i] = new Transition[cols];
             for(int j=0;j<cols;j++){
                 Rect rect = new Rect(j*size, i*size,(j+1)*size, (i+1)*size);
-                cells[i][j]= new Transition(rect, sprites);
+                cells[i][j]= new Transition(rect, sprites,  new Paint());
             }
         }
     }
 
     public void repaint() {
+        for(int i=0;i<rows;i++)
+            for(int j=0;j<cols;j++)
+                cells[i][j].setGoal(map.get(i,j));
+
         synchronized (refresh) {
             refresh.notify();
         }
@@ -91,26 +76,31 @@ public class DynamicRender extends Thread {
 
     @Override
     public void run() {
-        Paint paint = new Paint();
-        paint.setTextSize(32);
         mRun = true;
+        int i;
+        int j;
+        long systime;
+        boolean transFinished;
         while (mRun) {
 
             Canvas canvas = null;
             try {
+                transFinished = true;
+//                synchronized (surfaceHolder) {
+//                }
+
                 // получаем объект Canvas и выполняем отрисовку
                 canvas = surfaceHolder.lockCanvas(null);
-                synchronized (surfaceHolder) {
-
-                    canvas.drawColor(Color.WHITE);
-
-                    for(int i=0;i<rows;i++){
-                        for(int j=0;j<cols;j++){
-                            cells[i][j].draw(canvas, paint,map.get(i,j));
+//                synchronized (surfaceHolder) {
+//                    canvas.drawColor(Color.WHITE);
+                    systime = System.currentTimeMillis();
+                    for(i=0;i<rows;i++){
+                        for(j=0;j<cols;j++){
+                            if(!cells[i][j].transStep(canvas,systime))
+                                transFinished = false ;
                         }
                     }
-
-                }
+//                }
             } finally {
                 if (canvas != null)
                     surfaceHolder.unlockCanvasAndPost(canvas);
@@ -118,13 +108,18 @@ public class DynamicRender extends Thread {
 
 
             try {
+                if(!transFinished)
+                    sleep(50);
                 synchronized (refresh) {
-                    if(mRun)
-                        refresh.wait();
-                    else break;
+                    if(mRun) {
+                        if(transFinished)
+                            refresh.wait();
+                    } else
+                        break;
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                mRun = false; // Если поменяю цикл и забуду
                 break;
             }
         }

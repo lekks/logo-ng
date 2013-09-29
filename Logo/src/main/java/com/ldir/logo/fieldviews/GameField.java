@@ -71,8 +71,6 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
     }
 
 
-//    class Render extends Thread
-
     //SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -107,12 +105,23 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
             render.repaint();
     }
 
+    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
+        int row= (int) (cY/fspan);
+        int col= (int) (cX/fspan);
+        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
+            retPos.set(row,col);
+            return true;
+        } else
+            return false;
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(render.findCell(event.getX(), event.getY(), clickPos)){
+                if(findCell(event.getX(), event.getY(), clickPos)){
                     if(fieldPressHandler != null)
                         fieldPressHandler.onPress(clickPos);
                 }
