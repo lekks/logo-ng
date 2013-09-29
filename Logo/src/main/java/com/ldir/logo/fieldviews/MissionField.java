@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -49,7 +48,7 @@ public class MissionField extends android.view.View {
 	protected void onDraw(Canvas canvas) {
 		
 		canvas.drawColor(Color.WHITE); // предварительная заливка фона сглаживает неровности. TODO подобрать ширину спрайта
-		render.printNumbers(canvas, paint);
+		render.paint(canvas, paint);
 	}
 	
 }

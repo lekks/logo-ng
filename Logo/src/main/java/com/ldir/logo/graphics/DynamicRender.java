@@ -3,9 +3,12 @@ package com.ldir.logo.graphics;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.FloatMath;
 import android.view.SurfaceHolder;
 
+import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 
 /**
@@ -17,40 +20,9 @@ public class DynamicRender extends Thread {
     private Object  refresh = new Object();
     private GameMap map;
     private float cSize;
-    private float hsize;
     private int cols, rows;
+    private Transition cells[][];
 
-    Cell cells[][];
-    Sprites sprites;
-
-
-    private class Cell {
-        //	Rect rect=new Rect();
-        private float x;
-        private float y;
-
-        Cell(int row, int col, float size) {
-            this.x=(col+0.5f)*size;
-            this.y=(row+0.5f)*size;
-            //float s=span*0.42f;
-            //rect.set((int)(x-s), (int)(y-s), (int)(x+s), (int)(y+s));
-        }
-
-        boolean test(float cX, float cY){
-            return cX > (x- hsize) && cX < (x+ hsize) && cY > (y- hsize) && cY < (y+ hsize);
-        }
-
-        void draw(Canvas canvas, Paint paint, byte val){
-            //canvas.drawRect(rect, paint);
-            canvas.drawBitmap(sprites.pic[0], x- hsize, y- hsize, paint);
-            if(val>0) {
-                canvas.drawBitmap(sprites.pic[val], x- hsize, y- hsize, paint);
-//                RectF dst = new RectF(x-hsize, y-hsize,x+hsize , y+ hsize);
-//                canvas.drawBitmap(sprites.pic[val], null,dst, paint);
-            }
-            //canvas.drawText(String.format("%i",val), x, y, paint);
-        }
-    }
 
     public void printNumbers(Canvas canvas, Paint paint) {
         for(int i=0;i<rows;i++){
@@ -61,15 +33,13 @@ public class DynamicRender extends Thread {
     }
 
     public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                if(cells[i][j].test(cX, cY)){
-                    retPos.set(i,j);
-                    return true;
-                }
-            }
-        }
-        return false;
+        int row= (int) (cY/cSize);
+        int col= (int) (cX/cSize);
+        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
+            retPos.set(row,col);
+            return true;
+        } else
+            return false;
     }
 
 
@@ -79,14 +49,16 @@ public class DynamicRender extends Thread {
         map = gameMap;
         this.rows=gameMap.ROWS;
         this.cols=gameMap.COLS;
-        hsize = sellSize/2;
 
-        sprites = new Sprites((int) FloatMath.floor(sellSize));
-        cells = new Cell[rows][];
+        int size = (int)sellSize;
+
+        Sprites sprites = new Sprites(size);
+        cells = new Transition[rows][];
         for(int i=0;i<rows;i++){
-            cells[i] = new Cell[cols];
+            cells[i] = new Transition[cols];
             for(int j=0;j<cols;j++){
-                cells[i][j]= new Cell(i,j,sellSize);
+                Rect rect = new Rect(j*size, i*size,(j+1)*size, (i+1)*size);
+                cells[i][j]= new Transition(rect, sprites);
             }
         }
     }
@@ -131,19 +103,12 @@ public class DynamicRender extends Thread {
                 synchronized (surfaceHolder) {
 
                     canvas.drawColor(Color.WHITE);
-                    canvas.drawBitmap(sprites.pic[0],0,0,paint);
 
                     for(int i=0;i<rows;i++){
                         for(int j=0;j<cols;j++){
                             cells[i][j].draw(canvas, paint,map.get(i,j));
                         }
                     }
-
-
-//                    if(i>0)
-//                        canvas.drawBitmap(sprites.pic[i],0,0,paint);
-//                    if(++i>=sprites.pic.length)
-//                        i=0;
 
                 }
             } finally {
