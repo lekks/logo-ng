@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
     {
         @Override
         public void onPress(GameMap.Pos clickPos) {
-            Log.i("Verbose","Field pressed"+clickPos.row+","+clickPos.col);
+//            Log.i("Verbose","Field pressed"+clickPos.row+","+clickPos.col);
             makeMove(clickPos);
         }
     }

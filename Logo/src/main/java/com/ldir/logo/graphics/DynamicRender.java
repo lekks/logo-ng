@@ -39,15 +39,16 @@ public class DynamicRender extends Thread {
             cells[i] = new Transition[cols];
             for(int j=0;j<cols;j++){
                 Rect rect = new Rect(j*size, i*size,(j+1)*size, (i+1)*size);
-                cells[i][j]= new Transition(rect, sprites,  new Paint());
+                cells[i][j]= new Transition(rect, sprites,sprites.pic[0],  new Paint());
             }
         }
     }
 
     public void repaint() {
+        long systime = System.currentTimeMillis();
         for(int i=0;i<rows;i++)
             for(int j=0;j<cols;j++)
-                cells[i][j].setGoal(map.get(i,j));
+                cells[i][j].setGoal(map.get(i,j),systime);
 
         synchronized (refresh) {
             refresh.notify();

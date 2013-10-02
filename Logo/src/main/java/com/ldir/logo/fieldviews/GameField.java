@@ -77,7 +77,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
         Log.i("Verbose", "surfaceCreated");
         render = new DynamicRender(getHolder(), Game.gameMap,fspan);
         render.start();
-
+        render.repaint(); // Игра может быть в полном разгаре!
     }
 
     //SurfaceHolder.Callback
