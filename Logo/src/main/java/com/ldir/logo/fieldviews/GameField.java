@@ -77,7 +77,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
         Log.i("Verbose", "surfaceCreated");
         render = new DynamicRender(getHolder(), Game.gameMap,fspan);
         render.start();
-        render.repaint(); // Игра может быть в полном разгаре!
+        render.repaint();
     }
 
     //SurfaceHolder.Callback
@@ -85,8 +85,12 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         Log.i("Verbose", "surfaceChanged " + format + "," + width + "," + height);
 
-        // FIXME Старую убить, новую создать
-
+        if(fspan != render.getcSize()) {
+            render.close();
+            render = new DynamicRender(getHolder(), Game.gameMap,fspan);
+            render.start();
+            render.repaint();
+        }
     }
 
     //SurfaceHolder.Callback

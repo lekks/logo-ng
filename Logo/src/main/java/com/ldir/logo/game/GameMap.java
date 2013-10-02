@@ -61,10 +61,6 @@ public class GameMap {
         map[x][y] = v;
     }
 
-    private void next(int i, int j) {
-        if(++map[i][j]>4)map[i][j]=1;
-    }
-
     public void reset() {
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++)
@@ -82,13 +78,25 @@ public class GameMap {
         return true;
     }
 
+    private void nextPresssed(int i, int j) {
+        if(++map[i][j]>4)map[i][j]=1;
+    }
 
-    public void gameMove(int i,int j) {
-        next(i,j);
-        if (i+1<ROWS) next(i+1,j);
-        if (j+1<COLS) next(i,j+1);
-        if (i>0) next(i-1,j);
-        if (j>0) next(i,j-1);
+    private void nextSide(int i, int j) {
+        if(map[i][j]>0)
+            nextPresssed(i, j);
+    }
+
+    public boolean gameMove(int i,int j) {
+        if(map[i][j] == 0) {
+            nextPresssed(i, j);
+            if (i+1<ROWS) nextSide(i + 1, j);
+            if (j+1<COLS) nextSide(i, j + 1);
+            if (i>0) nextSide(i - 1, j);
+            if (j>0) nextSide(i, j - 1);
+            return true;
+        } else
+            return false;
     }
 
 

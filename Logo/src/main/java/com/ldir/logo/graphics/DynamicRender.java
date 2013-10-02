@@ -23,7 +23,6 @@ public class DynamicRender extends Thread {
     private int cols, rows;
     private Transition cells[][];
 
-
     public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize) {
         this.surfaceHolder = surfaceHolder;
         cSize = sellSize;
@@ -42,6 +41,10 @@ public class DynamicRender extends Thread {
                 cells[i][j]= new Transition(rect, sprites,sprites.pic[0],  new Paint());
             }
         }
+    }
+
+    public float getcSize(){
+        return cSize;
     }
 
     public void repaint() {

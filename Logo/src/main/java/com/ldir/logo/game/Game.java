@@ -35,14 +35,22 @@ public class Game {
             return false;
     }
 
-    public static void makeMove(GameMap.Pos clickPos){
+    public static boolean lastLevel(){
+        return MissionLoader.lastLevel(level);
+    }
+
+
+    public static boolean makeMove(GameMap.Pos clickPos) {
         GameMap last = new GameMap();
         last.assign(Game.gameMap);
-        Game.gameMap.gameMove(clickPos.row, clickPos.col);
-        if(Game.gameMap.isEqual(Game.goalMap)) {
-            Game.win = true;
+        boolean move = gameMap.gameMove(clickPos.row, clickPos.col);
+        if (move) {
+            if (Game.gameMap.isEqual(Game.goalMap)) {
+                Game.win = true;
+            }
+            history.add(last);
         }
-        history.add(last);
+        return move;
     }
 
 

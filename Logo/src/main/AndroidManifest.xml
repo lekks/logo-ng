@@ -25,7 +25,11 @@
         <activity
             android:name=".platform.NextLevelActivity"
             android:theme="@android:style/Theme.Dialog"
-            android:label="Level Complete"
+        />
+
+        <activity
+            android:name=".platform.GameWinActivity"
+            android:theme="@android:style/Theme.Dialog"
         />
 
     </application>

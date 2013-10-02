@@ -17,6 +17,7 @@ import com.ldir.logo.game.GameMap;
 public class MainActivity extends Activity {
 
     private final int NEXT_LEVEL_ACTIVITY = 1;
+    private final int GAME_WIN_ACTIVITY = 2;
 
 	private GameField gameField;
 	private MissionField missionField;
@@ -28,21 +29,25 @@ public class MainActivity extends Activity {
 
     private void makeMove(GameMap.Pos clickPos)
     {
-        Game.makeMove(clickPos);
-        processFieldChange();
-        if(Game.win) {
-            startNextLevelActitity();
+        if(Game.makeMove(clickPos)) {
+            processFieldChange();
+            if(Game.win) {
+                if(Game.lastLevel())
+                    startGameWinActitity();
+                 else
+                    startNextLevelActitity();
+            }
         }
-
     }
 
     private void nextLevel()
     {
-        if (Game.nextlevel() ==false ) {
-            Game.reset();
-            Toast.makeText(this, "That`s all folks", Toast.LENGTH_SHORT).show();
-        } else {
+        if (Game.nextlevel() ) {
             missionField.invalidate();
+        } else {
+            Game.reset();
+            Log.e("Error", "No more levels");
+            Toast.makeText(this, "That`s all folks", Toast.LENGTH_SHORT).show();
         }
         processFieldChange();
     }
@@ -77,11 +82,22 @@ public class MainActivity extends Activity {
         intent.putExtra("level", "message");
         startActivityForResult(intent,NEXT_LEVEL_ACTIVITY);
     }
+    private void startGameWinActitity()
+    {
+        Intent intent = new Intent(this, GameWinActivity.class);
+        startActivityForResult(intent,GAME_WIN_ACTIVITY);
+    }
+
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == NEXT_LEVEL_ACTIVITY) {
-            nextLevel();
+        switch (requestCode) {
+            case NEXT_LEVEL_ACTIVITY:
+                nextLevel();
+                break;
+            case GAME_WIN_ACTIVITY:
+                newGame();
+                break;
         }
     }
 
