@@ -25,22 +25,19 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/logo"
             android:src="@drawable/logo"
-            android:layout_above="@+id/misionView"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:layout_gravity="right|top" />
 
         <TextView
             android:text="LEVEL 1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView"
             style="@style/game_text"  />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="TIME: 2:54"
             android:id="@+id/textView2"
             style="@style/game_text" />
@@ -48,18 +45,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Pattern"
             android:id="@+id/textView3"
             style="@style/game_text"
-            android:paddingTop="20dp" />
+            android:paddingTop="10dp" />
 
         <com.ldir.logo.fieldviews.MissionField
             android:id="@+id/misionView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
             android:layout_weight="4"
             android:layout_gravity="center_horizontal"
             android:padding="20dp" />
