@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import java.util.Random;
+
 /**
  * Created by Ldir on 29.09.13.
  */
@@ -29,7 +31,11 @@ public class Transition {
     private Rect rect;
     private Rect rectBuf = new Rect();
     private Paint paint;
+    private int cX,cY;
+    private int size,hsize;
+    private boolean horizontal;
 
+    static Random rnd = new Random();
 
     final static int TRANS_STATE_FIX=0;
     final static int TRANS_STATE_GO=1;
@@ -42,6 +48,10 @@ public class Transition {
         this.sprites = sprites;
         this.rect = rect;
         this.backgr = backgr;
+        cX=rect.centerX();
+        cY=rect.centerY();
+        size = rect.width();
+        hsize = size/2;
     }
 
     public void setGoal(int goal,long sysTime)
@@ -71,51 +81,50 @@ public class Transition {
     public boolean transStep(Canvas canvas, long sysTime)
     {
         long trTime = sysTime - stateTime;
-        final int TR_TIME = 500;
+        final int TR_TIME = 250;
 
         canvas.drawBitmap(backgr, null, rect, paint);
 
-        switch (state) {
-            case TRANS_STATE_GO:
-                if(current == 0)
-                    setState(TRANS_STATE_FADE_IN, sysTime);
+        if (state == TRANS_STATE_GO) {
+            horizontal = rnd.nextBoolean();
+            if(current == 0)
+                setState(TRANS_STATE_FADE_IN, sysTime);
+            else
+                setState(TRANS_STATE_FADE_OUT, sysTime);
+            trTime = sysTime - stateTime;
+        }
+
+        if (state == TRANS_STATE_FADE_OUT) {
+            if(trTime < TR_TIME) {
+                float ph=1.0f-(float)trTime/TR_TIME;
+                int hs = (int)((float)hsize*ph);
+                if(horizontal)
+                    rectBuf.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
                 else
-                    setState(TRANS_STATE_FADE_OUT, sysTime);
+                    rectBuf.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
+                canvas.drawBitmap(sprites.pic[current], null, rectBuf, paint);
+            } else {
+                if(goal == 0)
+                    setState(TRANS_STATE_FIX, sysTime);
+                else
+                    setState(TRANS_STATE_FADE_IN, sysTime);
                 trTime = sysTime - stateTime;
-                //no break;
-            case TRANS_STATE_FADE_OUT:
-                if(trTime < TR_TIME) {
-                    float ph=1.0f-(float)trTime/TR_TIME;
-                    int x=rect.centerX();
-                    int y=rect.centerY();
-                    int hs = (int)((float)rect.width()*ph/2);
-                    int hh = rect.height()/2;
-                    rectBuf.set(x - hs, y - hh, x + hs, y + hh);
-                    canvas.drawBitmap(sprites.pic[current], null, rectBuf, paint);
-                    break;
-                } else {
-                    if(goal == 0)
-                        setState(TRANS_STATE_FIX, sysTime);
-                    else
-                        setState(TRANS_STATE_FADE_IN, sysTime);
-                    trTime = sysTime - stateTime;
-                }
-                //no break;
-            case TRANS_STATE_FADE_IN:
+            }
+        }
+        if (state == TRANS_STATE_FADE_IN) {
                 if(trTime < TR_TIME) {
                     float ph=(float)trTime/TR_TIME;
-                    int x=rect.centerX();
-                    int y=rect.centerY();
-                    int hs = (int)((float)rect.width()*ph/2);
-                    int hh = rect.height()/2;
-                    rectBuf.set(x - hs, y - hh, x + hs, y + hh);
+                    int hs = (int)((float)hsize*ph);
+                    if(horizontal)
+                        rectBuf.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
+                    else
+                        rectBuf.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
                     canvas.drawBitmap(sprites.pic[goal], null, rectBuf, paint);
-                    break;
                 } else {
                     setState(TRANS_STATE_FIX, sysTime);
                 }
-                //no break;
-            case TRANS_STATE_FIX:
+        }
+        if (state == TRANS_STATE_FIX) {
                 if(goal != 0)
                     canvas.drawBitmap(sprites.pic[goal], null, rect, paint);
                 return true;

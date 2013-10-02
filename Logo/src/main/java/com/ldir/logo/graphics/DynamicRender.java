@@ -110,7 +110,7 @@ public class DynamicRender extends Thread {
 
             try {
                 if(!transFinished)
-                    sleep(50);
+                    sleep(20);
                 synchronized (refresh) {
                     if(mRun) {
                         if(transFinished)
