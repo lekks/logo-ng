@@ -20,8 +20,10 @@ public class Underlayer {
     public Underlayer(int size) {
         if (orig != null)
             pic = Bitmap.createScaledBitmap(Underlayer.orig, size, size, true);
-        else
+        else {
             pic = Bitmap.createBitmap(size, size, Config.ARGB_4444);
+            pic.eraseColor(Color.GREEN);
+        }
     }
 
     public static void load(Resources res) {

@@ -59,40 +59,5 @@
             android:padding="20dp" />
 
     </LinearLayout>
-    <!--
-
-    <RelativeLayout
-         android:layout_width="wrap_content"
-         android:layout_height="match_parent"
-         android:layout_weight="1"
-         android:gravity="top"
-         android:paddingBottom="50dp"
-         android:paddingLeft="5dp"
-         android:paddingRight="5dp" >
-
-
-                <Button
-                    android:id="@+id/undo_button"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/misionView"
-                    android:layout_alignLeft="@+id/misionView"
-                    android:layout_marginLeft="14dp"
-                    android:onClick="undoClicked"
-                    android:text="@string/undo_but" />
-
-                <Button
-                    android:id="@+id/clear_button"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/undo_button"
-                    android:layout_alignBottom="@+id/undo_button"
-                    android:layout_toRightOf="@+id/undo_button"
-                    android:onClick="clearClicked"
-                    android:text="@string/new_but" />
-    </RelativeLayout>
-        -->
 
 </LinearLayout>

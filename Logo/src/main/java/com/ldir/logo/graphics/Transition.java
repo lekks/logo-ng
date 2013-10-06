@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.Random;
 
@@ -29,7 +28,7 @@ public class Transition {
     private Sprites sprites;
     private Bitmap backgr;
     private Rect rect;
-    private Rect rectBuf = new Rect();
+    private Rect rectTmp = new Rect();
     private Paint paint;
     private int cX,cY;
     private int size,hsize;
@@ -44,7 +43,7 @@ public class Transition {
 
 
 
-    public Transition(Rect rect, Sprites sprites, Bitmap backgr, Paint paint ) {
+    public Transition(Rect rect, Sprites sprites, Bitmap backgr ) {
         this.sprites = sprites;
         this.rect = rect;
         this.backgr = backgr;
@@ -99,10 +98,10 @@ public class Transition {
                 float ph=1.0f-(float)trTime/TR_TIME;
                 int hs = (int)((float)hsize*ph);
                 if(horizontal)
-                    rectBuf.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
+                    rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
                 else
-                    rectBuf.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                canvas.drawBitmap(sprites.pic[current], null, rectBuf, paint);
+                    rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
+                canvas.drawBitmap(sprites.pic[current], null, rectTmp, paint);
             } else {
                 if(goal == 0)
                     setState(TRANS_STATE_FIX, sysTime);
@@ -116,10 +115,10 @@ public class Transition {
                     float ph=(float)trTime/TR_TIME;
                     int hs = (int)((float)hsize*ph);
                     if(horizontal)
-                        rectBuf.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
+                        rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
                     else
-                        rectBuf.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                    canvas.drawBitmap(sprites.pic[goal], null, rectBuf, paint);
+                        rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
+                    canvas.drawBitmap(sprites.pic[goal], null, rectTmp, paint);
                 } else {
                     setState(TRANS_STATE_FIX, sysTime);
                 }

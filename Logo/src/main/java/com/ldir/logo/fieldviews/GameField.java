@@ -17,7 +17,7 @@ import com.ldir.logo.graphics.DynamicRender;
 /**
  * Created by Ldir on 27.09.13.
  */
-public class GameField extends SurfaceView implements SurfaceHolder.Callback{
+public class GameField extends android.view.View {
 
     private DynamicRender render;
 
@@ -28,6 +28,16 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
     private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
     private FieldPressHandler fieldPressHandler;
 
+    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
+        int row= (int) (cY/fspan);
+        int col= (int) (cX/fspan);
+        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
+            retPos.set(row,col);
+            return true;
+        } else
+            return false;
+    }
+
     public interface FieldPressHandler {
         void onPress(GameMap.Pos retPos);
     }
@@ -37,7 +47,6 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     protected void init(){
-        getHolder().addCallback(this);
     }
 
     public GameField(Context context) {
@@ -68,60 +77,9 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
         sizeY = height;
         this.fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
         Log.i("Verbose", "Field surface size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
-    }
-
-
-    private void startRender() {
-        render = new DynamicRender(getHolder(), Game.gameMap,fspan, sizeX, sizeY);
-        render.start();
+        render = new DynamicRender(Game.gameMap,fspan, sizeX, sizeY);
         render.repaint();
-
     }
-
-    //SurfaceHolder.Callback
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Log.i("Verbose", "surfaceCreated");
-        startRender();
-    }
-
-    //SurfaceHolder.Callback
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-        Log.i("Verbose", "surfaceChanged " + format + "," + width + "," + height);
-
-        if(fspan != render.getcSize()) {
-            render.close();
-            startRender();
-        }
-    }
-
-    //SurfaceHolder.Callback
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        Log.i("Verbose", "surfaceDestroyed");
-        boolean retry = true;
-        // завершаем работу потока
-        render.close();
-        render = null;
-    }
-
-    public void drawField()
-    {
-        if(render !=null)
-            render.repaint();
-    }
-
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
-        int row= (int) (cY/fspan);
-        int col= (int) (cX/fspan);
-        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
-            retPos.set(row,col);
-            return true;
-        } else
-            return false;
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -137,14 +95,15 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
         return true;
     }
 
+    public void drawField() {
+        render.repaint();
+        invalidate();
+    }
 
-    // Для дизайнера инерфейса
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
-        Log.i("Verbose", "surface onDraw");
-        canvas.drawColor(Color.GREEN);
-
+        if(!render.run(canvas))
+            invalidate();
     }
 
 }

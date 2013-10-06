@@ -14,10 +14,7 @@ import com.ldir.logo.game.GameMap;
 /**
  * Created by Ldir on 27.09.13.
  */
-public class DynamicRender extends Thread {
-    private boolean mRun;
-    private SurfaceHolder surfaceHolder;
-    private Object  refresh = new Object();
+public class DynamicRender  {
     private GameMap map;
     private float cSize;
     private int cols, rows;
@@ -25,8 +22,7 @@ public class DynamicRender extends Thread {
     private Underlayer underlayer;
     private Paint paint = new Paint();
 
-    public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize,int width, int height ) {
-        this.surfaceHolder = surfaceHolder;
+    public DynamicRender(GameMap gameMap, float sellSize,int width, int height ) {
         cSize = sellSize;
         map = gameMap;
         this.rows=gameMap.ROWS;
@@ -39,7 +35,7 @@ public class DynamicRender extends Thread {
             cells[i] = new Transition[cols];
             for(int j=0;j<cols;j++){
                 Rect rect = new Rect((int)(j*sellSize), (int)(i*sellSize),(int)((j+1)*sellSize), (int)((i+1)*sellSize));
-                cells[i][j]= new Transition(rect, sprites,sprites.pic[0],  new Paint());
+                cells[i][j]= new Transition(rect, sprites,sprites.pic[0]);
             }
         }
     }
@@ -53,79 +49,22 @@ public class DynamicRender extends Thread {
         for(int i=0;i<rows;i++)
             for(int j=0;j<cols;j++)
                 cells[i][j].setGoal(map.get(i,j),systime);
-
-        synchronized (refresh) {
-            refresh.notify();
-        }
     }
 
-    public void close() {
-        boolean retry = true;
-        synchronized (refresh) {
-            mRun = false;
-            refresh.notify();
-        }
-        while (retry) {
-            try {
-                join();
-                retry = false;
-            } catch (InterruptedException e) {
-                // если не получилось, то будем пытаться еще и еще
-            }
-        }
-    }
-
-
-    @Override
-    public void run() {
-        mRun = true;
+    public boolean run(Canvas canvas) {
         int i;
         int j;
-        long systime;
-        boolean transFinished;
-        while (mRun) {
+        boolean transFinished = true;
+//        canvas.drawColor(Color.BLACK);
+        canvas.drawBitmap(underlayer.pic, 0, 0, paint);
 
-            Canvas canvas = null;
-            try {
-                transFinished = true;
-//                synchronized (surfaceHolder) {
-//                }
-
-                // получаем объект Canvas и выполняем отрисовку
-                canvas = surfaceHolder.lockCanvas(null);
-//                synchronized (surfaceHolder) {
-                canvas.drawColor(Color.BLACK);
-                canvas.drawBitmap(underlayer.pic, 0, 0, paint);
-
-                systime = System.currentTimeMillis();
-                for (i = 0; i < rows; i++) {
-                    for (j = 0; j < cols; j++) {
-                        if (!cells[i][j].transStep(canvas, systime))
-                            transFinished = false;
-                    }
-                }
-//                }
-            } finally {
-                if (canvas != null)
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-            }
-
-
-            try {
-                if (!transFinished)
-                    sleep(20);
-                synchronized (refresh) {
-                    if (mRun) {
-                        if (transFinished)
-                            refresh.wait();
-                    } else
-                        break;
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                mRun = false; // Если поменяю цикл и забуду
-                break;
+        long systime = System.currentTimeMillis();
+        for (i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
+                if (!cells[i][j].transStep(canvas, systime))
+                    transFinished = false;
             }
         }
+        return transFinished;
     }
 }
