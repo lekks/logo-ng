@@ -71,13 +71,18 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
     }
 
 
+    private void startRender() {
+        render = new DynamicRender(getHolder(), Game.gameMap,fspan, sizeX, sizeY);
+        render.start();
+        render.repaint();
+
+    }
+
     //SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.i("Verbose", "surfaceCreated");
-        render = new DynamicRender(getHolder(), Game.gameMap,fspan);
-        render.start();
-        render.repaint();
+        startRender();
     }
 
     //SurfaceHolder.Callback
@@ -87,9 +92,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback{
 
         if(fspan != render.getcSize()) {
             render.close();
-            render = new DynamicRender(getHolder(), Game.gameMap,fspan);
-            render.start();
-            render.repaint();
+            startRender();
         }
     }
 

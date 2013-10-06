@@ -22,22 +22,23 @@ public class DynamicRender extends Thread {
     private float cSize;
     private int cols, rows;
     private Transition cells[][];
+    private Underlayer underlayer;
+    private Paint paint = new Paint();
 
-    public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize) {
+    public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize,int width, int height ) {
         this.surfaceHolder = surfaceHolder;
         cSize = sellSize;
         map = gameMap;
         this.rows=gameMap.ROWS;
         this.cols=gameMap.COLS;
 
-        int size = (int)sellSize;
-
-        Sprites sprites = new Sprites(size);
+        Sprites sprites = new Sprites((int)sellSize);
+        underlayer = new Underlayer(width);
         cells = new Transition[rows][];
         for(int i=0;i<rows;i++){
             cells[i] = new Transition[cols];
             for(int j=0;j<cols;j++){
-                Rect rect = new Rect(j*size, i*size,(j+1)*size, (i+1)*size);
+                Rect rect = new Rect((int)(j*sellSize), (int)(i*sellSize),(int)((j+1)*sellSize), (int)((i+1)*sellSize));
                 cells[i][j]= new Transition(rect, sprites,sprites.pic[0],  new Paint());
             }
         }
@@ -75,9 +76,6 @@ public class DynamicRender extends Thread {
     }
 
 
-
-
-
     @Override
     public void run() {
         mRun = true;
@@ -96,14 +94,16 @@ public class DynamicRender extends Thread {
                 // получаем объект Canvas и выполняем отрисовку
                 canvas = surfaceHolder.lockCanvas(null);
 //                synchronized (surfaceHolder) {
-//                    canvas.drawColor(Color.WHITE);
-                    systime = System.currentTimeMillis();
-                    for(i=0;i<rows;i++){
-                        for(j=0;j<cols;j++){
-                            if(!cells[i][j].transStep(canvas,systime))
-                                transFinished = false ;
-                        }
+                canvas.drawColor(Color.BLACK);
+                canvas.drawBitmap(underlayer.pic, 0, 0, paint);
+
+                systime = System.currentTimeMillis();
+                for (i = 0; i < rows; i++) {
+                    for (j = 0; j < cols; j++) {
+                        if (!cells[i][j].transStep(canvas, systime))
+                            transFinished = false;
                     }
+                }
 //                }
             } finally {
                 if (canvas != null)
@@ -112,11 +112,11 @@ public class DynamicRender extends Thread {
 
 
             try {
-                if(!transFinished)
+                if (!transFinished)
                     sleep(20);
                 synchronized (refresh) {
-                    if(mRun) {
-                        if(transFinished)
+                    if (mRun) {
+                        if (transFinished)
                             refresh.wait();
                     } else
                         break;
@@ -127,5 +127,5 @@ public class DynamicRender extends Thread {
                 break;
             }
         }
-     }
+    }
 }

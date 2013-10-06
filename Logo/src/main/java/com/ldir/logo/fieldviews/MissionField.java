@@ -37,17 +37,14 @@ public class MissionField extends android.view.View {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-        int sizeX = width;
-        int sizeY = height;
-        float fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
-        Log.i("Verbose", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
-        render = new StaticRender(fspan,Game.goalMap);
+        Log.i("Verbose", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height);
+        render = new StaticRender(Game.goalMap, width, height);
     }
 
 
 	protected void onDraw(Canvas canvas) {
 		
-		canvas.drawColor(Color.WHITE); // предварительная заливка фона сглаживает неровности. TODO подобрать ширину спрайта
+//		canvas.drawColor(Color.WHITE); // предварительная заливка фона сглаживает неровности. TODO подобрать ширину спрайта
 		render.paint(canvas, paint);
 	}
 	

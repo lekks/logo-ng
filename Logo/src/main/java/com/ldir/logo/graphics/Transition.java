@@ -83,7 +83,7 @@ public class Transition {
         long trTime = sysTime - stateTime;
         final int TR_TIME = 250;
 
-        canvas.drawBitmap(backgr, null, rect, paint);
+//        canvas.drawBitmap(backgr, null, rect, paint);
 
         if (state == TRANS_STATE_GO) {
             horizontal = rnd.nextBoolean();
