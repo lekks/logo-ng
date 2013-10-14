@@ -13,6 +13,9 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
+import com.ldir.logo.music.ModPlayer;
+
+import java.io.IOException;
 
 public class MainActivity extends Activity {
 
@@ -21,6 +24,8 @@ public class MainActivity extends Activity {
 
 	private GameField gameField;
 	private MissionField missionField;
+    private ModPlayer music;
+
 
     private void processFieldChange()
     {
@@ -128,8 +133,36 @@ public class MainActivity extends Activity {
          default:
             return super.onOptionsItemSelected(item);
         }
-    }    
-    
+    }
+
+    private void setMusicState(Boolean en) {
+        if (en) {
+            if (music == null) {
+                try {
+                    music = new ModPlayer(getAssets().open("0.mod"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (music != null) {
+                music.close();
+                music = null;
+            }
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        setMusicState(true);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        setMusicState(false);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
