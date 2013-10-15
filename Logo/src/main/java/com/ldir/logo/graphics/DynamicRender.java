@@ -1,14 +1,9 @@
 package com.ldir.logo.graphics;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.util.FloatMath;
-import android.view.SurfaceHolder;
 
-import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 
 /**

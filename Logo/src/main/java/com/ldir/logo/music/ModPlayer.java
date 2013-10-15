@@ -14,6 +14,7 @@ import java.io.InputStream;
 public class ModPlayer extends Thread {
 
     private final static int BIT_RATE = 44100;
+    private final static int MIN_BUF_SIZE = BIT_RATE*4;
 	private boolean stopped = false;  // Тут мьютекс не принципиален
     private Module module;
 
@@ -47,15 +48,22 @@ public class ModPlayer extends Thread {
         Log.i("Mod", "Song duration: " + duration / BIT_RATE);
 
 		try {
+
+            int[] mixBuf = new int[ micromod.getMixBufferLength() ];
+            short[] outBuf = new short[ mixBuf.length * 2 ];
+
 			int minSize = AudioTrack.getMinBufferSize(BIT_RATE,
                     AudioFormat.CHANNEL_OUT_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT);
+
+
+            if(minSize < MIN_BUF_SIZE) minSize = MIN_BUF_SIZE;
+//            if(minSize < outBuf.length*2) minSize = outBuf.length*2;
+
             track = new AudioTrack(AudioManager.STREAM_MUSIC, BIT_RATE,
 					AudioFormat.CHANNEL_OUT_STEREO,
 					AudioFormat.ENCODING_PCM_16BIT, minSize,
 					AudioTrack.MODE_STREAM);
-            int[] mixBuf = new int[ micromod.getMixBufferLength() ];
-            short[] outBuf = new short[ mixBuf.length * 2 ];
             track.play();
             while (  duration >0  && !stopped) {
                 int samples = micromod.getAudio( mixBuf );

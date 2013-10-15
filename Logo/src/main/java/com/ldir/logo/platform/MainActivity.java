@@ -152,14 +152,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    protected void onResume() {
-        super.onResume();
+    @Override
+    protected void onStart() {
+        super.onStart();
         setMusicState(true);
+        gameField.setAnimationEnable(true);
     }
 
-    protected void onPause() {
-        super.onPause();
+    @Override
+    protected void onStop() {
+        super.onStop();
         setMusicState(false);
+        gameField.setAnimationEnable(false);
     }
 
 

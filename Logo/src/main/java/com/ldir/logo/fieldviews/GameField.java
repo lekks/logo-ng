@@ -2,17 +2,16 @@ package com.ldir.logo.fieldviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.graphics.DynamicRender;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Ldir on 27.09.13.
@@ -20,6 +19,8 @@ import com.ldir.logo.graphics.DynamicRender;
 public class GameField extends android.view.View {
 
     private DynamicRender render;
+    private Timer mTimer;
+    private boolean mAnimate = false;
 
     protected int sizeX=1;
     protected int sizeY=1;
@@ -99,11 +100,37 @@ public class GameField extends android.view.View {
         render.repaint();
         invalidate();
     }
+    class AccTimerTask extends TimerTask {
+        @Override public void run() {
+            if(mAnimate)
+                postInvalidate();
+        };
+    };
+
+    public void setAnimationEnable(Boolean en){
+        if(en){
+            if(mTimer == null) {
+                mTimer = new Timer();
+                mTimer.scheduleAtFixedRate(new AccTimerTask(), 50, 50);
+            }
+        } else {
+            if(mTimer != null){
+                mTimer.cancel();
+                mTimer = null;
+            }
+        }
+    }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(!render.run(canvas))
-            invalidate();
+        if(render.run(canvas))
+            mAnimate = false;
+        else
+            mAnimate = true;
     }
+
+
 
 }
