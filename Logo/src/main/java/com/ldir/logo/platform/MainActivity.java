@@ -13,7 +13,7 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.music.ModPlayer;
+import com.ldir.logo.music.IBXMPlayer;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 
 	private GameField gameField;
 	private MissionField missionField;
-    private ModPlayer music;
+    private IBXMPlayer music;
 
 
     private void processFieldChange()
@@ -139,7 +139,7 @@ public class MainActivity extends Activity {
         if (en) {
             if (music == null) {
                 try {
-                    music = new ModPlayer(getAssets().open("0.mod"));
+                    music = new IBXMPlayer(getAssets().open("1.xm"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

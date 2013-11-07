@@ -1,26 +1,30 @@
 
-package com.ldir.logo.music.micromod;
+package com.ldir.logo.music.ibxm;
 
 /*
-	Java ProTracker Replay (c)2013 mumart@gmail.com
+	ProTracker, Scream Tracker 3, FastTracker 2 Replay (c)2013 mumart@gmail.com
 */
-public class Micromod {
-	public static final String VERSION = "20130203 (c)2013 mumart@gmail.com";
+public class IBXM {
+	public static final String VERSION = "a67 (c)2013 mumart@gmail.com";
 
 	private Module module;
 	private int[] rampBuf;
 	private Channel[] channels;
-	private int sampleRate;
+	private int sampleRate, interpolation;
 	private int seqPos, breakSeqPos, row, nextRow, tick;
 	private int speed, tempo, plCount, plChannel;
-	private boolean interpolation;
+	private GlobalVol globalVol;
+	private Note note;
 
 	/* Play the specified Module at the specified sampling rate. */
-	public Micromod( Module module, int samplingRate ) {
+	public IBXM( Module module, int samplingRate ) {
 		this.module = module;
 		setSampleRate( samplingRate );
+		interpolation = Channel.LINEAR;
 		rampBuf = new int[ 128 ];
 		channels = new Channel[ module.numChannels ];
+		globalVol = new GlobalVol();
+		note = new Note();
 		setSequencePos( 0 );
 	}
 
@@ -39,12 +43,13 @@ public class Micromod {
 		sampleRate = rate;
 	}
 
-	/* Enable or disable the linear interpolation filter. */
-	public void setInterpolation( boolean interpolation ) {
+	/* Set the resampling quality to one of
+	   Channel.NEAREST, Channel.LINEAR, or Channel.SINC. */
+	public void setInterpolation( int interpolation ) {
 		this.interpolation = interpolation;
 	}
 
-	/* Return the length of the buffer required by getAudio(). */
+	/* Returns the length of the buffer required by getAudio(). */
 	public int getMixBufferLength() {
 		return ( calculateTickLen( 32, 128000 ) + 65 ) * 4;
 	}
@@ -65,11 +70,12 @@ public class Micromod {
 		breakSeqPos = pos;
 		nextRow = 0;
 		tick = 1;
-		speed = 6;
-		tempo = 125;
+		globalVol.volume = module.defaultGVol;
+		speed = module.defaultSpeed > 0 ? module.defaultSpeed : 6;
+		tempo = module.defaultTempo > 0 ? module.defaultTempo : 125;
 		plCount = plChannel = -1;
 		for( int idx = 0; idx < module.numChannels; idx++ )
-			channels[ idx ] = new Channel( module, idx );
+			channels[ idx ] = new Channel( module, idx, globalVol );
 		for( int idx = 0; idx < 128; idx++ )
 			rampBuf[ idx ] = 0;
 		tick();
@@ -85,7 +91,7 @@ public class Micromod {
 			songEnd = tick();
 		}
 		setSequencePos( 0 );
-		return duration;
+		return duration;	
 	}
 
 	/* Seek to approximately the specified sample position.
@@ -109,7 +115,7 @@ public class Micromod {
 		setSequencePos( 0 );
 		if( sequencePos < 0 || sequencePos >= module.sequenceLength )
 			sequencePos = 0;
-		if( sequenceRow >= 64 )
+		if( sequenceRow >= module.patterns[ module.sequence[ sequencePos ] ].numRows )
 			sequenceRow = 0;
 		while( seqPos < sequencePos || row < sequenceRow ) {
 			int tickLen = calculateTickLen( tempo, sampleRate );
@@ -155,7 +161,7 @@ public class Micromod {
 			mixBuf[ idx     ] = ( mixBuf[ idx     ] * a1 + rampBuf[ idx     ] * a2 ) >> 8;
 			mixBuf[ idx + 1 ] = ( mixBuf[ idx + 1 ] * a1 + rampBuf[ idx + 1 ] * a2 ) >> 8;
 		}
-		System.arraycopy(mixBuf, tickLen * 2, rampBuf, 0, 128);
+		System.arraycopy( mixBuf, tickLen * 2, rampBuf, 0, 128 );
 	}
 
 	private void downsample( int[] buf, int count ) {
@@ -182,59 +188,72 @@ public class Micromod {
 		boolean songEnd = false;
 		if( breakSeqPos >= 0 ) {
 			if( breakSeqPos >= module.sequenceLength ) breakSeqPos = nextRow = 0;
+			while( module.sequence[ breakSeqPos ] >= module.numPatterns ) {
+				breakSeqPos++;
+				if( breakSeqPos >= module.sequenceLength ) breakSeqPos = nextRow = 0;
+			}
 			if( breakSeqPos <= seqPos ) songEnd = true;
 			seqPos = breakSeqPos;
 			for( int idx = 0; idx < module.numChannels; idx++ ) channels[ idx ].plRow = 0;
 			breakSeqPos = -1;
 		}
+		Pattern pattern = module.patterns[ module.sequence[ seqPos ] ];
 		row = nextRow;
+		if( row >= pattern.numRows ) row = 0;
 		nextRow = row + 1;
-		if( nextRow >= 64 ) {
+		if( nextRow >= pattern.numRows ) {
 			breakSeqPos = seqPos + 1;
 			nextRow = 0;
 		}
-		int patOffset = ( module.sequence[ seqPos ] * 64 + row ) * module.numChannels * 4;
+		int noteIdx = row * module.numChannels;
 		for( int chanIdx = 0; chanIdx < module.numChannels; chanIdx++ ) {
 			Channel channel = channels[ chanIdx ];
-			int key = module.patterns[ patOffset ] & 0xFF;
-			int ins = module.patterns[ patOffset + 1 ] & 0xFF;
-			int effect = module.patterns[ patOffset + 2 ] & 0xFF;
-			int param  = module.patterns[ patOffset + 3 ] & 0xFF;
-			patOffset += 4;
-			if( effect == 0xE ) {
-				effect = 0x10 | ( param >> 4 );
-				param &= 0xF;
+			pattern.getNote( noteIdx + chanIdx, note );
+			if( note.effect == 0xE ) {
+				note.effect = 0x70 | ( note.param >> 4 );
+				note.param &= 0xF;
 			}
-			if( effect == 0 && param > 0 ) effect = 0xE;
-			channel.row( key, ins, effect, param );
-			switch( effect ) {
-				case 0xB: /* Pattern Jump.*/
+			if( note.effect == 0x93 ) {
+				note.effect = 0xF0 | ( note.param >> 4 );
+				note.param &= 0xF;
+			}
+			if( note.effect == 0 && note.param > 0 ) note.effect = 0x8A;
+			channel.row( note );
+			switch( note.effect ) {
+				case 0x81: /* Set Speed. */
+					if( note.param > 0 )
+						tick = speed = note.param;
+					break;
+				case 0xB: case 0x82: /* Pattern Jump.*/
 					if( plCount < 0 ) {
-						breakSeqPos = param;
+						breakSeqPos = note.param;
 						nextRow = 0;
 					}
 					break;
-				case 0xD: /* Pattern Break.*/
+				case 0xD: case 0x83: /* Pattern Break.*/
 					if( plCount < 0 ) {
 						breakSeqPos = seqPos + 1;
-						nextRow = ( param >> 4 ) * 10 + ( param & 0xF );
-						if( nextRow >= 64 ) nextRow = 0;
+						nextRow = ( note.param >> 4 ) * 10 + ( note.param & 0xF );
 					}
 					break;
-				case 0xF: /* Set Speed.*/
-					if( param > 0 ) {
-						if( param < 32 )
-							tick = speed = param;
+				case 0xF: /* Set Speed/Tempo.*/
+					if( note.param > 0 ) {
+						if( note.param < 32 )
+							tick = speed = note.param;
 						else
-							tempo = param;
+							tempo = note.param;
 					}
 					break;
-				case 0x16: /* Pattern Loop.*/
-					if( param == 0 ) /* Set loop marker on this channel. */
+				case 0x94: /* Set Tempo.*/
+					if( note.param > 32 )
+						tempo = note.param;
+					break;
+				case 0x76: case 0xFB : /* Pattern Loop.*/
+					if( note.param == 0 ) /* Set loop marker on this channel. */
 						channel.plRow = row;
 					if( channel.plRow < row ) { /* Marker valid. Begin looping. */
 						if( plCount < 0 ) { /* Not already looping, begin. */
-							plCount = param;
+							plCount = note.param;
 							plChannel = chanIdx;
 						}
 						if( plChannel == chanIdx ) { /* Next Loop.*/
@@ -249,8 +268,8 @@ public class Micromod {
 						}
 					}
 					break;
-				case 0x1E: /* Pattern Delay.*/
-					tick = speed + speed * param;
+				case 0x7E: case 0xFE: /* Pattern Delay.*/
+					tick = speed + speed * note.param;
 					break;
 			}
 		}

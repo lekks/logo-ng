@@ -5,27 +5,27 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
 
-import com.ldir.logo.music.micromod.Micromod;
-import com.ldir.logo.music.micromod.Module;
+import com.ldir.logo.music.ibxm.IBXM;
+import com.ldir.logo.music.ibxm.Module;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ModPlayer extends Thread {
+public class IBXMPlayer extends Thread {
 
     private final static int BIT_RATE = 44100;
     private final static int MIN_BUF_SIZE = BIT_RATE*4;
 	private boolean stopped = false;  // Тут мьютекс не принципиален
     private Module module;
 
-	public ModPlayer(byte[] data) {
+	public IBXMPlayer(byte[] data) {
 		super();
         module = new Module( data );
 		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);
 		start();
 	}
 
-    public ModPlayer(InputStream file) throws IOException {
+    public IBXMPlayer(InputStream file) throws IOException {
         super();
         int size = file.available();
         Log.i("Verbose", "size is " + size);
@@ -41,15 +41,15 @@ public class ModPlayer extends Thread {
 	@Override
     public void run() {
 		AudioTrack track = null;
-        Micromod micromod = new Micromod( module, BIT_RATE );
-        int duration = micromod.calculateSongDuration();
+        IBXM ibxm = new IBXM( module, BIT_RATE );
+        int duration = ibxm.calculateSongDuration();
 
         Log.i("Mod", "Song name: " + module.songName);
         Log.i("Mod", "Song duration: " + duration / BIT_RATE);
 
 		try {
 
-            int[] mixBuf = new int[ micromod.getMixBufferLength() ];
+            int[] mixBuf = new int[ ibxm.getMixBufferLength() ];
             short[] outBuf = new short[ mixBuf.length * 2 ];
 
 			int minSize = AudioTrack.getMinBufferSize(BIT_RATE,
@@ -66,7 +66,7 @@ public class ModPlayer extends Thread {
 					AudioTrack.MODE_STREAM);
             track.play();
             while (  duration >0  && !stopped) {
-                int samples = micromod.getAudio( mixBuf );
+                int samples = ibxm.getAudio( mixBuf );
                 int outIdx = 0;
                 for( int mixIdx = 0, mixEnd = samples * 2; mixIdx < mixEnd; mixIdx++ ) {
                     int sam = mixBuf[ mixIdx ];
