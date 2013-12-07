@@ -111,7 +111,7 @@ public class GameField extends android.view.View {
         if(en){
             if(mTimer == null) {
                 mTimer = new Timer();
-                mTimer.scheduleAtFixedRate(new AccTimerTask(), 50, 50);
+                mTimer.scheduleAtFixedRate(new AccTimerTask(), 20, 20);
             }
         } else {
             if(mTimer != null){
