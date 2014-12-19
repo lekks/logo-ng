@@ -17,7 +17,7 @@ import com.ldir.logo.music.IBXMPlayer;
 
 import java.io.IOException;
 
-public class MainActivity extends Activity {
+public class GameActivity extends Activity {
 
     private final int NEXT_LEVEL_ACTIVITY = 1;
     private final int GAME_WIN_ACTIVITY = 2;
@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
     {
 //    	MissionLoader.load();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
         gameField = (GameField)findViewById(R.id.fieldSurface);
         gameField.setFieldPressHandler(new OnFieldPressed());
         missionField = (MissionField)findViewById(R.id.misionView);
