@@ -24,7 +24,6 @@ public class GameActivity extends Activity {
 
 	private GameField gameField;
 	private MissionField missionField;
-    private IBXMPlayer music;
 
 
     private void processFieldChange()
@@ -135,35 +134,24 @@ public class GameActivity extends Activity {
         }
     }
 
-    private void setMusicState(Boolean en) {
-        if (en) {
-            if (music == null) {
-                try {
-                    music = new IBXMPlayer(getAssets().open("1.xm"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            if (music != null) {
-                music.close();
-                music = null;
-            }
-        }
-    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        setMusicState(true);
+        Game.enterPlayground();
         gameField.setAnimationEnable(true);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        setMusicState(false);
         gameField.setAnimationEnable(false);
+        try {
+            Game.exitPlayground();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.graphics.Sprites;
 import com.ldir.logo.graphics.Underlayer;
+import com.ldir.logo.music.Music;
 
 public class GameApp  extends Application{
     private static Context context;
@@ -15,6 +16,9 @@ public class GameApp  extends Application{
         GameApp.context = getApplicationContext();
         Sprites.load(getResources());
         Underlayer.load(getResources());
+
+        Game.observedState.addObserver(Music.onGameChange);
+
         Game.startGame();
     }
 

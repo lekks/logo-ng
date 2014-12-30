@@ -90,12 +90,8 @@ public class IBXMPlayer extends Thread {
 		}
 	}
 
-	public void close() {
+	public void close() throws InterruptedException {
 		stopped = true;
-		try {
-			join(1000);
-		} catch (InterruptedException e) {
-            e.printStackTrace();
-		}
+        join(1000);
 	}
 }
