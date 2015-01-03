@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.ldir.logo.R;
+import com.ldir.logo.game.Game;
 
 /**
  * Created by Ldir on 25.09.13.
@@ -30,6 +31,19 @@ public class NextLevelActivity extends Activity {
     private void close() {
         finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Game.enterNextLevelScreen();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Game.exitNextLevelScreen();
+    }
+
     // TODO обработать кнопки
     @Override
     public boolean onTouchEvent(MotionEvent event) {

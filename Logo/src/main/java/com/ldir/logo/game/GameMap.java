@@ -61,7 +61,7 @@ public class GameMap {
         map[x][y] = v;
     }
 
-    public void reset() {
+    public void resetField() {
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++)
                 map[i][j]=0;

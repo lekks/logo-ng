@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.ldir.logo.R;
+import com.ldir.logo.game.Game;
 
 /**
  * Created by Ldir on 25.09.13.
@@ -31,4 +32,18 @@ public class GameWinActivity extends Activity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Game.enterWinScreen();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Game.exitWinScreen();
+        // пока заменил на android:noHistory="true"
+        // если сделать непрозрачным - лучше убрать будет
+//        finish();
+    }
 }

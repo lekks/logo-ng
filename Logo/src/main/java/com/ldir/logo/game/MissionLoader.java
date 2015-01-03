@@ -41,8 +41,12 @@ public class MissionLoader {
 //			},
 		};
 
+    private static int levelNumber(){
+        return levels.length-1;
+    }
+
     public static boolean lastLevel(int n) {
-        if (n+1 < levels.length)
+        if (n+1 < levelNumber())
             return false;
         else
             return true;
@@ -51,7 +55,7 @@ public class MissionLoader {
 	
 	public static boolean load(GameMap map, int n)
 	{
-		if (n <levels.length) {
+		if (n <levelNumber()) {
             for (int i = 0; i < levels[n].length; i++) {
                 for (int j = 0; j < levels[n][i].length; j++) {
                     map.set(i,j,levels[n][i][j]);

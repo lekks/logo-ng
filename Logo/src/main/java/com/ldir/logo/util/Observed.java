@@ -7,6 +7,21 @@ import java.util.Observer;
  * Created by Ldir on 30.12.2014.
  */
 public class Observed {
+
+    public static class Event extends Observable implements Observer {
+
+        public void update() {
+            setChanged();
+            notifyObservers();
+        }
+
+        @Override
+        public void update(Observable o, Object arg) {
+            setChanged();
+            notifyObservers(arg);
+        }
+    }
+
     public static class Value<T> extends Observable implements Observer {
 
         public void update(T value) {
@@ -14,10 +29,10 @@ public class Observed {
             notifyObservers(value);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void update(Observable o, Object arg) {
-            setChanged();
-            notifyObservers(arg);
+            update((T)arg);
         }
     }
 
@@ -40,6 +55,7 @@ public class Observed {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void update(Observable o, Object arg) {
             update((T)arg);

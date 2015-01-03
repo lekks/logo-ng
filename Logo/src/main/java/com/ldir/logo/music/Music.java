@@ -20,11 +20,13 @@ public class Music {
             switch (state.oldState) {
                 case PLAYING:
                     stopMusic();
+                    break;
             }
 
             switch (state.newState) {
                 case PLAYING:
                     startMusic();
+                    break;
             }
         }
     };

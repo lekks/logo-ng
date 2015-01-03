@@ -14,6 +14,7 @@ public class Underlayer {
     public Bitmap pic;
     static Paint paint = new Paint();
 
+    //fixme рециркулировать и обобщить со спрайтами
 
     public Underlayer(int size) {
         if (orig != null)

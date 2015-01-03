@@ -19,7 +19,7 @@ public class GameApp  extends Application{
 
         Game.observedState.addObserver(Music.onGameChange);
 
-        Game.startGame();
+        Game.restartGame();
     }
 
     public static Context getAppContext() {

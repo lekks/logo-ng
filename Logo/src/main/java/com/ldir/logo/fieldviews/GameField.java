@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.graphics.DynamicRender;
+import com.ldir.logo.util.Observed;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,7 +30,10 @@ public class GameField extends android.view.View {
     private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
     private FieldPressHandler fieldPressHandler;
 
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
+    private boolean mTransitionStarted = false;
+    public static Observed.Event transitionEndEvent = new  Observed.Event();
+
+    public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
         int row= (int) (cY/fspan);
         int col= (int) (cX/fspan);
         if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
@@ -98,6 +102,7 @@ public class GameField extends android.view.View {
 
     public void drawField() {
         render.repaint();
+        mTransitionStarted = true;
         invalidate();
     }
     class AccTimerTask extends TimerTask {
@@ -125,10 +130,15 @@ public class GameField extends android.view.View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(render.run(canvas))
+        if(render.run(canvas)) {
             mAnimate = false;
-        else
+            if(mTransitionStarted) {
+                mTransitionStarted = false;
+                transitionEndEvent.update();
+            }
+        } else {
             mAnimate = true;
+        }
     }
 
 
