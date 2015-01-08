@@ -18,6 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+<!--
     <com.ldir.logo.fieldviews.FieldView
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -26,5 +27,6 @@
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/button"
         android:layout_toStartOf="@+id/button" />
+-->
 
 </RelativeLayout>

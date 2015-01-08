@@ -2,30 +2,24 @@ package com.ldir.logo.fieldviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.graphics.Sprites;
-import com.ldir.logo.graphics.Transition;
-import com.ldir.logo.graphics.Underlayer;
-import com.ldir.logo.util.Observed;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Ldir on 27.09.13.
  */
-public class GameField extends android.view.View {
+public class GameField extends SurfaceView implements SurfaceHolder.Callback{
 
     private DynamicRender render;
-    private Timer mTimer;
-    private boolean mAnimate = false;
 
     protected int sizeX=1;
     protected int sizeY=1;
@@ -33,19 +27,6 @@ public class GameField extends android.view.View {
 
     private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
     private FieldPressHandler fieldPressHandler;
-
-    private boolean mTransitionStarted = false;
-    public static Observed.Event transitionEndEvent = new  Observed.Event();
-
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
-        int row= (int) (cY/fspan);
-        int col= (int) (cX/fspan);
-        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
-            retPos.set(row,col);
-            return true;
-        } else
-            return false;
-    }
 
     public interface FieldPressHandler {
         void onPress(GameMap.Pos retPos);
@@ -56,6 +37,15 @@ public class GameField extends android.view.View {
     }
 
     protected void init(){
+        //Для поднятием над фоном
+        setZOrderOnTop(true);
+
+        //Нужно для бинарной прозрачности
+        //getHolder().setFormat(PixelFormat.TRANSPARENT);
+
+        //Нужно для плавной прозрачности
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        getHolder().addCallback(this);
     }
 
     public GameField(Context context) {
@@ -86,9 +76,60 @@ public class GameField extends android.view.View {
         sizeY = height;
         this.fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
         Log.i("Verbose", "Field surface size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
-        render = new DynamicRender(Game.gameMap,fspan, sizeX, sizeY);
-        render.repaint();
     }
+
+
+    private void startRender() {
+        render = new DynamicRender(getHolder(), Game.gameMap,fspan, sizeX, sizeY);
+        render.start();
+        render.repaint();
+
+    }
+
+    //SurfaceHolder.Callback
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Log.i("Verbose", "surfaceCreated");
+        startRender();
+    }
+
+    //SurfaceHolder.Callback
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+        Log.i("Verbose", "surfaceChanged " + format + "," + width + "," + height);
+
+        if(fspan != render.getcSize()) {
+            render.close();
+            startRender();
+        }
+    }
+
+    //SurfaceHolder.Callback
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        Log.i("Verbose", "surfaceDestroyed");
+        boolean retry = true;
+        // завершаем работу потока
+        render.close();
+        render = null;
+    }
+
+    public void drawField()
+    {
+        if(render !=null)
+            render.repaint();
+    }
+
+    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
+        int row= (int) (cY/fspan);
+        int col= (int) (cX/fspan);
+        if(row < Game.gameMap.ROWS && col < GameMap.COLS) {
+            retPos.set(row,col);
+            return true;
+        } else
+            return false;
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -104,99 +145,14 @@ public class GameField extends android.view.View {
         return true;
     }
 
-    public void drawField() {
-        render.repaint();
-        mTransitionStarted = true;
-        invalidate();
-    }
-    class AccTimerTask extends TimerTask {
-        @Override public void run() {
-            if(mAnimate)
-                postInvalidate();
-        };
-    };
 
-    public void setAnimationEnable(Boolean en){
-        if(en){
-            if(mTimer == null) {
-                mTimer = new Timer();
-                mTimer.scheduleAtFixedRate(new AccTimerTask(), 20, 20);
-            }
-        } else {
-            if(mTimer != null){
-                mTimer.cancel();
-                mTimer = null;
-            }
-        }
-    }
-
-
-
+    // Для дизайнера инерфейса
     @Override
     protected void onDraw(Canvas canvas) {
-        if(render.run(canvas)) {
-            mAnimate = false;
-            if(mTransitionStarted) {
-                mTransitionStarted = false;
-                transitionEndEvent.update();
-            }
-        } else {
-            mAnimate = true;
-        }
-    }
-}
+        Paint paint = new Paint();
+        Log.i("Verbose", "surface onDraw");
+        canvas.drawColor(Color.GREEN);
 
-class DynamicRender  {
-    private GameMap map;
-    private float cSize;
-    private int cols, rows;
-    private Transition cells[][];
-    private Underlayer underlayer;
-    private Paint paint = new Paint();
-
-    public DynamicRender(GameMap gameMap, float sellSize,int width, int height ) {
-        cSize = sellSize;
-        map = gameMap;
-        this.rows=gameMap.ROWS;
-        this.cols=gameMap.COLS;
-
-        Sprites sprites = new Sprites((int)sellSize);
-        underlayer = new Underlayer(width);
-        cells = new Transition[rows][];
-        for(int i=0;i<rows;i++){
-            cells[i] = new Transition[cols];
-            for(int j=0;j<cols;j++){
-                Rect rect = new Rect((int)(j*sellSize), (int)(i*sellSize),(int)((j+1)*sellSize), (int)((i+1)*sellSize));
-                cells[i][j]= new Transition(rect, sprites,sprites.pic[0]);
-            }
-        }
     }
 
-    public float getcSize(){
-        return cSize;
-    }
-
-    public void repaint() {
-        long systime = System.currentTimeMillis();
-        for(int i=0;i<rows;i++)
-            for(int j=0;j<cols;j++)
-                cells[i][j].setGoal(map.get(i,j),systime);
-    }
-
-    public boolean run(Canvas canvas) {
-        int i;
-        int j;
-        boolean transFinished = true;
-//        canvas.drawColor(Color.BLACK);
-        canvas.drawBitmap(underlayer.pic, 0, 0, paint);
-
-        long systime = System.currentTimeMillis();
-        for (i = 0; i < rows; i++) {
-            for (j = 0; j < cols; j++) {
-                if (!cells[i][j].transStep(canvas, systime))
-                    transFinished = false;
-            }
-        }
-        return transFinished;
-    }
 }

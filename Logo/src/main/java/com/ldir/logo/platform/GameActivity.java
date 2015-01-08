@@ -116,13 +116,13 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Game.enterPlayground();
-        gameField.setAnimationEnable(true);
+//        gameField.setAnimationEnable(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        gameField.setAnimationEnable(false);
+//        gameField.setAnimationEnable(false);
         Game.exitPlayground();
     }
 
@@ -132,7 +132,7 @@ public class GameActivity extends Activity {
         super.onStart();
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
-        gameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
+//        gameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
 //        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
@@ -142,7 +142,7 @@ public class GameActivity extends Activity {
         super.onStop();
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
-        gameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
+//        gameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
 //        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
