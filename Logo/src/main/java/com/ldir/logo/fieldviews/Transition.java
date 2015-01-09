@@ -31,7 +31,6 @@ public class Transition {
     private Bitmap backgr;
     private Rect rect;
     private Rect rectTmp = new Rect();
-    private Paint paint;
     private int cX,cY;
     private int size,hsize;
     private boolean horizontal;
@@ -103,7 +102,7 @@ public class Transition {
                     rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
                 else
                     rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                canvas.drawBitmap(sprites.pic[current], null, rectTmp, paint);
+                canvas.drawBitmap(sprites.pic[current], null, rectTmp, null);
             } else {
                 if(goal == 0)
                     setState(TRANS_STATE_FIX, sysTime);
@@ -120,14 +119,14 @@ public class Transition {
                         rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
                     else
                         rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                    canvas.drawBitmap(sprites.pic[goal], null, rectTmp, paint);
+                    canvas.drawBitmap(sprites.pic[goal], null, rectTmp, null);
                 } else {
                     setState(TRANS_STATE_FIX, sysTime);
                 }
         }
         if (state == TRANS_STATE_FIX) {
                 if(goal != 0)
-                    canvas.drawBitmap(sprites.pic[goal], null, rect, paint);
+                    canvas.drawBitmap(sprites.pic[goal], null, rect, null);
                 return true;
         }
         return false;

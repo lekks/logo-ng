@@ -38,8 +38,9 @@ public class MissionField extends android.view.View {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-        Log.i("Verbose", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height);
+        Log.v("Mission Field", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height);
         render = new StaticRender(Game.goalMap, width, height);
+        //FIXME а рециркулировать битмапы?
     }
 
 
@@ -82,7 +83,7 @@ class StaticRender {
         int sizeX = width;
         int sizeY = height;
         float fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
-        Log.i("Verbose", "Static render init " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
+        Log.v("Mission Field", "Static render init " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
 
         this.map=gameMap;
         this.rows=gameMap.ROWS;

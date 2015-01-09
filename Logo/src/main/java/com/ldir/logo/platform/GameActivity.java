@@ -132,7 +132,7 @@ public class GameActivity extends Activity {
         super.onStart();
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
-//        gameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
+        gameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
 //        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
@@ -142,7 +142,7 @@ public class GameActivity extends Activity {
         super.onStop();
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
-//        gameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
+        gameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
 //        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
@@ -172,6 +172,7 @@ public class GameActivity extends Activity {
     public void onDestroy(){
         super.onDestroy();
         Game.observedState.deleteObserver(onGameChange);
+        gameField.destroy();
     }
 
 }

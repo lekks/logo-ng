@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true" />
 
 <!--
-    <com.ldir.logo.fieldviews.FieldView
+    <com.ldir.logo.fieldviews.old.FieldView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/fieldView"

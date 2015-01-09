@@ -25,7 +25,7 @@ public class Music {
 
             switch (state.newState) {
                 case PLAYING:
-                    startMusic();
+//                    startMusic();
                     break;
             }
         }

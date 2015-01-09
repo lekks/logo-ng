@@ -19,7 +19,7 @@ public class Sprites {
 	//Fixme рециркулировать
 	public Sprites(int size) {
 		pic = new Bitmap[5];
-		for(int i=0;i<pic.length;i++){
+		for(int i=1;i<pic.length;i++){
 			if(orig != null)
 				pic[i] = Bitmap.createScaledBitmap(Sprites.orig[i], size,size, true);
 			else {
@@ -35,7 +35,7 @@ public class Sprites {
 
 	public static void load(Resources res){
 		orig = new Bitmap[5];
-		orig[0] =  BitmapFactory.decodeResource(res, R.drawable.s0);
+		//orig[0] =  BitmapFactory.decodeResource(res, R.drawable.s0);
 		orig[1] =  BitmapFactory.decodeResource(res, R.drawable.s1);
 		orig[2] =  BitmapFactory.decodeResource(res, R.drawable.s2);
 		orig[3] =  BitmapFactory.decodeResource(res, R.drawable.s3);
