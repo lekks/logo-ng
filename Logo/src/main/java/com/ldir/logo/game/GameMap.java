@@ -7,8 +7,8 @@ public class GameMap {
     private byte map[][];
 
     // TODO Переделать в методы
-    public static int COLS =7;
-    public static int ROWS =7;
+    public static final int COLS =7;
+    public static final int ROWS =7;
 
     public static class Pos {
         public int row;

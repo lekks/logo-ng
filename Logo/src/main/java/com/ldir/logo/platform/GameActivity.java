@@ -2,9 +2,11 @@ package com.ldir.logo.platform;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.GameField;
@@ -20,28 +22,27 @@ public class GameActivity extends Activity {
     private final int NEXT_LEVEL_ACTIVITY = 1;
     private final int GAME_WIN_ACTIVITY = 2;
 
-	private GameField gameField;
-	private MissionField missionField;
+	private GameField mGameField;
+	private MissionField mMissionField;
+    private TextView mTimeLabel;
+    private TextView mLevelLabel;
 
     private void processFieldChange()
     {
-        gameField.drawField();
+        mGameField.drawField();
     }
-
     private Observer onFieldChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
             processFieldChange();
         }
     };
-
     private Observer onMissionChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            missionField.invalidate();
+            mMissionField.invalidate();
         }
     };
-
     public Observer onGameChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
@@ -62,8 +63,6 @@ public class GameActivity extends Activity {
             }
         }
     };
-
-
 /*
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
@@ -76,8 +75,6 @@ public class GameActivity extends Activity {
         }
     }
 */
-
-
     private class OnFieldPressed implements GameField.FieldPressHandler
     {
         @Override
@@ -116,13 +113,13 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Game.enterPlayground();
-//        gameField.setAnimationEnable(true);
+//        mGameField.setAnimationEnable(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        gameField.setAnimationEnable(false);
+//        mGameField.setAnimationEnable(false);
         Game.exitPlayground();
     }
 
@@ -132,8 +129,8 @@ public class GameActivity extends Activity {
         super.onStart();
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
-        gameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
-//        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
+        mGameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
+//        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
 
@@ -142,8 +139,8 @@ public class GameActivity extends Activity {
         super.onStop();
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
-        gameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
-//        gameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
+        mGameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
+//        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
 
@@ -160,11 +157,21 @@ public class GameActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        gameField = (GameField)findViewById(R.id.fieldSurface);
-        gameField.setFieldPressHandler(new OnFieldPressed());
-        missionField = (MissionField)findViewById(R.id.misionView);
-        Game.observedState.addObserver(onGameChange);
+        mGameField = (GameField)findViewById(R.id.fieldSurface);
+        mGameField.setFieldPressHandler(new OnFieldPressed());
+        mMissionField = (MissionField)findViewById(R.id.misionView);
 
+        mTimeLabel = (TextView) findViewById(R.id.timeLabel);
+        mLevelLabel = (TextView) findViewById(R.id.levelLabel);
+        TextView patternLabel = (TextView) findViewById(R.id.patternLabel);
+
+        Typeface font = Typeface.createFromAsset(getAssets(),"zebulon.ttf");
+
+        mTimeLabel.setTypeface(font);
+        mLevelLabel.setTypeface(font);
+        patternLabel.setTypeface(font);
+
+        Game.observedState.addObserver(onGameChange);
     }
 
 
@@ -172,7 +179,7 @@ public class GameActivity extends Activity {
     public void onDestroy(){
         super.onDestroy();
         Game.observedState.deleteObserver(onGameChange);
-        gameField.destroy();
+        mGameField.destroy();
     }
 
 }

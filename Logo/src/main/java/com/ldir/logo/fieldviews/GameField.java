@@ -48,14 +48,16 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     protected void init() {
-        //Для поднятием над фоном
-        setZOrderOnTop(true);
+        if(! isInEditMode() ) {
+            //Для поднятием над фоном
+            setZOrderOnTop(true);
 
-        //Нужно для бинарной прозрачности
-        getHolder().setFormat(PixelFormat.TRANSPARENT);
-        //Нужно для плавной прозрачности
+            //Нужно для бинарной прозрачности
+            getHolder().setFormat(PixelFormat.TRANSPARENT);
+            //Нужно для плавной прозрачности
 //        getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        getHolder().addCallback(this);
+            getHolder().addCallback(this);
+        }
     }
 
     public void destroy() {
@@ -80,18 +82,31 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
         Log.v("GameField", "Field view size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
     }
 
-    private void startRender() {
-        render = new DynamicRender(getHolder(), Game.gameMap, fspan, sizeX);
-        render.transitionEndEvent.addObserver(this.transitionEndEvent);
-        render.start();
-        render.repaint();
+    private void createRender() {
+        if( !isInEditMode() ) {
+            render = new DynamicRender(getHolder(), Game.gameMap, fspan, sizeX);
+            render.transitionEndEvent.addObserver(this.transitionEndEvent);
+            render.start();
+            render.repaint();
+        }
     }
 
+//    private Bitmap getBackground(){
+//        int[] pos=new int[2];
+//        getLocationOnScreen(pos);
+//        View v = getRootView();
+//        v.setDrawingCacheEnabled(true);
+//        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+//        v.setDrawingCacheEnabled(false);
+//        Bitmap bitmap2= Bitmap.createBitmap(bitmap,pos[0],pos[1],getWidth(),getHeight());
+//        bitmap.recycle();
+//    }
     //SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.v("GameField", "surfaceCreated");
-        startRender();
+        //getBackground();
+        createRender();//TODO стартовать рендер при создании и паузить его когда не нужен
     }
 
     //SurfaceHolder.Callback
@@ -101,7 +116,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
         if (fspan != render.getcSize()) {
             render.close();
-            startRender();
+            createRender();
         }
     }
 
