@@ -58,14 +58,11 @@ public class GameActivity extends Activity {
         @Override
         public void update(Observable observable, Object arg) {
             Game.StateChange state = (Game.StateChange)arg;
-            switch (state.oldState) {
-                case GAME_LOST_MENU: // TODO сделать новое состояние конец игры
-                case GAME_WIN_MENU:
+            switch (state.newState) {
+                case GAME_OVER:
                     finish();
                     Game.restartGame();
                     break;
-            }
-            switch (state.newState) {
                 case GAME_WIN:
                     startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class),GAME_WIN_ACTIVITY);
                     break;

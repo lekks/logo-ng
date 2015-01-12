@@ -163,14 +163,14 @@ public class Game {
         changeState(GlobalState.GAME_WIN_MENU);
     }
     public static void exitWinScreen()  {
-        changeState(GlobalState.PAUSE);
+        changeState(GlobalState.GAME_OVER);
     }
 
     public static void enterLostScreen() {
         changeState(GlobalState.GAME_LOST_MENU);
     }
     public static void exitLostScreen()  {
-        changeState(GlobalState.PAUSE);
+        changeState(GlobalState.GAME_OVER);
     }
 
     public static Observer onFieldTransitionEnd = new Observer(){
