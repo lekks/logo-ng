@@ -1,8 +1,4 @@
 ОШИБКИ:
-    на старом андроиде при нажатии HOME вызывается
- 502-502/com.ldir.logo V/Mission Field﹕ Field size changed from 171,171 to 0,0
-01-12 18:18:36.633      502-502/com.ldir.logo V/Mission Field﹕ Static render init 0,0 ;span ,(0.0)
-
 
 -Рециркулировать все bitmap
 -объеженить в пакет render gamefieldы и рендеры и переходы

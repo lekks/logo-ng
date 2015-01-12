@@ -45,6 +45,7 @@ public class Game {
     }
 
     public static void reset(){
+        levelTime = 21;
         Game.gameMap.resetField();
         history.clear();
         fieldChanged.update();
@@ -96,6 +97,8 @@ public class Game {
         GAME_OVER,
         GAME_WIN,
         GAME_WIN_MENU,
+        GAME_LOST,
+        GAME_LOST_MENU,
     }
 
     public static class StateChange {
@@ -111,8 +114,13 @@ public class Game {
         @Override
         public void run() {
 //            Log.d("Timer","Tick");
-            ++levelTime;
-            timerChanged.update(levelTime);
+            if(levelTime>0) {
+                --levelTime;
+                timerChanged.update(levelTime);
+            } else {
+                timerChanged.update(levelTime);
+                changeState(GlobalState.GAME_LOST);
+            }
         }
     };
 
@@ -158,11 +166,18 @@ public class Game {
         changeState(GlobalState.PAUSE);
     }
 
+    public static void enterLostScreen() {
+        changeState(GlobalState.GAME_LOST_MENU);
+    }
+    public static void exitLostScreen()  {
+        changeState(GlobalState.PAUSE);
+    }
+
     public static Observer onFieldTransitionEnd = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
             switch (globalState){
-                case PLAYING:
+                case PLAYING: // TODO Сделать тоже самое при окончании таймера
                     if (Game.gameMap.isEqual(Game.goalMap)) {
                         if(Game.lastLevel()) {
                             changeState(GlobalState.GAME_WIN);

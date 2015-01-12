@@ -39,7 +39,11 @@ public class MissionField extends android.view.View {
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
         Log.v("Mission Field", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height);
-        render = new StaticRender(Game.goalMap, width, height);
+        if(height>0 && width>0)
+            render = new StaticRender(Game.goalMap, width, height);
+        else
+            render = null;
+
         //FIXME а рециркулировать битмапы?
     }
 
@@ -47,7 +51,8 @@ public class MissionField extends android.view.View {
 	protected void onDraw(Canvas canvas) {
 		
 //		canvas.drawColor(Color.WHITE); // предварительная заливка фона сглаживает неровности. TODO подобрать ширину спрайта
-		render.paint(canvas, paint);
+        if(render != null)
+		    render.paint(canvas, paint);
 	}
 	
 }

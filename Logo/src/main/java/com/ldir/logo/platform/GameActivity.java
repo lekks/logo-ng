@@ -23,6 +23,7 @@ public class GameActivity extends Activity {
 
     private final int NEXT_LEVEL_ACTIVITY = 1;
     private final int GAME_WIN_ACTIVITY = 2;
+    private final int GAME_LOST_ACTIVITY = 3;
 
 	private GameField mGameField;
 	private MissionField mMissionField;
@@ -33,7 +34,7 @@ public class GameActivity extends Activity {
     private Runnable mUpdateTimerLabel = new Runnable() {
         @Override
         public void run() {
-            mTimeLabel.setText(String.format("%d:%02d", mLevelTime, mLevelTime));
+            mTimeLabel.setText(getString(R.string.timeLabelText)+String.format("%d:%02d", mLevelTime/60, mLevelTime % 60));
         }
     };
 
@@ -58,6 +59,7 @@ public class GameActivity extends Activity {
         public void update(Observable observable, Object arg) {
             Game.StateChange state = (Game.StateChange)arg;
             switch (state.oldState) {
+                case GAME_LOST_MENU: // TODO сделать новое состояние конец игры
                 case GAME_WIN_MENU:
                     finish();
                     Game.restartGame();
@@ -69,6 +71,9 @@ public class GameActivity extends Activity {
                     break;
                 case LEVEL_COMPLETE:
                     startActivityForResult( new Intent(GameActivity.this, NextLevelActivity.class),NEXT_LEVEL_ACTIVITY);
+                    break;
+                case GAME_LOST:
+                    startActivityForResult( new Intent(GameActivity.this, TimeoutActivity.class),GAME_LOST_ACTIVITY);
                     break;
             }
         }
@@ -88,7 +93,6 @@ public class GameActivity extends Activity {
     {
         switch (requestCode) {
             case NEXT_LEVEL_ACTIVITY:
-                break;
             case GAME_WIN_ACTIVITY:
                 break;
         }

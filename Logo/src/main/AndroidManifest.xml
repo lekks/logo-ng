@@ -8,6 +8,13 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
 
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:name=".platform.GameApp"
@@ -16,10 +23,11 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".platform.MenuActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_menu" >
+            android:label="@string/title_activity_menu"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,6 +45,11 @@
             android:noHistory="true"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".platform.TimeoutActivity"
+            android:noHistory="true"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog" /> >
     </application>
 
 </manifest>
