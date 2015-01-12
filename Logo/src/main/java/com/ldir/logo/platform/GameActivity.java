@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -26,6 +28,14 @@ public class GameActivity extends Activity {
 	private MissionField mMissionField;
     private TextView mTimeLabel;
     private TextView mLevelLabel;
+    private int mLevelTime;
+    private Handler mUI_handler = new Handler();
+    private Runnable mUpdateTimerLabel = new Runnable() {
+        @Override
+        public void run() {
+            mTimeLabel.setText(String.format("%d:%02d", mLevelTime, mLevelTime));
+        }
+    };
 
     private void processFieldChange()
     {
@@ -63,6 +73,15 @@ public class GameActivity extends Activity {
             }
         }
     };
+
+    private Observer onTimeChange = new Observer(){
+        @Override
+        public void update(Observable observable, Object arg) {
+            mLevelTime = (Integer)arg;
+            mUI_handler.postDelayed(mUpdateTimerLabel,0);
+        }
+    };
+
 /*
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
@@ -127,6 +146,7 @@ public class GameActivity extends Activity {
         @Override
     protected void onStart() {
         super.onStart();
+        Game.timerChanged.addObserver(onTimeChange);
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
         mGameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);

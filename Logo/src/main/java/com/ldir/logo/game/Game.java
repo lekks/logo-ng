@@ -1,11 +1,16 @@
 package com.ldir.logo.game;
 
 import android.content.Intent;
+import android.text.format.Time;
 import android.util.Log;
 
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import com.ldir.logo.platform.GameWinActivity;
 import com.ldir.logo.util.Observed;
@@ -19,8 +24,15 @@ public class Game {
 
     public static GameMap goalMap = new GameMap();
     public static GameMap gameMap = new GameMap();
+    public static Observed.Event fieldChanged = new  Observed.Event();
+    public static Observed.Event missionChanged = new  Observed.Event();
+    public static Observed.Value<Integer> timerChanged = new  Observed.Value<Integer>();
+
+    private static int levelTime;
 	private static int level;
     private static Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
+    private static ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
+    private static ScheduledFuture mTimerFuture;
 
     public static boolean undo(){
         if(history.size() != 0 ){
@@ -74,12 +86,6 @@ public class Game {
         reset();
     }
 
-//******************************* переношу сюда из акшинов **********************************
-
-    public static Observed.Event fieldChanged = new  Observed.Event();
-    public static Observed.Event missionChanged = new  Observed.Event();
-
-
     public static enum GlobalState {
         UNDEFINED,
 //        MAIN_MENU,
@@ -93,32 +99,49 @@ public class Game {
     }
 
     public static class StateChange {
-        public GlobalState oldState;
-        public GlobalState newState;
-        StateChange(GlobalState from,GlobalState to){
+        public GlobalState oldState = GlobalState.UNDEFINED;
+        public GlobalState newState = GlobalState.UNDEFINED;
+        void set(GlobalState from,GlobalState to){
             oldState = from;
             newState = to;
-        }
+        };
     }
 
+    private static Runnable onTimerTick = new Runnable() {
+        @Override
+        public void run() {
+//            Log.d("Timer","Tick");
+            ++levelTime;
+            timerChanged.update(levelTime);
+        }
+    };
 
     public static GlobalState globalState = GlobalState.UNDEFINED;
 
     public static Observed.Value<StateChange> observedState = new  Observed.Value<StateChange>();
 
+//    private static void onChangeState(StateChange state)
+//    {
+//
+//    }
+
+    private static StateChange mStateChange=new StateChange();
     private static void changeState(GlobalState newState) {
         if(!globalState.equals(newState)){
-            StateChange change = new StateChange(globalState,newState);
-            Log.i("State changed","From "+globalState+" to "+ newState);
+            mStateChange.set(globalState,newState);
+            Log.i("State changed", "From " + globalState + " to " + newState);
             globalState = newState;
-            observedState.update(change);
+//            onChangeState(mStateChange);
+            observedState.update(mStateChange);
         }
     }
 
     public static void enterPlayground() {
         changeState(GlobalState.PLAYING);
+        mTimerFuture = mTimerExecutor.scheduleAtFixedRate(onTimerTick,1, 1, TimeUnit.SECONDS);
     }
     public static void exitPlayground()  {
+        mTimerFuture.cancel(false);
         changeState(GlobalState.PAUSE);
     }
     public static void enterNextLevelScreen() {
