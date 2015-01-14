@@ -99,6 +99,7 @@ public class Game {
         GAME_WIN_MENU,
         GAME_LOST,
         GAME_LOST_MENU,
+        GAME_OPTIONS,
     }
 
     public static class StateChange {
@@ -152,7 +153,12 @@ public class Game {
         mTimerFuture.cancel(false);
         changeState(GlobalState.PAUSE);
     }
-    public static void enterNextLevelScreen() {
+
+    public static void startOptions() {
+        changeState(GlobalState.GAME_OPTIONS);
+    }
+
+        public static void enterNextLevelScreen() {
         changeState(GlobalState.NEXT_LEVEL_MENU);
     }
     public static void exitNextLevelScreen()  {

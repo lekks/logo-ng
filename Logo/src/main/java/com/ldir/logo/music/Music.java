@@ -19,7 +19,8 @@ public class Music {
             Game.StateChange state = (Game.StateChange)arg;
             switch (state.oldState) {
                 case PLAYING:
-                    stopMusic();
+                    if(state.newState != Game.GlobalState.GAME_OPTIONS)
+                        stopMusic();
                     break;
             }
 

@@ -54,7 +54,8 @@
         <activity
             android:name=".platform.GameOptActvity"
             android:screenOrientation="landscape"
-            android:label="@string/title_activity_game_opt_actvity" >
+            android:label="@string/title_activity_game_opt_actvity"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
     </application>
 

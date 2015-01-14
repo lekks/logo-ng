@@ -15,4 +15,6 @@ public class GameOptActvity extends Activity {
         setContentView(R.layout.activity_game_opt_actvity);
     }
 
+    //FIXME надо както тормознуть музыку при нажатии HOME
+
 }

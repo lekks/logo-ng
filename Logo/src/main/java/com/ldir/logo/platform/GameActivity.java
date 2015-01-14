@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ public class GameActivity extends Activity {
     private final int NEXT_LEVEL_ACTIVITY = 1;
     private final int GAME_WIN_ACTIVITY = 2;
     private final int GAME_LOST_ACTIVITY = 3;
+    private final int GAME_OPT_ACTIVITY = 4;
 
 	private GameField mGameField;
 	private MissionField mMissionField;
@@ -65,13 +65,16 @@ public class GameActivity extends Activity {
                     Game.restartGame();
                     break;
                 case GAME_WIN:
-                    startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class),GAME_WIN_ACTIVITY);
+                    startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class), GAME_WIN_ACTIVITY);
                     break;
                 case LEVEL_COMPLETE:
                     startActivityForResult( new Intent(GameActivity.this, NextLevelActivity.class),NEXT_LEVEL_ACTIVITY);
                     break;
                 case GAME_LOST:
                     startActivityForResult( new Intent(GameActivity.this, TimeoutActivity.class),GAME_LOST_ACTIVITY);
+                    break;
+                case GAME_OPTIONS:
+                    startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class),GAME_OPT_ACTIVITY);
                     break;
             }
         }
@@ -132,8 +135,7 @@ public class GameActivity extends Activity {
 
 
     public void onOptionButton(View v){
-        Intent intent = new Intent(this, GameOptActvity.class);
-        startActivity(intent);
+        Game.startOptions();
     }
 
     public void onUndoButton(View v){
