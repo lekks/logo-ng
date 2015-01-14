@@ -25,7 +25,7 @@ public class Music {
 
             switch (state.newState) {
                 case PLAYING:
-//                    startMusic();
+                    startMusic();
                     break;
             }
         }
@@ -34,7 +34,7 @@ public class Music {
     public static void startMusic() {
         if (music == null) {
             try {
-                music = new IBXMPlayer(GameApp.getAppContext().getAssets().open("1.xm"));
+                music = new IBXMPlayer(GameApp.getAppContext().getAssets().open("mus/menu/1.xm"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

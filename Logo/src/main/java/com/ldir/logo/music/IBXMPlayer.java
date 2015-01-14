@@ -18,7 +18,7 @@ public class IBXMPlayer extends Thread {
 	private boolean stopped = false;  // Тут мьютекс не принципиален
     private Module module;
 
-	public IBXMPlayer(byte[] data) {
+	public IBXMPlayer(byte[] data) throws IOException {
 		super();
         module = new Module( data );
 		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO);

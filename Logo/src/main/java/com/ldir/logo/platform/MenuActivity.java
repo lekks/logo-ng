@@ -26,7 +26,6 @@ public class MenuActivity extends Activity {
     public void onStartGame(View v){
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
-
     }
 
     @Override

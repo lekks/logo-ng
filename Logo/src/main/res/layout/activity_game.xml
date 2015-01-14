@@ -28,27 +28,69 @@
             android:layout_weight="3"
             android:layout_gravity="right|top" />
 
-        <TextView
-            android:text="LEVEL 1"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/levelLabel"
-            style="@style/game_text"  />
+            android:weightSum="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timeLabelText"
-            android:id="@+id/timeLabel"
-            style="@style/game_text" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+                <TextView
+                    android:text="LEVEL 1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/levelLabel"
+                    style="@style/game_text"  />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pattern"
-            android:id="@+id/patternLabel"
-            style="@style/game_text"
-            android:paddingTop="10dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/timeLabelText"
+                    android:id="@+id/timeLabel"
+                    style="@style/game_text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pattern_label"
+                    android:id="@+id/patternLabel"
+                    style="@style/game_text"
+                    android:paddingTop="10dp" />
+
+            </LinearLayout>
+            <ImageButton
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/optionsButton"
+                android:src="@drawable/opt"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:onClick="onOptionButton"
+                android:contentDescription="Options"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+            <ImageButton
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:id="@+id/undoButton"
+                android:src="@drawable/undo"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:onClick="onUndoButton"
+                android:contentDescription="Undo"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/optionsButton"
+                android:layout_toStartOf="@+id/optionsButton" />
+
+        </RelativeLayout>
 
         <com.ldir.logo.fieldviews.MissionField
             android:id="@+id/misionView"

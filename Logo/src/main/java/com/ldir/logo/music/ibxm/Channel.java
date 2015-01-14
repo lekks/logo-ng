@@ -5,24 +5,27 @@ public class Channel {
 	public static final int NEAREST = 0, LINEAR = 1, SINC = 2;
 
 	private static final int[] periodTable = {
-		// Periods for keys -11 to 1 with 8 finetune values.
-		54784, 54390, 53999, 53610, 53224, 52841, 52461, 52084, 
-		51709, 51337, 50968, 50601, 50237, 49876, 49517, 49161, 
-		48807, 48456, 48107, 47761, 47418, 47076, 46738, 46401, 
-		46068, 45736, 45407, 45081, 44756, 44434, 44115, 43797, 
-		43482, 43169, 42859, 42550, 42244, 41940, 41639, 41339, 
-		41042, 40746, 40453, 40162, 39873, 39586, 39302, 39019, 
-		38738, 38459, 38183, 37908, 37635, 37365, 37096, 36829, 
-		36564, 36301, 36040, 35780, 35523, 35267, 35014, 34762, 
-		34512, 34263, 34017, 33772, 33529, 33288, 33049, 32811, 
-		32575, 32340, 32108, 31877, 31647, 31420, 31194, 30969, 
-		30746, 30525, 30306, 30088, 29871, 29656, 29443, 29231, 
-		29021, 28812, 28605, 28399, 28195, 27992, 27790, 27590, 
-		27392, 27195, 26999, 26805, 26612, 26421, 26231, 26042
+		/* Periods for keys 0 to 15 with 8 finetune values. */
+		29021, 28812, 28605, 28399, 28195, 27992, 27790, 27590,
+		27392, 27195, 26999, 26805, 26612, 26421, 26231, 26042,
+		25855, 25669, 25484, 25301, 25119, 24938, 24758, 24580,
+		24403, 24228, 24054, 23881, 23709, 23538, 23369, 23201,
+		23034, 22868, 22704, 22540, 22378, 22217, 22057, 21899,
+		21741, 21585, 21429, 21275, 21122, 20970, 20819, 20670,
+		20521, 20373, 20227, 20081, 19937, 19793, 19651, 19509,
+		19369, 19230, 19091, 18954, 18818, 18682, 18548, 18414,
+		18282, 18150, 18020, 17890, 17762, 17634, 17507, 17381,
+		17256, 17132, 17008, 16886, 16765, 16644, 16524, 16405,
+		16287, 16170, 16054, 15938, 15824, 15710, 15597, 15485,
+		15373, 15263, 15153, 15044, 14936, 14828, 14721, 14616,
+		14510, 14406, 14302, 14199, 14097, 13996, 13895, 13795,
+		13696, 13597, 13500, 13403, 13306, 13210, 13115, 13021,
+		12927, 12834, 12742, 12650, 12559, 12469, 12379, 12290,
+		12202, 12114, 12027, 11940, 11854, 11769, 11684, 11600
 	};
 
 	private static final int[] freqTable = {
-		// Frequency for keys 109 to 121 with 8 fractional values.
+		/* Frequency for keys 109 to 121 with 8 fractional values. */
 		267616, 269555, 271509, 273476, 275458, 277454, 279464, 281489,
 		283529, 285584, 287653, 289738, 291837, 293952, 296082, 298228,
 		300389, 302566, 304758, 306966, 309191, 311431, 313688, 315961,
@@ -38,11 +41,6 @@ public class Channel {
 		535232, 539111, 543017, 546952, 550915, 554908, 558929, 562979
 	};
 
-	private static final short[] arpTuning = {
-		4096, 4340, 4598, 4871, 5161, 5468, 5793, 6137,
-		6502, 6889, 7298, 7732, 8192, 8679, 9195, 9742
-	};
-
 	private static final short[] sineTable = {
 		   0,  24,  49,  74,  97, 120, 141, 161, 180, 197, 212, 224, 235, 244, 250, 253,
 		 255, 253, 250, 244, 235, 224, 212, 197, 180, 161, 141, 120,  97,  74,  49,  24
@@ -54,7 +52,7 @@ public class Channel {
 	private Sample sample;
 	private boolean keyOn;
 	private int noteKey, noteIns, noteVol, noteEffect, noteParam;
-	private int sampleIdx, sampleFra, freq, ampl, pann;
+	private int sampleOffset, sampleIdx, sampleFra, freq, ampl, pann;
 	private int volume, panning, fadeOutVol, volEnvTick, panEnvTick;
 	private int period, portaPeriod, retrigCount, fxCount, autoVibratoCount;
 	private int portaUpParam, portaDownParam, tonePortaParam, offsetParam;
@@ -111,7 +109,10 @@ public class Channel {
 		noteParam = note.param;
 		retrigCount++;
 		vibratoAdd = tremoloAdd = arpeggioAdd = fxCount = 0;
-		if( noteEffect != 0x7D && noteEffect != 0xFD ) trigger();
+		if( !( ( noteEffect == 0x7D || noteEffect == 0xFD ) && noteParam > 0 ) ) {
+			/* Not note delay.*/
+			trigger();
+		}
 		switch( noteEffect ) {
 			case 0x01: case 0x86: /* Porta Up. */
 				if( noteParam > 0 ) portaUpParam = noteParam;
@@ -144,12 +145,7 @@ public class Channel {
 				tremolo();
 				break;
 			case 0x08: /* Set Panning.*/
-				panning = noteParam & 0xFF;
-				break;
-			case 0x09: case 0x8F: /* Set Sample Offset. */
-				if( noteParam > 0 ) offsetParam = noteParam;
-				sampleIdx = offsetParam << 8;
-				sampleFra = 0;
+				panning = ( noteParam < 128 ) ? ( noteParam << 1 ) : 255;
 				break;
 			case 0x0A: case 0x84: /* Vol Slide. */
 				if( noteParam > 0 ) vslideParam = noteParam;
@@ -220,9 +216,6 @@ public class Channel {
 				break;
 			case 0x7C: case 0xFC: /* Note Cut. */
 				if( noteParam <= 0 ) volume = 0;
-				break;
-			case 0x7D: case 0xFD: /* Note Delay. */
-				if( noteParam <= 0 ) trigger();
 				break;
 			case 0x8A: /* Arpeggio. */
 				if( noteParam > 0 ) arpeggioParam = noteParam;
@@ -505,9 +498,10 @@ public class Channel {
 			freq = y >> ( 9 - tone / 768 );
 		} else {
 			int per = period + vibratoAdd;
+			per = per * ( periodTable[ ( arpeggioAdd & 0xF ) << 3 ] << 1 ) / periodTable[ 0 ];
+			per = ( per >> 1 ) + ( per & 1 );
 			if( per < 28 ) per = periodTable[ 0 ];
 			freq = module.c2Rate * 1712 / per;
-			freq = ( freq * arpTuning[ arpeggioAdd ] >> 12 ) & 0x7FFFF;
 		}
 	}
 
@@ -535,9 +529,13 @@ public class Channel {
 			volume = sam.volume >= 64 ? 64 : sam.volume & 0x3F;
 			if( sam.panning >= 0 ) panning = sam.panning & 0xFF;
 			if( period > 0 && sam.looped() ) sample = sam; /* Amiga trigger.*/
-			volEnvTick = panEnvTick = 0;
+			sampleOffset = volEnvTick = panEnvTick = 0;
 			fadeOutVol = 32768;
 			keyOn = true;
+		}
+		if( noteEffect == 0x09 || noteEffect == 0x8F ) { /* Set Sample Offset. */
+			if( noteParam > 0 ) offsetParam = noteParam;
+			sampleOffset = offsetParam << 8;
 		}
 		if( noteVol >= 0x10 && noteVol < 0x60 )
 			volume = noteVol < 0x50 ? noteVol - 0x10 : 64;
@@ -572,32 +570,58 @@ public class Channel {
 					noteEffect == 0x03 || noteEffect == 0x05 ||
 					noteEffect == 0x87 || noteEffect == 0x8C;
 				if( !isPorta ) sample = instrument.samples[ instrument.keyToSample[ noteKey ] ];
-				byte fineTune = ( byte ) sample.fineTune;
-				if( noteEffect == 0x75 || noteEffect == 0xF2 ) /* Set FineTune. */
-					fineTune = ( byte ) ( ( noteParam & 0xF ) << 4 );
+				int fineTune = sample.fineTune;
+				if( noteEffect == 0x75 || noteEffect == 0xF2 ) { /* Set Fine Tune. */
+					fineTune = ( noteParam & 0xF ) << 4;
+					if( fineTune > 127 ) fineTune -= 256;
+				}
 				int key = noteKey + sample.relNote;
 				if( key < 1 ) key = 1;
 				if( key > 120 ) key = 120;
-				if( module.linearPeriods ) {
-					portaPeriod = 7680 - ( ( key - 1 ) << 6 ) - ( fineTune >> 1 );
-				} else {
-					int tone = 768 + ( ( key - 1 ) << 6 ) + ( fineTune >> 1 );
-					int i = ( tone >> 3 ) % 96;
-					int c = periodTable[ i ];
-					int m = periodTable[ i + 1 ] - c;
-					int x = tone & 0x7;
-					int y = ( ( m * x ) >> 3 ) + c;
-					portaPeriod = y >> ( tone / 768 );
-					portaPeriod = module.c2Rate * portaPeriod / sample.c2Rate;
-				}
+				int per = keyToPeriod( key, fineTune, module.linearPeriods );
+				per = module.c2Rate * per * 2 / sample.c2Rate;
+				portaPeriod = ( per >> 1 ) + ( per & 1 );
 				if( !isPorta ) {
 					period = portaPeriod;
-					sampleIdx = sampleFra = 0;
+					sampleIdx = sampleOffset;
+					sampleFra = 0;
 					if( vibratoType < 4 ) vibratoPhase = 0;
 					if( tremoloType < 4 ) tremoloPhase = 0;
 					retrigCount = autoVibratoCount = 0;
 				}
 			}
 		}
+	}
+
+	public static int keyToPeriod( int key, int fineTune, boolean linear ) {
+		if( linear ) {
+			return 7744 - ( key << 6 ) - ( fineTune >> 1 );
+		} else {
+			int tone = ( key << 6 ) + ( fineTune >> 1 );
+			int i = ( tone >> 3 ) % 96;
+			int c = periodTable[ i ] * 2;
+			int m = periodTable[ i + 1 ] * 2 - c;
+			int x = tone & 0x7;
+			int y = ( ( ( m * x ) >> 3 ) + c ) >> ( tone / 768 );
+			return ( y >> 1 ) + ( y & 1 );
+		}
+	}
+
+	public static int periodToKey( int period ) {
+		int key = 0, oct = 0;
+		while( period < periodTable[ 96 ] ) {
+			period = period << 1;
+			oct++;
+		}
+		while( key < 12 ) {
+			int d1 = periodTable[ key << 3 ] - period;
+			int d2 = period - periodTable[ ( key + 1 ) << 3 ];
+			if( d2 >= 0 ) {
+				if( d2 < d1 ) key++;
+				break;
+			}
+			key++;
+		}
+		return oct * 12 + key;
 	}
 }

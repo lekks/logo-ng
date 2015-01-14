@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.ldir.logo.R;
@@ -128,6 +129,17 @@ public class GameActivity extends Activity {
         public void update(Observable observable, Object arg) {
         }
     };*/
+
+
+    public void onOptionButton(View v){
+        Intent intent = new Intent(this, GameOptActvity.class);
+        startActivity(intent);
+    }
+
+    public void onUndoButton(View v){
+        Game.undo();
+    }
+
 
     @Override
     protected void onResume() {
