@@ -33,12 +33,6 @@ public class NextLevelActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Game.enterNextLevelScreen();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         Game.exitNextLevelScreen();

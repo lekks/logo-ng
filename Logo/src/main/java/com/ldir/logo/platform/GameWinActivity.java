@@ -33,17 +33,8 @@ public class GameWinActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Game.enterWinScreen();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         Game.exitWinScreen();
-        // пока заменил на android:noHistory="true"
-        // если сделать непрозрачным - лучше убрать будет
-//        finish();
     }
 }

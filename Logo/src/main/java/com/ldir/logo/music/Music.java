@@ -17,17 +17,19 @@ public class Music {
         @Override
         public void update(Observable observable, Object arg) {
             Game.StateChange state = (Game.StateChange)arg;
-            switch (state.oldState) {
-                case PLAYING:
-                    if(state.newState != Game.GlobalState.GAME_OPTIONS)
-                        stopMusic();
-                    break;
-            }
+//            switch (state.oldState) {
+//                case PLAYING:
+//                case GAME_OPTIONS:
+//                    break;
+//            }
 
             switch (state.newState) {
                 case PLAYING:
+                case GAME_OPTIONS:
                     startMusic();
                     break;
+                default:
+                    stopMusic();
             }
         }
     };

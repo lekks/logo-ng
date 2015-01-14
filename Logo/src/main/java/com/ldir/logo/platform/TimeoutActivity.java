@@ -29,17 +29,8 @@ public class TimeoutActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Game.enterLostScreen();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         Game.exitLostScreen();
-        // пока заменил на android:noHistory="true"
-        // если сделать непрозрачным - лучше убрать будет
-//        finish();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,24 +59,31 @@ public class GameActivity extends Activity {
     public Observer onGameChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            Game.StateChange state = (Game.StateChange)arg;
+            Game.StateChange state = (Game.StateChange) arg;
+
             switch (state.newState) {
                 case GAME_OVER:
                     finish();
                     Game.restartGame();
                     break;
+                case GAME_LOST:
+                    startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
+                    break;
                 case GAME_WIN:
                     startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class), GAME_WIN_ACTIVITY);
                     break;
                 case LEVEL_COMPLETE:
-                    startActivityForResult( new Intent(GameActivity.this, NextLevelActivity.class),NEXT_LEVEL_ACTIVITY);
+                    startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
-                case GAME_LOST:
-                    startActivityForResult( new Intent(GameActivity.this, TimeoutActivity.class),GAME_LOST_ACTIVITY);
-                    break;
-                case GAME_OPTIONS:
-                    startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class),GAME_OPT_ACTIVITY);
-                    break;
+            }
+
+            // Потоу что GAME_OPTIONS повторно вызываются из его активити
+            if (state.oldState == Game.GlobalState.PLAYING) {
+                switch (state.newState) {
+                    case GAME_OPTIONS:
+                        startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
+                        break;
+                }
             }
         }
     };
@@ -146,6 +154,8 @@ public class GameActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("GameActivity", "Resume");
+
         Game.enterPlayground();
 //        mGameField.setAnimationEnable(true);
     }
@@ -153,6 +163,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("GameActivity", "Pause");
 //        mGameField.setAnimationEnable(false);
         Game.exitPlayground();
     }
@@ -161,6 +172,7 @@ public class GameActivity extends Activity {
         @Override
     protected void onStart() {
         super.onStart();
+        Log.i("GameActivity", "Start");
         Game.timerChanged.addObserver(onTimeChange);
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
@@ -172,6 +184,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i("GameActivity", "Stop");
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
         mGameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);

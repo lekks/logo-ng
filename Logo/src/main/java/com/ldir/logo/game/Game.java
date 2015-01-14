@@ -93,12 +93,9 @@ public class Game {
         PLAYING,
         PAUSE,
         LEVEL_COMPLETE,
-        NEXT_LEVEL_MENU,
         GAME_OVER,
         GAME_WIN,
-        GAME_WIN_MENU,
         GAME_LOST,
-        GAME_LOST_MENU,
         GAME_OPTIONS,
     }
 
@@ -125,7 +122,7 @@ public class Game {
         }
     };
 
-    public static GlobalState globalState = GlobalState.UNDEFINED;
+    private static GlobalState globalState = GlobalState.UNDEFINED;
 
     public static Observed.Value<StateChange> observedState = new  Observed.Value<StateChange>();
 
@@ -135,7 +132,7 @@ public class Game {
 //    }
 
     private static StateChange mStateChange=new StateChange();
-    private static void changeState(GlobalState newState) {
+    private static synchronized void changeState(GlobalState newState) {
         if(!globalState.equals(newState)){
             mStateChange.set(globalState,newState);
             Log.i("State changed", "From " + globalState + " to " + newState);
@@ -151,32 +148,37 @@ public class Game {
     }
     public static void exitPlayground()  {
         mTimerFuture.cancel(false);
-        changeState(GlobalState.PAUSE);
+        switch (globalState) {
+            case GAME_OPTIONS:
+            case GAME_WIN:
+            case LEVEL_COMPLETE:
+                break;
+            default:
+                changeState(GlobalState.PAUSE);
+        }
     }
 
     public static void startOptions() {
         changeState(GlobalState.GAME_OPTIONS);
     }
 
-        public static void enterNextLevelScreen() {
-        changeState(GlobalState.NEXT_LEVEL_MENU);
-    }
     public static void exitNextLevelScreen()  {
         changeState(GlobalState.PAUSE);
         skipLevel();
     }
-    public static void enterWinScreen() {
-        changeState(GlobalState.GAME_WIN_MENU);
-    }
     public static void exitWinScreen()  {
         changeState(GlobalState.GAME_OVER);
     }
-
-    public static void enterLostScreen() {
-        changeState(GlobalState.GAME_LOST_MENU);
-    }
     public static void exitLostScreen()  {
         changeState(GlobalState.GAME_OVER);
+    }
+
+    public static void enterOptScreen()  {
+        changeState(GlobalState.GAME_OPTIONS);
+    }
+    public static void exitOptScreen()  {
+        if (globalState != GlobalState.PLAYING)
+            changeState(GlobalState.PAUSE);
     }
 
     public static Observer onFieldTransitionEnd = new Observer(){
