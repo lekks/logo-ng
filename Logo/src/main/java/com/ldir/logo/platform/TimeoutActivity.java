@@ -19,18 +19,11 @@ public class TimeoutActivity extends Activity {
         setTitle("You lost!");
     }
 
-    private void close() {
-        finish();
-    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        close();
+        finish();
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Game.exitLostScreen();
-    }
 }

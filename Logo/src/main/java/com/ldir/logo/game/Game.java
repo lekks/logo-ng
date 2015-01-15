@@ -162,14 +162,7 @@ public class Game {
         changeState(GlobalState.GAME_OPTIONS);
     }
 
-    public static void exitNextLevelScreen()  {
-        changeState(GlobalState.PAUSE);
-        skipLevel();
-    }
-    public static void exitWinScreen()  {
-        changeState(GlobalState.GAME_OVER);
-    }
-    public static void exitLostScreen()  {
+    public static void gameOver(){
         changeState(GlobalState.GAME_OVER);
     }
 

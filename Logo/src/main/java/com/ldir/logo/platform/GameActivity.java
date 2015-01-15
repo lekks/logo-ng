@@ -56,6 +56,15 @@ public class GameActivity extends Activity {
             mMissionField.invalidate();
         }
     };
+    private Observer onTimeChange = new Observer(){
+        @Override
+        public void update(Observable observable, Object arg) {
+            mLevelTime = (Integer)arg;
+            mUI_handler.postDelayed(mUpdateTimerLabel,0);
+        }
+    };
+
+
     public Observer onGameChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
@@ -76,9 +85,7 @@ public class GameActivity extends Activity {
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
             }
-
-            // Потоу что GAME_OPTIONS повторно вызываются из его активити
-            if (state.oldState == Game.GlobalState.PLAYING) {
+            if (state.oldState == Game.GlobalState.PLAYING) {// Потоу что GAME_OPTIONS повторно вызываются из его активити
                 switch (state.newState) {
                     case GAME_OPTIONS:
                         startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
@@ -88,25 +95,36 @@ public class GameActivity extends Activity {
         }
     };
 
-    private Observer onTimeChange = new Observer(){
-        @Override
-        public void update(Observable observable, Object arg) {
-            mLevelTime = (Integer)arg;
-            mUI_handler.postDelayed(mUpdateTimerLabel,0);
-        }
-    };
-
-/*
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data)
     {
         switch (requestCode) {
             case NEXT_LEVEL_ACTIVITY:
+                Game.skipLevel();
+                break;
             case GAME_WIN_ACTIVITY:
+                Game.gameOver();
+                break;
+            case GAME_LOST_ACTIVITY:
+                Game.gameOver();
+                break;
+            case GAME_OPT_ACTIVITY:
+//                Game.exitOptScreen();
+                if (resultCode == RESULT_OK && data != null) {
+                    int cmd = data.getIntExtra(GameOptActvity.CMD,0);
+                    switch (cmd) {
+                        case GameOptActvity.CMD_RESET:
+                            Game.reset();
+                            break;
+                        case GameOptActvity.CMD_RESTART:
+                            Game.restartGame();
+                            break;
+                    }
+                }
                 break;
         }
     }
-*/
+
     private class OnFieldPressed implements GameField.FieldPressHandler
     {
         @Override
@@ -118,7 +136,6 @@ public class GameActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-         
         switch (item.getItemId())
         {
         case R.id.menu_undo:
@@ -135,13 +152,6 @@ public class GameActivity extends Activity {
         }
     }
 
- /*   public Observer onFieldTransitionEnd = new Observer(){
-        @Override
-        public void update(Observable observable, Object arg) {
-        }
-    };*/
-
-
     public void onOptionButton(View v){
         Game.startOptions();
     }
@@ -155,16 +165,13 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Log.i("GameActivity", "Resume");
-
         Game.enterPlayground();
-//        mGameField.setAnimationEnable(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.i("GameActivity", "Pause");
-//        mGameField.setAnimationEnable(false);
         Game.exitPlayground();
     }
 
@@ -188,17 +195,15 @@ public class GameActivity extends Activity {
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
         mGameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
-//        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
-
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu)
+//    {
+//        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+//        return true;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)

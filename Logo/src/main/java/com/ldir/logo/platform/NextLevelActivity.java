@@ -28,20 +28,9 @@ public class NextLevelActivity extends Activity {
 //        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,android.R.drawable.ic_dialog_alert);
     }
 
-    private void close() {
-        finish();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Game.exitNextLevelScreen();
-    }
-
-    // TODO обработать кнопки
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        close();
+        finish();
         return true;
     }
 

@@ -22,19 +22,10 @@ public class GameWinActivity extends Activity {
 //        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,android.R.drawable.ic_dialog_alert);
     }
 
-    private void close() {
-        finish();
-    }
-    // TODO обработать кнопки
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        close();
+        finish();
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Game.exitWinScreen();
-    }
 }
