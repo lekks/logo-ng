@@ -22,26 +22,28 @@
         <ImageView
             android:id="@+id/gamefieldLogo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:contentDescription="@string/logo"
             android:src="@drawable/logo"
-            android:layout_weight="3"
-            android:layout_gravity="right|top" />
+            android:layout_gravity="right|top"
+            android:layout_weight="1" />
 
-        <RelativeLayout
+        <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/linearLayout"
                 android:layout_alignParentTop="false"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:layout_weight="5">
                 <TextView
                     android:text="LEVEL 1"
                     android:layout_width="wrap_content"
@@ -65,38 +67,33 @@
                     android:paddingTop="10dp" />
 
             </LinearLayout>
+
             <ImageButton
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:id="@+id/optionsButton"
                 android:src="@drawable/opt"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:background="@null"
                 android:onClick="onOptionButton"
-                android:contentDescription="Options"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_weight="1" />
+
             <ImageButton
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:id="@+id/undoButton"
                 android:src="@drawable/undo"
-                android:scaleType="fitCenter"
+                android:scaleType="fitStart"
                 android:background="@null"
                 android:onClick="onUndoButton"
-                android:contentDescription="Undo"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/optionsButton"
-                android:layout_toStartOf="@+id/optionsButton" />
-
-        </RelativeLayout>
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <com.ldir.logo.fieldviews.MissionField
             android:id="@+id/misionView"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:layout_gravity="center_horizontal"
             android:padding="20dp" />
 

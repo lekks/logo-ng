@@ -35,7 +35,10 @@
             android:layout_height="wrap_content"
             android:text="Music"
             android:id="@+id/toggleButton2"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:textOn="Music on"
+            android:textOff="Music off"
+            android:checked="true" />
     </LinearLayout>
 
 </RelativeLayout>
