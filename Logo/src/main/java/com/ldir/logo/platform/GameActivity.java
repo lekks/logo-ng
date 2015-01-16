@@ -113,6 +113,9 @@ public class GameActivity extends Activity {
                 if (resultCode == RESULT_OK && data != null) {
                     int cmd = data.getIntExtra(GameOptActvity.CMD,0);
                     switch (cmd) {
+                        case GameOptActvity.CMD_EXIT:
+                            finish();
+                            break;
                         case GameOptActvity.CMD_RESET:
                             Game.reset();
                             break;
@@ -160,7 +163,6 @@ public class GameActivity extends Activity {
         Game.undo();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -175,8 +177,7 @@ public class GameActivity extends Activity {
         Game.exitPlayground();
     }
 
-
-        @Override
+    @Override
     protected void onStart() {
         super.onStart();
         Log.i("GameActivity", "Start");
@@ -198,12 +199,12 @@ public class GameActivity extends Activity {
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu)
-//    {
-//        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        return true;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)

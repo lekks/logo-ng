@@ -17,6 +17,7 @@ public class GameOptActvity extends Activity {
         public final static String CMD="cmd";
         public final static int CMD_RESET=1;
         public final static int CMD_RESTART=2;
+        public final static int CMD_EXIT=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,11 @@ public class GameOptActvity extends Activity {
     public void onRestartButton(View v){
         retCmd(CMD_RESTART);
     }
-
     public void onResetButton(View v){
         retCmd(CMD_RESET);
+    }
+    public void onExitButton(View v) {
+        retCmd(CMD_EXIT);
     }
 
     @Override
@@ -66,15 +69,4 @@ public class GameOptActvity extends Activity {
         Game.exitOptScreen();
     }
 
-        @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("Options", "Resume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("Options", "Pause");
-    }
 }
