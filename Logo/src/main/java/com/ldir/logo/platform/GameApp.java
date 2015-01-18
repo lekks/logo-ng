@@ -9,6 +9,10 @@ import com.ldir.logo.graphics.Underlayer;
 import com.ldir.logo.music.Music;
 
 public class GameApp  extends Application{
+
+    public static final String SHARED_SETTINGS = "com.ldir.logo";
+    public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
+
     private static Context context;
     
     public void onCreate(){

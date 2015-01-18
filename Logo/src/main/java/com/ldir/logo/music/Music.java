@@ -13,6 +13,8 @@ import java.util.Observer;
 public class Music {
     private static IBXMPlayer music;
 
+    private static boolean musicEnabled;
+
     public static Observer onGameChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {

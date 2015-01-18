@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:background="@drawable/ground"
+    tools:context=".MainActivity" >
+
+    <com.ldir.logo.fieldviews.GameField
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="5dp"
+        android:id="@+id/fieldSurface"  />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/gamefieldLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/logo"
+            android:layout_gravity="right|top"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="5"
+                android:paddingLeft="20dp">
+                <TextView
+                    android:text="LEVEL 1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/levelLabel"
+                    style="@style/game_text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/timeLabelText"
+                    android:id="@+id/timeLabel"
+                    style="@style/game_text" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pattern_label"
+                    android:id="@+id/patternLabel"
+                    style="@style/game_text"
+                    android:paddingTop="10dp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/optionsButton"
+                android:src="@drawable/opt"
+                android:scaleType="fitStart"
+                android:background="@null"
+                android:onClick="onOptionButton"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/undoButton"
+                android:src="@drawable/undo"
+                android:scaleType="fitStart"
+                android:background="@null"
+                android:onClick="onUndoButton"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <com.ldir.logo.fieldviews.MissionField
+            android:id="@+id/misionView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_gravity="center_horizontal"
+            android:padding="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
