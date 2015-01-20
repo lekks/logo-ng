@@ -89,14 +89,12 @@ public class Game {
 
     public static enum GlobalState {
         UNDEFINED,
-//        MAIN_MENU,
         PLAYING,
         PAUSE,
         LEVEL_COMPLETE,
         GAME_OVER,
         GAME_WIN,
         GAME_LOST,
-        GAME_OPTIONS,
     }
 
     public static class StateChange {
@@ -149,7 +147,6 @@ public class Game {
     public static void exitPlayground()  {
         mTimerFuture.cancel(false);
         switch (globalState) {
-            case GAME_OPTIONS:
             case GAME_WIN:
             case LEVEL_COMPLETE:
                 break;
@@ -158,16 +155,8 @@ public class Game {
         }
     }
 
-    public static void startOptions() {
-        changeState(GlobalState.GAME_OPTIONS);
-    }
-
     public static void gameOver(){
         changeState(GlobalState.GAME_OVER);
-    }
-
-    public static void enterOptScreen()  {
-        changeState(GlobalState.GAME_OPTIONS);
     }
     public static void exitOptScreen()  {
         if (globalState != GlobalState.PLAYING)

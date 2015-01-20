@@ -1,5 +1,7 @@
 package com.ldir.logo.music;
 
+import android.content.SharedPreferences;
+
 import com.ldir.logo.game.Game;
 import com.ldir.logo.platform.GameApp;
 
@@ -13,48 +15,44 @@ import java.util.Observer;
 public class Music {
     private static IBXMPlayer music;
 
-    private static boolean musicEnabled;
+    private static boolean isON = false;
 
-    public static Observer onGameChange = new Observer(){
-        @Override
-        public void update(Observable observable, Object arg) {
-            Game.StateChange state = (Game.StateChange)arg;
-//            switch (state.oldState) {
-//                case PLAYING:
-//                case GAME_OPTIONS:
-//                    break;
-//            }
-
-            switch (state.newState) {
-                case PLAYING:
-                case GAME_OPTIONS:
-                    startMusic();
-                    break;
-                default:
-                    stopMusic();
+    private static void updade() {
+        if(isON && getMusicEnabled()) {
+            if (music == null) {
+                try {
+                    music = new IBXMPlayer(GameApp.getAppContext().getAssets().open("mus/menu/1.xm"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-    };
-
-    public static void startMusic() {
-        if (music == null) {
-            try {
-                music = new IBXMPlayer(GameApp.getAppContext().getAssets().open("mus/menu/1.xm"));
-            } catch (IOException e) {
-                e.printStackTrace();
+        } else {
+            if (music != null) {
+                try {
+                    music.close();
+                    music = null;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public static void stopMusic() {
-        if (music != null) {
-            try {
-                music.close();
-                music = null;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void setMusicOn(boolean on) {
+        isON = on;
+        updade();
+    }
+
+    public static void setMusicEnabled(boolean musicEnabled) {
+        SharedPreferences.Editor editor =  GameApp.getAppContext().getSharedPreferences(GameApp.SHARED_SETTINGS, GameApp.MODE_PRIVATE).edit();
+        editor.putBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, musicEnabled);
+        editor.commit();
+        updade();
+    }
+
+    public static boolean getMusicEnabled() {
+        SharedPreferences sharedPrefs = GameApp.getAppContext().getSharedPreferences(GameApp.SHARED_SETTINGS, GameApp.MODE_PRIVATE);
+        return sharedPrefs.getBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, true);
     }
 
 }

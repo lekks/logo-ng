@@ -21,8 +21,6 @@ public class GameApp  extends Application{
         Sprites.load(getResources());
         Underlayer.load(getResources());
 
-        Game.observedState.addObserver(Music.onGameChange);
-
         Game.restartGame();
     }
 

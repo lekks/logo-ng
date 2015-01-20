@@ -16,6 +16,7 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.MissionField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
+import com.ldir.logo.music.Music;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -85,13 +86,6 @@ public class GameActivity extends Activity {
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
             }
-            if (state.oldState == Game.GlobalState.PLAYING) {// Потоу что GAME_OPTIONS повторно вызываются из его активити
-                switch (state.newState) {
-                    case GAME_OPTIONS:
-                        startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
-                        break;
-                }
-            }
         }
     };
 
@@ -156,7 +150,7 @@ public class GameActivity extends Activity {
     }
 
     public void onOptionButton(View v){
-        Game.startOptions();
+        startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
     }
 
     public void onUndoButton(View v){
@@ -168,6 +162,12 @@ public class GameActivity extends Activity {
         super.onResume();
         Log.i("GameActivity", "Resume");
         Game.enterPlayground();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("GameActivity", "Restart");
     }
 
     @Override
@@ -185,6 +185,7 @@ public class GameActivity extends Activity {
         Game.fieldChanged.addObserver(onFieldChange);
         Game.missionChanged.addObserver(onMissionChange);
         mGameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
+        Music.setMusicOn(true);
 //        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
     }
@@ -196,6 +197,7 @@ public class GameActivity extends Activity {
         Game.fieldChanged.deleteObserver(onFieldChange);
         Game.missionChanged.deleteObserver(onMissionChange);
         mGameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
+        Music.setMusicOn(false);
     }
 
 
@@ -210,6 +212,7 @@ public class GameActivity extends Activity {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.i("GameActivity", "Create");
         setContentView(R.layout.activity_game);
         mGameField = (GameField)findViewById(R.id.fieldSurface);
         mGameField.setFieldPressHandler(new OnFieldPressed());
@@ -232,6 +235,7 @@ public class GameActivity extends Activity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        Log.i("GameActivity", "Destroy");
         Game.observedState.deleteObserver(onGameChange);
         mGameField.destroy();
     }

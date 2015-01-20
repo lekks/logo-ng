@@ -13,6 +13,7 @@ import android.widget.ToggleButton;
 
 import com.ldir.logo.R;
 import com.ldir.logo.game.Game;
+import com.ldir.logo.music.Music;
 
 public class GameOptActvity extends Activity {
         public final static String CMD="cmd";
@@ -26,9 +27,8 @@ public class GameOptActvity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_opt_actvity);
-        SharedPreferences sharedPrefs = getSharedPreferences(GameApp.SHARED_SETTINGS, MODE_PRIVATE);
         mMusicTogglel = (ToggleButton) findViewById(R.id.musToggleButton);
-        mMusicTogglel.setChecked(sharedPrefs.getBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, true));
+        mMusicTogglel.setChecked(Music.getMusicEnabled());
 
     }
 
@@ -63,30 +63,10 @@ public class GameOptActvity extends Activity {
     public void onToggleMusic(View v){
         ToggleButton toggle = (ToggleButton)v;
         if (toggle.isChecked()) {
-            Log.i("Options", "Music on");
-            SharedPreferences.Editor editor = getSharedPreferences(GameApp.SHARED_SETTINGS, MODE_PRIVATE).edit();
-            editor.putBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, true);
-            editor.commit();
+            Music.setMusicEnabled(true);
         } else {
-            Log.i("Options", "Music off");
-            SharedPreferences.Editor editor = getSharedPreferences(GameApp.SHARED_SETTINGS, MODE_PRIVATE).edit();
-            editor.putBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, false);
-            editor.commit();
+            Music.setMusicEnabled(false);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("Options", "Start");
-        Game.enterOptScreen();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("Options", "Stop");
-        Game.exitOptScreen();
     }
 
 }
