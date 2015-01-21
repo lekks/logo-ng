@@ -54,6 +54,10 @@ public class MissionField extends android.view.View {
         if(render != null)
 		    render.paint(canvas, paint);
 	}
+
+    public void destroy(){
+        render.recycle();
+    }
 	
 }
 
@@ -105,6 +109,10 @@ class StaticRender {
         }
     }
 
+    public void recycle() {
+        underlayer.recycle();
+        sprites.recycle();
+    }
 
 }
 

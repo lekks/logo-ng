@@ -10,19 +10,20 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
 import com.ldir.logo.R;
+import com.ldir.logo.platform.GameApp;
 
 public class Sprites {
 	public static Bitmap orig[];
 	public Bitmap pic[];
 	static Paint paint = new Paint();
-	
+
 	//Fixme рециркулировать
 	public Sprites(int size) {
 		pic = new Bitmap[5];
 		for(int i=1;i<pic.length;i++){
 			if(orig != null)
 				pic[i] = Bitmap.createScaledBitmap(Sprites.orig[i], size,size, true);
-			else {
+			else { // для отладки
 				pic[i] = Bitmap.createBitmap(size, size, Config.ARGB_4444);
 				Canvas canv= new Canvas(pic[i]);
 				paint.setTextAlign(Align.CENTER);
@@ -33,6 +34,7 @@ public class Sprites {
 		}
 	}
 
+
 	public static void load(Resources res){
 		orig = new Bitmap[5];
 		//orig[0] =  BitmapFactory.decodeResource(res, R.drawable.s0);
@@ -41,4 +43,14 @@ public class Sprites {
 		orig[3] =  BitmapFactory.decodeResource(res, R.drawable.s3);
 		orig[4] =  BitmapFactory.decodeResource(res, R.drawable.s4);
 	}
+
+    public void recycle() {
+        for(Bitmap p:pic) {
+            if(p!=null) {
+                p.recycle();
+                p = null;
+            }
+        }
+    }
+
 }

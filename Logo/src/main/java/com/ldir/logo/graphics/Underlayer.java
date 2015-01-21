@@ -19,10 +19,15 @@ public class Underlayer {
     public Underlayer(int size) {
         if (orig != null)
             pic = Bitmap.createScaledBitmap(Underlayer.orig, size, size, true);
-        else {
+        else { // для отладки
             pic = Bitmap.createBitmap(size, size, Config.ARGB_4444);
             pic.eraseColor(Color.GREEN);
         }
+    }
+
+    public void recycle() {
+        pic.recycle();
+        pic=null;
     }
 
     public static void load(Resources res) {

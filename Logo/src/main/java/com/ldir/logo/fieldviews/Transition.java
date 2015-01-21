@@ -28,7 +28,6 @@ public class Transition {
 
     private int state;
     private Sprites sprites;
-    private Bitmap backgr;
     private Rect rect;
     private Rect rectTmp = new Rect();
     private int cX,cY;
@@ -44,10 +43,9 @@ public class Transition {
 
 
 
-    public Transition(Rect rect, Sprites sprites, Bitmap backgr ) {
+    public Transition(Rect rect, Sprites sprites) {
         this.sprites = sprites;
         this.rect = rect;
-        this.backgr = backgr;
         cX=rect.centerX();
         cY=rect.centerY();
         size = rect.width();
@@ -130,5 +128,9 @@ public class Transition {
                 return true;
         }
         return false;
+    }
+
+    public void recycle(){
+        sprites.recycle();
     }
 }

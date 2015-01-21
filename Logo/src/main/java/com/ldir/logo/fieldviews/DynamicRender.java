@@ -43,7 +43,7 @@ public class DynamicRender extends Thread {
             cells[i] = new Transition[cols];
             for (int j = 0; j < cols; j++) {
                 Rect rect = new Rect((int) (j * sellSize), (int) (i * sellSize), (int) ((j + 1) * sellSize), (int) ((i + 1) * sellSize));
-                cells[i][j] = new Transition(rect, sprites, sprites.pic[0]);
+                cells[i][j] = new Transition(rect, sprites);
             }
         }
     }
@@ -80,6 +80,10 @@ public class DynamicRender extends Thread {
                 // если не получилось, то будем пытаться еще и еще
             }
         }
+        underlayer.recycle();
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                cells[i][j].recycle();
     }
 
     @Override

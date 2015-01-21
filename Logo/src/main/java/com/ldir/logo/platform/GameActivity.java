@@ -238,6 +238,7 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Destroy");
         Game.observedState.deleteObserver(onGameChange);
         mGameField.destroy();
+        mMissionField.destroy();
     }
 
 }

@@ -61,7 +61,8 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void destroy() {
-        Log.v("GameField", "destroy");
+        Log.v("GameField", "recycle");
+
     }
 
     @Override
