@@ -30,7 +30,7 @@ public class Game {
 
     private static int levelTime;
 	private static int level;
-    private static Stack<GameMap> history = new Stack<GameMap>(); // TODO Переделать на Vector;
+    private static Stack<GameMap> history = new Stack<GameMap>();
     private static ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture mTimerFuture;
 

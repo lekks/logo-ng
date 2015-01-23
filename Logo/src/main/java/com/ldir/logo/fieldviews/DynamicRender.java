@@ -14,62 +14,61 @@ import com.ldir.logo.util.Observed;
  * Created by Ldir on 27.09.13.
  */
 public class DynamicRender extends Thread {
-
     Observed.Event transitionEndEvent = new Observed.Event();
 
-    volatile private boolean mRun;
-    private SurfaceHolder surfaceHolder;
-    private Object state_mon = new Object();
-    private GameMap map;
-    private float cSize;
-    private int cols, rows;
-    private Transition cells[][];
-    private Underlayer underlayer;
-    private Paint paint = new Paint();
+    private volatile boolean mRun;
+    private SurfaceHolder mSurfaceHolder;
+    private Object mState_mon = new Object();
+    private GameMap mMap;
+    private float mCSize;
+    private int mCols, mRows;
+    private Transition mCells[][];
+    private Underlayer mUnderlayer;
+    private Paint mPaint = new Paint();
 
     private boolean mTransitionStarted = false;
 
     public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize, int size) {
-        this.surfaceHolder = surfaceHolder;
-        cSize = sellSize;
-        map = gameMap;
-        this.rows = gameMap.ROWS;
-        this.cols = gameMap.COLS;
+        this.mSurfaceHolder = surfaceHolder;
+        mCSize = sellSize;
+        mMap = gameMap;
+        this.mRows = gameMap.ROWS;
+        this.mCols = gameMap.COLS;
 
         Sprites sprites = new Sprites((int) sellSize);
-        underlayer = new Underlayer(size);
-        cells = new Transition[rows][];
-        for (int i = 0; i < rows; i++) {
-            cells[i] = new Transition[cols];
-            for (int j = 0; j < cols; j++) {
+        mUnderlayer = new Underlayer(size);
+        mCells = new Transition[mRows][];
+        for (int i = 0; i < mRows; i++) {
+            mCells[i] = new Transition[mCols];
+            for (int j = 0; j < mCols; j++) {
                 Rect rect = new Rect((int) (j * sellSize), (int) (i * sellSize), (int) ((j + 1) * sellSize), (int) ((i + 1) * sellSize));
-                cells[i][j] = new Transition(rect, sprites);
+                mCells[i][j] = new Transition(rect, sprites);
             }
         }
     }
 
     float getcSize() {
-        return cSize;
+        return mCSize;
     }
 
     void repaint() {
 
         long systime = System.currentTimeMillis();
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                cells[i][j].setGoal(map.get(i, j), systime);
+        for (int i = 0; i < mRows; i++)
+            for (int j = 0; j < mCols; j++)
+                mCells[i][j].setGoal(mMap.get(i, j), systime);
 
-        synchronized (state_mon) {
+        synchronized (mState_mon) {
             mTransitionStarted = true;
-            state_mon.notify();
+            mState_mon.notify();
         }
     }
 
     public void close() {
         boolean retry = true;
-        synchronized (state_mon) {
+        synchronized (mState_mon) {
             mRun = false;
-            state_mon.notify();
+            mState_mon.notify();
         }
 
         while (retry) {
@@ -80,18 +79,16 @@ public class DynamicRender extends Thread {
                 // если не получилось, то будем пытаться еще и еще
             }
         }
-        underlayer.recycle();
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                cells[i][j].recycle();
+        mUnderlayer.recycle();
+        for (int i = 0; i < mRows; i++)
+            for (int j = 0; j < mCols; j++)
+                mCells[i][j].recycle();
     }
 
     @Override
     public void run() {
 
         //TODO занести инициализацию всего сюда, переинициализацию при
-        //смене картинки тоже сюда
-
 
         mRun = true;
         int i;
@@ -104,22 +101,22 @@ public class DynamicRender extends Thread {
             try {
                 transFinished = true;
                 // получаем объект Canvas и выполняем отрисовку
-                canvas = surfaceHolder.lockCanvas(null);
-                synchronized (surfaceHolder) {
+                canvas = mSurfaceHolder.lockCanvas(null);
+                synchronized (mSurfaceHolder) {
 
                     //Восстановление прозрачного фона
                     canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
 
-                    canvas.drawBitmap(underlayer.get(), 0, 0, paint);
+                    canvas.drawBitmap(mUnderlayer.get(), 0, 0, mPaint);
                     systime = System.currentTimeMillis();
-                    for (i = 0; i < rows; i++) {
-                        for (j = 0; j < cols; j++) {
-                            if (!cells[i][j].transStep(canvas, systime))
+                    for (i = 0; i < mRows; i++) {
+                        for (j = 0; j < mCols; j++) {
+                            if (!mCells[i][j].transStep(canvas, systime))
                                 transFinished = false;
                         }
                     }
                 }
-                synchronized (state_mon) {
+                synchronized (mState_mon) {
                     if(transFinished) {
                         if (mTransitionStarted) {
                             mTransitionStarted = false;
@@ -127,20 +124,16 @@ public class DynamicRender extends Thread {
                         }
                     }
                 }
-
-
             } finally {
                 if (canvas != null)
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    mSurfaceHolder.unlockCanvasAndPost(canvas);
             }
-
-
             try {
                 if(!mRun)
                     sleep(5);
-                synchronized (state_mon) {
+                synchronized (mState_mon) {
                     while ( !mTransitionStarted && mRun) {
-                        state_mon.wait();
+                        mState_mon.wait();
                     }
                 }
             } catch (InterruptedException e) {

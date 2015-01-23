@@ -1,8 +1,6 @@
 package com.ldir.logo.fieldviews;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.ldir.logo.graphics.Sprites;
@@ -21,116 +19,111 @@ import java.util.Random;
 
 public class Transition {
 
-    private int goal;
-    private int current;
-
-    private long stateTime;
-
-    private int state;
-    private Sprites sprites;
-    private Rect rect;
-    private Rect rectTmp = new Rect();
-    private int cX,cY;
-    private int size,hsize;
-    private boolean horizontal;
-
-    static Random rnd = new Random();
+    private int mGoal;
+    private int mCurrent;
+    private long mStateTime;
+    private int mState;
+    private Sprites mSprites;
+    private Rect mRect;
+    private Rect mRectTmp = new Rect();
+    private int mCX, mCY;
+    private int mSize, mHSize;
+    private boolean mHorizontal;
+    private static Random mRnd = new Random();
 
     final static int TRANS_STATE_FIX=0;
     final static int TRANS_STATE_GO=1;
     final static int TRANS_STATE_FADE_OUT =2;
     final static int TRANS_STATE_FADE_IN =3;
 
-
-
     public Transition(Rect rect, Sprites sprites) {
-        this.sprites = sprites;
-        this.rect = rect;
-        cX=rect.centerX();
-        cY=rect.centerY();
-        size = rect.width();
-        hsize = size/2;
+        this.mSprites = sprites;
+        this.mRect = rect;
+        mCX =rect.centerX();
+        mCY =rect.centerY();
+        mSize = rect.width();
+        mHSize = mSize /2;
     }
 
     public void setGoal(int goal,long sysTime)
     {
-//        Log.i("Verbose", "state goal " + goal+"(current "+this.goal+"),state="+state);
-        if(this.goal != goal) {
+//        Log.i("Verbose", "mState mGoal " + mGoal+"(mCurrent "+this.mGoal+"),mState="+mState);
+        if(this.mGoal != goal) {
             setState(TRANS_STATE_GO, sysTime);
-            current = this.goal;
-            this.goal = goal;
+            mCurrent = this.mGoal;
+            this.mGoal = goal;
         }
     }
 
     private final void setState(int state, long sysTIme)
     {
-        if(this.state != state) {
-            stateTime = sysTIme;
-//            Log.i("Verbose", "state to " + state);
+        if(this.mState != state) {
+            mStateTime = sysTIme;
+//            Log.i("Verbose", "mState to " + mState);
 
-//            switch(state){
+//            switch(mState){
 //                case TRANS_STATE_GO:
 //                    break;
 //            }
-            this.state = state;
+            this.mState = state;
         }
     }
 
     public boolean transStep(Canvas canvas, long sysTime)
     {
-        long trTime = sysTime - stateTime;
+        long trTime = sysTime - mStateTime;
         final int TR_TIME = 250;
 
-//        canvas.drawBitmap(backgr, null, rect, paint);
+//        canvas.drawBitmap(backgr, null, mRect, paint);
 
-        if (state == TRANS_STATE_GO) {
-            horizontal = rnd.nextBoolean();
-            if(current == 0)
+        if (mState == TRANS_STATE_GO) {
+            mHorizontal = mRnd.nextBoolean();
+            if(mCurrent == 0)
                 setState(TRANS_STATE_FADE_IN, sysTime);
             else
                 setState(TRANS_STATE_FADE_OUT, sysTime);
-            trTime = sysTime - stateTime;
+            trTime = sysTime - mStateTime;
         }
 
-        if (state == TRANS_STATE_FADE_OUT) {
+        if (mState == TRANS_STATE_FADE_OUT) {
             if(trTime < TR_TIME) {
                 float ph=1.0f-(float)trTime/TR_TIME;
-                int hs = (int)((float)hsize*ph);
-                if(horizontal)
-                    rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
+                int hs = (int)((float) mHSize *ph);
+                if(mHorizontal)
+                    mRectTmp.set(mCX - hs, mCY - mHSize, mCX + hs, mCY + mHSize);
                 else
-                    rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                canvas.drawBitmap(sprites.pic[current], null, rectTmp, null);
+                    mRectTmp.set(mCX - mHSize, mCY - hs, mCX + mHSize, mCY + hs);
+                canvas.drawBitmap(mSprites.pic[mCurrent], null, mRectTmp, null);
             } else {
-                if(goal == 0)
+                if(mGoal == 0)
                     setState(TRANS_STATE_FIX, sysTime);
                 else
                     setState(TRANS_STATE_FADE_IN, sysTime);
-                trTime = sysTime - stateTime;
+                trTime = sysTime - mStateTime;
             }
         }
-        if (state == TRANS_STATE_FADE_IN) {
+        if (mState == TRANS_STATE_FADE_IN) {
                 if(trTime < TR_TIME) {
                     float ph=(float)trTime/TR_TIME;
-                    int hs = (int)((float)hsize*ph);
-                    if(horizontal)
-                        rectTmp.set(cX - hs, cY - hsize, cX + hs, cY + hsize);
+                    int hs = (int)((float) mHSize *ph);
+                    if(mHorizontal)
+                        mRectTmp.set(mCX - hs, mCY - mHSize, mCX + hs, mCY + mHSize);
                     else
-                        rectTmp.set(cX - hsize, cY - hs, cX + hsize, cY + hs);
-                    canvas.drawBitmap(sprites.pic[goal], null, rectTmp, null);
+                        mRectTmp.set(mCX - mHSize, mCY - hs, mCX + mHSize, mCY + hs);
+                    canvas.drawBitmap(mSprites.pic[mGoal], null, mRectTmp, null);
                 } else {
                     setState(TRANS_STATE_FIX, sysTime);
                 }
         }
-        if (state == TRANS_STATE_FIX) {
-                if(goal != 0)
-                    canvas.drawBitmap(sprites.pic[goal], null, rect, null);
+        if (mState == TRANS_STATE_FIX) {
+                if(mGoal != 0)
+                    canvas.drawBitmap(mSprites.pic[mGoal], null, mRect, null);
                 return true;
         }
         return false;
     }
 
     public void recycle(){
-        sprites.recycle();
+        mSprites.recycle();
     }
 }

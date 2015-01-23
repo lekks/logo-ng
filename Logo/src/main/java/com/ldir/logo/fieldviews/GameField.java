@@ -20,13 +20,13 @@ import com.ldir.logo.util.Observed;
  */
 public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
-    protected int sizeX = 1;
-    protected int sizeY = 1;
-    float fspan = 0; // Размер клетки точек
-    private DynamicRender render;
-    private GameMap.Pos clickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
-    private FieldPressHandler fieldPressHandler;
-    public Observed.Event transitionEndEvent = new Observed.Event();;
+    private int mSizeX = 1;
+    private int mSizeY = 1;
+    private float mFSpan = 0; // Размер клетки точек
+    private DynamicRender mRender;
+    private GameMap.Pos mClickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
+    private FieldPressHandler mFieldPressHandler;
+    public Observed.Event transitionEndEvent = new Observed.Event();
 
     public GameField(Context context) {
         super(context);
@@ -44,7 +44,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setFieldPressHandler(FieldPressHandler handler) {
-        fieldPressHandler = handler;
+        mFieldPressHandler = handler;
     }
 
     protected void init() {
@@ -77,69 +77,70 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-        sizeX = width;
-        sizeY = height;
-        this.fspan = Math.min((float) sizeX / (float) GameMap.COLS, (float) sizeY / (float) GameMap.ROWS);
-        Log.v("GameField", "Field view size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
+        mSizeX = width;
+        mSizeY = height;
+        this.mFSpan = Math.min((float) mSizeX / (float) GameMap.COLS, (float) mSizeY / (float) GameMap.ROWS);
+        Log.v("GameField", "Field view size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + mFSpan + ")");
     }
 
     private void createRender() {
         if( !isInEditMode() ) {
-            render = new DynamicRender(getHolder(), Game.gameMap, fspan, sizeX);
-            render.transitionEndEvent.addObserver(this.transitionEndEvent);
-            render.start();
-            render.repaint();
+            mRender = new DynamicRender(getHolder(), Game.gameMap, mFSpan, mSizeX);
+            mRender.transitionEndEvent.addObserver(this.transitionEndEvent);
+            mRender.start();
+            mRender.repaint();
         }
     }
 
-//    private Bitmap getBackground(){
-//        int[] pos=new int[2];
-//        getLocationOnScreen(pos);
-//        View v = getRootView();
-//        v.setDrawingCacheEnabled(true);
-//        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
-//        v.setDrawingCacheEnabled(false);
-//        Bitmap bitmap2= Bitmap.createBitmap(bitmap,pos[0],pos[1],getWidth(),getHeight());
-//        bitmap.recycle();
-//    }
-    //SurfaceHolder.Callback
-    @Override
+    /* Захват юэкграунда, если решу перерисовывать поле
+    private Bitmap getBackground(){
+        int[] pos=new int[2];
+        getLocationOnScreen(pos);
+        View v = getRootView();
+        v.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+        v.setDrawingCacheEnabled(false);
+        Bitmap bitmap2= Bitmap.createBitmap(bitmap,pos[0],pos[1],getWidth(),getHeight());
+        bitmap.recycle();
+    }*/
+
+    @Override //SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.v("GameField", "surfaceCreated");
         //getBackground();
         createRender();//TODO стартовать рендер при создании и паузить его когда не нужен
     }
 
-    //SurfaceHolder.Callback
-    @Override
+
+    @Override //SurfaceHolder.Callback
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         Log.v("GameField", "surfaceChanged " + format + "," + width + "," + height);
 
-        if (fspan != render.getcSize()) {
-            render.close();
+        if (mFSpan != mRender.getcSize()) {
+            mRender.close();
             createRender();
         }
     }
 
-    //SurfaceHolder.Callback
-    @Override
+
+    @Override //SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         Log.v("GameField", "surfaceDestroyed");
         boolean retry = true;
         // завершаем работу потока
-        render.close();
-        render = null;
+        mRender.close();
+        mRender = null;
     }
 
     public void drawField() {
-        if (render != null) {
-            render.repaint();
+        if (mRender != null) {
+            mRender.repaint();
         }
     }
 
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) { // TODO Оптимизировать, убрать цикл
-        int row = (int) (cY / fspan);
-        int col = (int) (cX / fspan);
+    public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
+        int row = (int) (cY / mFSpan);
+        int col = (int) (cX / mFSpan);
         if (row < Game.gameMap.ROWS && col < GameMap.COLS) {
             retPos.set(row, col);
             return true;
@@ -152,9 +153,9 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (findCell(event.getX(), event.getY(), clickPos)) {
-                    if (fieldPressHandler != null)
-                        fieldPressHandler.onPress(clickPos);
+                if (findCell(event.getX(), event.getY(), mClickPos)) {
+                    if (mFieldPressHandler != null)
+                        mFieldPressHandler.onPress(mClickPos);
                 }
                 break;
         }
@@ -164,7 +165,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     // Для дизайнера инерфейса
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
+//        Paint paint = new Paint();
         Log.v("GameField", "surface onDraw");
         canvas.drawColor(Color.GREEN);
 
