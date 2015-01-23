@@ -10,16 +10,15 @@ import android.graphics.Paint;
 import com.ldir.logo.R;
 
 public class Underlayer {
-    public static Bitmap orig;
-    public Bitmap pic;
-    static Paint paint = new Paint();
-
-    //fixme рециркулировать и обобщить со спрайтами
+    private static Resources mRes;
+    private Bitmap pic;
 
     public Underlayer(int size) {
-        if (orig != null)
-            pic = Bitmap.createScaledBitmap(Underlayer.orig, size, size, true);
-        else { // для отладки
+        if (mRes != null) {
+            Bitmap orig = BitmapFactory.decodeResource(mRes, R.drawable.grid);
+            pic = Bitmap.createScaledBitmap(orig, size, size, true);
+            orig.recycle();
+        } else { // для отладки
             pic = Bitmap.createBitmap(size, size, Config.ARGB_4444);
             pic.eraseColor(Color.GREEN);
         }
@@ -30,7 +29,11 @@ public class Underlayer {
         pic=null;
     }
 
+    public Bitmap get() {
+        return pic;
+    }
+
     public static void load(Resources res) {
-        orig = BitmapFactory.decodeResource(res, R.drawable.grid);
+        mRes = res;
     }
 }

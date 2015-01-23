@@ -110,7 +110,7 @@ public class DynamicRender extends Thread {
                     //Восстановление прозрачного фона
                     canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
 
-                    canvas.drawBitmap(underlayer.pic, 0, 0, paint);
+                    canvas.drawBitmap(underlayer.get(), 0, 0, paint);
                     systime = System.currentTimeMillis();
                     for (i = 0; i < rows; i++) {
                         for (j = 0; j < cols; j++) {

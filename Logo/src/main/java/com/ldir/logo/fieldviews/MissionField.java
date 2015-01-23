@@ -70,7 +70,7 @@ class StaticRender {
     private int cols, rows;
 
     public void paint(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(underlayer.pic, 0, 0, paint);
+        canvas.drawBitmap(underlayer.get(), 0, 0, paint);
         for(int i=0;i<rows;i++){
             for(int j=0;j<cols;j++){
                 int val = map.get(i,j);
