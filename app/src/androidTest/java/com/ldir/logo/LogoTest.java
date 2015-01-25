@@ -28,5 +28,9 @@ public class LogoTest extends ApplicationTestCase<Application> {
         Log.i("Test", "Test 1");
         assertEquals(true,true);
     }
+    public void testOther() {
+        Log.i("Test", "Sprites test 1");
+//        assertEquals(false,true);
+    }
 
 }

@@ -34,9 +34,9 @@ public class GameMap {
         this.map = new byte[ROWS][COLS];
     }
 
-    GameMap(int rows, int cols) {
-        this.map = new byte[rows][cols];
-    }
+//    GameMap(int rows, int cols) {
+//        this.map = new byte[rows][cols];
+//    }
 
     public void assign(GameMap other) {
         for (int i = 0; i < ROWS; i++) {
@@ -46,6 +46,7 @@ public class GameMap {
         }
     }
 
+    @Override
     public GameMap clone() throws CloneNotSupportedException {
         super.clone();
         GameMap copy = new GameMap();
@@ -68,7 +69,8 @@ public class GameMap {
         }
     }
 
-    public boolean isEqual(GameMap other) {
+    public boolean isEqual(GameMap other) { //Typed compare
+        if (this == other) return true;
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++){
                 if(map[i][j] != other.map[i][j])
@@ -76,6 +78,22 @@ public class GameMap {
             }
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        for(int i=0;i<ROWS;i++){
+            for(int j=0;j<COLS;j++){
+                result = 31 * result + map[i][j];
+            }
+        }
+        return result;
+    }
+
+    @Override public boolean equals(Object other) {
+        if (!(other instanceof GameMap)) return false;
+        return isEqual((GameMap) other);
     }
 
     private void nextPresssed(int i, int j) {

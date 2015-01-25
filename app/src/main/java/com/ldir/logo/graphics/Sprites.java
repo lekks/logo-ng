@@ -17,7 +17,6 @@ public class Sprites {
 	public Bitmap pic[];
 	static Paint paint = new Paint();
 
-	//Fixme рециркулировать
 	public Sprites(int size) {
 		pic = new Bitmap[5];
 		for(int i=1;i<pic.length;i++){
