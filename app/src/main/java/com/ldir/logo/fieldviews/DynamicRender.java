@@ -1,13 +1,12 @@
 package com.ldir.logo.fieldviews;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.graphics.Sprites;
-import com.ldir.logo.graphics.Underlayer;
 import com.ldir.logo.util.Observed;
 
 /**
@@ -23,7 +22,7 @@ public class DynamicRender extends Thread {
     private float mCSize;
     private int mCols, mRows;
     private Transition mCells[][];
-    private Underlayer mUnderlayer;
+    private Bitmap mUnderlayer;
     private Paint mPaint = new Paint();
 
     private boolean mTransitionStarted = false;
@@ -35,8 +34,8 @@ public class DynamicRender extends Thread {
         this.mRows = gameMap.ROWS;
         this.mCols = gameMap.COLS;
 
-        Sprites sprites = new Sprites((int) sellSize);
-        mUnderlayer = new Underlayer(size);
+        Bitmap[] sprites = FieldGraphics.makeStrites((int) sellSize);
+        mUnderlayer = FieldGraphics.makeUnderlayer(size);
         mCells = new Transition[mRows][];
         for (int i = 0; i < mRows; i++) {
             mCells[i] = new Transition[mCols];
@@ -79,7 +78,6 @@ public class DynamicRender extends Thread {
                 // если не получилось, то будем пытаться еще и еще
             }
         }
-        mUnderlayer.recycle();
         for (int i = 0; i < mRows; i++)
             for (int j = 0; j < mCols; j++)
                 mCells[i][j].recycle();
@@ -107,7 +105,7 @@ public class DynamicRender extends Thread {
                     //Восстановление прозрачного фона
                     canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
 
-                    canvas.drawBitmap(mUnderlayer.get(), 0, 0, mPaint);
+                    canvas.drawBitmap(mUnderlayer, 0, 0, mPaint);
                     systime = System.currentTimeMillis();
                     for (i = 0; i < mRows; i++) {
                         for (j = 0; j < mCols; j++) {

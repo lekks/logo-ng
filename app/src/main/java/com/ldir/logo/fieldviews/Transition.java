@@ -1,9 +1,8 @@
 package com.ldir.logo.fieldviews;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-
-import com.ldir.logo.graphics.Sprites;
 
 import java.util.Random;
 
@@ -23,7 +22,7 @@ public class Transition {
     private int mCurrent;
     private long mStateTime;
     private int mState;
-    private Sprites mSprites;
+    private Bitmap[] mSprites;
     private Rect mRect;
     private Rect mRectTmp = new Rect();
     private int mCX, mCY;
@@ -36,7 +35,7 @@ public class Transition {
     final static int TRANS_STATE_FADE_OUT =2;
     final static int TRANS_STATE_FADE_IN =3;
 
-    public Transition(Rect rect, Sprites sprites) {
+    public Transition(Rect rect, Bitmap[] sprites) {
         this.mSprites = sprites;
         this.mRect = rect;
         mCX =rect.centerX();
@@ -93,7 +92,7 @@ public class Transition {
                     mRectTmp.set(mCX - hs, mCY - mHSize, mCX + hs, mCY + mHSize);
                 else
                     mRectTmp.set(mCX - mHSize, mCY - hs, mCX + mHSize, mCY + hs);
-                canvas.drawBitmap(mSprites.pic[mCurrent], null, mRectTmp, null);
+                canvas.drawBitmap(mSprites[mCurrent], null, mRectTmp, null);
             } else {
                 if(mGoal == 0)
                     setState(TRANS_STATE_FIX, sysTime);
@@ -110,20 +109,19 @@ public class Transition {
                         mRectTmp.set(mCX - hs, mCY - mHSize, mCX + hs, mCY + mHSize);
                     else
                         mRectTmp.set(mCX - mHSize, mCY - hs, mCX + mHSize, mCY + hs);
-                    canvas.drawBitmap(mSprites.pic[mGoal], null, mRectTmp, null);
+                    canvas.drawBitmap(mSprites[mGoal], null, mRectTmp, null);
                 } else {
                     setState(TRANS_STATE_FIX, sysTime);
                 }
         }
         if (mState == TRANS_STATE_FIX) {
                 if(mGoal != 0)
-                    canvas.drawBitmap(mSprites.pic[mGoal], null, mRect, null);
+                    canvas.drawBitmap(mSprites[mGoal], null, mRect, null);
                 return true;
         }
         return false;
     }
 
     public void recycle(){
-        mSprites.recycle();
     }
 }

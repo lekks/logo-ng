@@ -1,29 +1,29 @@
 package com.ldir.logo.fieldviews;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.graphics.Sprites;
-import com.ldir.logo.graphics.Underlayer;
 
 class StaticRender {
     private Rect mCells[][];
     private GameMap mMap;
-    private Sprites mSprites;
-    private Underlayer mUnderlayer;
+    private Bitmap[] mSprites;
+    private Bitmap mUnderlayer;
+
     private int mCols, mRows;
 
     public void paint(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(mUnderlayer.get(), 0, 0, paint);
+        canvas.drawBitmap(mUnderlayer, 0, 0, paint);
         for(int i=0;i< mRows;i++){
             for(int j=0;j< mCols;j++){
                 int val = mMap.get(i,j);
                 Rect rect = mCells[i][j];
                 if(val>0) {
-                    canvas.drawBitmap(mSprites.pic[val], rect.left, rect.top, paint);
+                    canvas.drawBitmap(mSprites[val], rect.left, rect.top, paint);
                 }
             }
         }
@@ -42,8 +42,8 @@ class StaticRender {
         this.mRows =gameMap.ROWS;
         this.mCols =gameMap.COLS;
 
-        mSprites = new Sprites((int) fspan);
-        mUnderlayer = new Underlayer(width);
+        mSprites = FieldGraphics.makeStrites((int) fspan);
+        mUnderlayer = FieldGraphics.makeUnderlayer(width);
         mCells = new Rect[mRows][];
         for(int i=0;i< mRows;i++){
             mCells[i] = new Rect[mCols];
@@ -54,8 +54,6 @@ class StaticRender {
     }
 
     public void recycle() {
-        mUnderlayer.recycle();
-        mSprites.recycle();
     }
 
 }

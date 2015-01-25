@@ -6,9 +6,6 @@ import android.content.res.Resources;
 import android.util.Log;
 
 import com.ldir.logo.game.Game;
-import com.ldir.logo.graphics.Sprites;
-import com.ldir.logo.graphics.Underlayer;
-import com.ldir.logo.music.Music;
 
 public class GameApp  extends Application{
 
@@ -25,8 +22,6 @@ public class GameApp  extends Application{
         Log.i("GameApp", "onCreate");
         GameApp.context = getApplicationContext();
         GameApp.resources = getResources();
-        Sprites.load(getResources());
-        Underlayer.load(getResources());
 
         Game.restartGame();
     }
