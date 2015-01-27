@@ -1,13 +1,10 @@
-package com.ldir.logo.platform;
+package com.ldir.logo.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import com.ldir.logo.R;
-import com.ldir.logo.game.Game;
 
 
 public class TimeoutActivity extends Activity {

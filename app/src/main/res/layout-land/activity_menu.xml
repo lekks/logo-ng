@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:background="@drawable/ground"
 
-    tools:context="com.ldir.logo.platform.MenuActivity">
+    tools:context="com.ldir.logo.activities.MenuActivity">
 
     <LinearLayout
         android:orientation="horizontal"

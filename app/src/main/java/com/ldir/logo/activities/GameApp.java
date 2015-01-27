@@ -1,4 +1,4 @@
-package com.ldir.logo.platform;
+package com.ldir.logo.activities;
 
 import android.app.Application;
 import android.content.Context;

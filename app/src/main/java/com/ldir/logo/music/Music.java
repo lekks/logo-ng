@@ -2,12 +2,9 @@ package com.ldir.logo.music;
 
 import android.content.SharedPreferences;
 
-import com.ldir.logo.game.Game;
-import com.ldir.logo.platform.GameApp;
+import com.ldir.logo.activities.GameApp;
 
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Ldir on 30.12.2014.

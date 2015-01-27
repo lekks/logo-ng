@@ -1,18 +1,13 @@
-package com.ldir.logo.platform;
+package com.ldir.logo.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ToggleButton;
 
 import com.ldir.logo.R;
-import com.ldir.logo.game.Game;
 import com.ldir.logo.music.Music;
 
 public class GameOptActvity extends Activity {

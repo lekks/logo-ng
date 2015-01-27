@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@drawable/vground"
 
-    tools:context="com.ldir.logo.platform.MenuActivity">
+    tools:context="com.ldir.logo.activities.MenuActivity">
 
     <LinearLayout
         android:orientation="vertical"

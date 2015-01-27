@@ -1,7 +1,5 @@
 package com.ldir.logo.game;
 
-import android.content.Intent;
-import android.text.format.Time;
 import android.util.Log;
 
 import java.util.Observable;
@@ -12,7 +10,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import com.ldir.logo.platform.GameWinActivity;
 import com.ldir.logo.util.Observed;
 
 // Тут состредоточим всю логику
