@@ -2,7 +2,12 @@ package com.ldir.logo.game;
 
 public class MissionLoader {
 
-	static byte levels[][][]={
+    static int level_time[]={
+            21,22,23
+    };
+
+
+    static byte levels[][][]={
             {
 				{0,0,0,0,0,0,0},
 				{0,0,0,0,0,0,0},
@@ -53,14 +58,15 @@ public class MissionLoader {
     }
 
 	
-	public static boolean load(GameMap map, int n)
+	public static boolean load(GameLevel level, int n)
 	{
 		if (n <levelNumber()) {
             for (int i = 0; i < levels[n].length; i++) {
                 for (int j = 0; j < levels[n][i].length; j++) {
-                    map.set(i,j,levels[n][i][j]);
+                    level.map.set(i,j,levels[n][i][j]);
                 }
             }
+            level.time = level_time[n];
             return true;
         } else
             return false;

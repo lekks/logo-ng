@@ -39,7 +39,7 @@ public class MissionField extends android.view.View {
         if(mRender != null)
             mRender.recycle();
         if(height>0 && width>0)
-            mRender = new StaticRender(Game.goalMap, width, height);
+            mRender = new StaticRender(Game.getGoalMap(), width, height);
         else {
             mRender = null;
         }

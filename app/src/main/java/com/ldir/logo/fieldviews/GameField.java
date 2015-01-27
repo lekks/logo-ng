@@ -85,7 +85,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     private void createRender() {
         if( !isInEditMode() ) {
-            mRender = new DynamicRender(getHolder(), Game.gameMap, mFSpan, mSizeX);
+            mRender = new DynamicRender(getHolder(), Game.getGameMap(), mFSpan, mSizeX);
             mRender.transitionEndEvent.addObserver(this.transitionEndEvent);
             mRender.start();
             mRender.repaint();
@@ -141,7 +141,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
         int row = (int) (cY / mFSpan);
         int col = (int) (cX / mFSpan);
-        if (row < Game.gameMap.ROWS && col < GameMap.COLS) {
+        if (row < Game.getGameMap().ROWS && col < GameMap.COLS) {
             retPos.set(row, col);
             return true;
         } else

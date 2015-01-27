@@ -19,17 +19,26 @@ public class Game {
     //	INSTANCE;
 
 
-    public static GameMap goalMap = new GameMap();
-    public static GameMap gameMap = new GameMap();
     public static Observed.Event fieldChanged = new  Observed.Event();
     public static Observed.Event missionChanged = new  Observed.Event();
     public static Observed.Value<Integer> timerChanged = new  Observed.Value<Integer>();
 
+    private static GameLevel gameLevel = new GameLevel();
+    private static GameMap gameMap = new GameMap();
     private static int levelTime;
 	private static int level;
     private static Stack<GameMap> history = new Stack<GameMap>();
     private static ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture mTimerFuture;
+
+
+    public static GameMap getGoalMap() {
+        return gameLevel.map;
+    }
+
+    public static GameMap getGameMap() {
+        return gameMap;
+    }
 
     public static boolean undo(){
         if(history.size() != 0 ){
@@ -42,14 +51,14 @@ public class Game {
     }
 
     public static void reset(){
-        levelTime = 21;
+        levelTime = gameLevel.time+1;
         Game.gameMap.resetField();
         history.clear();
         fieldChanged.update();
     }
 
     public static boolean skipLevel(){
-        if(MissionLoader.load(goalMap,level+1)) {
+        if(MissionLoader.load(gameLevel,level+1)) {
             ++level;
             missionChanged.update();
             reset();
@@ -79,7 +88,7 @@ public class Game {
     public static void restartGame()
     {
         level = 0;
-        MissionLoader.load(goalMap, level);
+        MissionLoader.load(gameLevel, level);
         missionChanged.update();
         reset();
     }
@@ -165,7 +174,7 @@ public class Game {
         public void update(Observable observable, Object arg) {
             switch (globalState){
                 case PLAYING: // TODO Сделать тоже самое при окончании таймера
-                    if (Game.gameMap.isEqual(Game.goalMap)) {
+                    if (Game.gameMap.isEqual(Game.getGoalMap())) {
                         if(Game.lastLevel()) {
                             changeState(GlobalState.GAME_WIN);
                         } else {
