@@ -21,12 +21,12 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:id="@+id/imageView"
             android:src="@drawable/logo"
             android:layout_weight="2"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center" />
 
         <RelativeLayout
             android:orientation="vertical"
@@ -35,8 +35,8 @@
             android:layout_weight="1">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/go"
                 android:scaleType="fitCenter"
                 android:background="@null"
@@ -45,7 +45,20 @@
                 android:layout_gravity="right"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:cropToPadding="false"
+                android:id="@+id/goButton"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:text="Levels"
+                android:onClick="onSelectLevels"
+                android:layout_margin="10dp"
+                android:id="@+id/levelsButton"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/goButton" />
         </RelativeLayout>
 
     </LinearLayout>

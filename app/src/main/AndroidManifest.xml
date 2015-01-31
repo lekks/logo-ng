@@ -4,12 +4,20 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk
-        android:minSdkVersion="8" />
-<!-- in application
+    <uses-sdk android:minSdkVersion="8" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <!--
+ in application
     android:hardwareAccelerated="false"
     android:largeHeap="true"
--->
+    -->
     <application
         android:name=".activities.GameApp"
         android:icon="@drawable/ic_launcher"
@@ -17,8 +25,9 @@
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name=".activities.MenuActivity"
-            android:label="@string/title_activity_menu">
-            <!--android:screenOrientation="landscape"-->
+            android:label="@string/title_activity_menu" >
+
+            <!-- android:screenOrientation="landscape" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,7 +35,7 @@
         </activity>
         <activity
             android:name=".activities.GameActivity"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main" >
         </activity>
         <activity
             android:name=".activities.NextLevelActivity"
@@ -39,10 +48,15 @@
             android:name=".activities.TimeoutActivity"
             android:noHistory="true"
             android:theme="@android:style/Theme.Dialog" />
-         <activity
+        <activity
             android:name=".activities.GameOptActvity"
             android:label="@string/title_activity_game_opt_actvity"
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name=".activities.SelectLevel"
+            android:noHistory="true"
+            android:label="@string/title_activity_select_level" >
         </activity>
     </application>
 

@@ -24,6 +24,10 @@ public class MenuActivity extends Activity {
         startActivity(intent);
     }
 
+    public void onSelectLevels(View v){
+        Intent intent = new Intent(this, SelectLevel.class);
+        startActivity(intent);
+    }
 /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
