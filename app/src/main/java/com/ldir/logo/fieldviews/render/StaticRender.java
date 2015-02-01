@@ -1,4 +1,4 @@
-package com.ldir.logo.fieldviews;
+package com.ldir.logo.fieldviews.render;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.ldir.logo.game.GameMap;
 
-class StaticRender {
+public class StaticRender {
     private Rect mCells[][];
     private GameMap mMap;
     private Bitmap[] mSprites;

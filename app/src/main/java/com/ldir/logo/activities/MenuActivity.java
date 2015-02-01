@@ -25,7 +25,7 @@ public class MenuActivity extends Activity {
     }
 
     public void onSelectLevels(View v){
-        Intent intent = new Intent(this, SelectLevel.class);
+        Intent intent = new Intent(this, SelectLevelActivity.class);
         startActivity(intent);
     }
 /*

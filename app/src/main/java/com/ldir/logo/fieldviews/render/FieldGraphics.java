@@ -1,4 +1,4 @@
-package com.ldir.logo.fieldviews;
+package com.ldir.logo.fieldviews.render;
 
 import android.graphics.Bitmap;
 
@@ -9,7 +9,7 @@ import com.ldir.logo.R;
  */
 public class FieldGraphics {
     public static Bitmap makeUnderlayer(int size){
-        return Sprite.get(R.drawable.grid,size);
+        return Sprite.get(R.drawable.grid, size);
     }
 
     public static Bitmap[] makeStrites(int size){

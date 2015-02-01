@@ -54,7 +54,7 @@
             android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
-            android:name=".activities.SelectLevel"
+            android:name=".activities.SelectLevelActivity"
             android:noHistory="true"
             android:label="@string/title_activity_select_level" >
         </activity>

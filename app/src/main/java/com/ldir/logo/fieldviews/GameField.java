@@ -3,7 +3,6 @@ package com.ldir.logo.fieldviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.ldir.logo.fieldviews.render.DynamicRender;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.util.Observed;

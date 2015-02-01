@@ -1,4 +1,4 @@
-package com.ldir.logo.fieldviews;
+package com.ldir.logo.fieldviews.render;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

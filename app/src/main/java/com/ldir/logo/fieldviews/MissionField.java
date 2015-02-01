@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.ldir.logo.fieldviews.render.StaticRender;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 

@@ -1,7 +1,9 @@
-package com.ldir.logo.fieldviews;
+package com.ldir.logo.fieldviews.render;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -36,9 +38,16 @@ public class Sprite {
     private static Bitmap makeBitmap(int id,int size) // can throw NullPointerException
     {
         Bitmap orig = BitmapFactory.decodeResource(GameApp.getAppResources(), id);
-        Bitmap res = Bitmap.createScaledBitmap(orig, size,size, true);
-        orig.recycle();
-        return res;
+        if (orig != null) {
+            Bitmap res = Bitmap.createScaledBitmap(orig, size, size, true);
+            orig.recycle();
+            return res;
+        } else {
+            Bitmap res = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
+            Canvas canv= new Canvas(res);
+            canv.drawColor(Color.YELLOW);
+            return res;
+        }
     }
 
     /*

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 
-import com.ldir.logo.fieldviews.Sprite;
+import com.ldir.logo.fieldviews.render.Sprite;
 
 
 /**

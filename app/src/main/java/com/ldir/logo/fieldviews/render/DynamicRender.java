@@ -1,4 +1,4 @@
-package com.ldir.logo.fieldviews;
+package com.ldir.logo.fieldviews.render;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,7 +13,7 @@ import com.ldir.logo.util.Observed;
  * Created by Ldir on 27.09.13.
  */
 public class DynamicRender extends Thread {
-    Observed.Event transitionEndEvent = new Observed.Event();
+    public Observed.Event transitionEndEvent = new Observed.Event();
 
     private volatile boolean mRun;
     private SurfaceHolder mSurfaceHolder;
@@ -46,11 +46,11 @@ public class DynamicRender extends Thread {
         }
     }
 
-    float getcSize() {
+    public float getcSize() {
         return mCSize;
     }
 
-    void repaint() {
+    public void repaint() {
 
         long systime = System.currentTimeMillis();
         for (int i = 0; i < mRows; i++)
