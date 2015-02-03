@@ -36,7 +36,7 @@ public class MissionField extends android.view.View {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-        Log.v("Mission Field", "Field size changed from " + oldw + "," + oldh + " to " + width + "," + height);
+        Log.v("Mission Field", "Field mSize changed from " + oldw + "," + oldh + " to " + width + "," + height);
         if(mRender != null)
             mRender.recycle();
         if(height>0 && width>0)

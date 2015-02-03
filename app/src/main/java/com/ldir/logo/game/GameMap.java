@@ -20,6 +20,10 @@ public class GameMap {
     }
 
 
+    static public float calcCellSize(int fieldWidth, int fieldHeight) {
+        return Math.min((float)fieldWidth/(float)COLS, (float)fieldHeight/(float)ROWS);
+    }
+
     static public void fitWidhHeight(int[] size)
     {
         int t = size[0] * GameMap.ROWS / GameMap.COLS;

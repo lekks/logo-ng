@@ -46,7 +46,7 @@ public class MissionLoader {
 //			},
 		};
 
-    private static int levelNumber(){
+    public static int levelNumber(){
         return levels.length-1;
     }
 

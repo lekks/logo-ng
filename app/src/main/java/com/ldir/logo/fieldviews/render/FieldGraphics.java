@@ -12,12 +12,13 @@ public class FieldGraphics {
         return Sprite.get(R.drawable.grid, size);
     }
 
-    public static Bitmap[] makeStrites(int size){
-        Bitmap[] s= new Bitmap[5];
-        s[1]= Sprite.get(R.drawable.s1,size);
-        s[2]= Sprite.get(R.drawable.s2,size);
-        s[3]= Sprite.get(R.drawable.s3,size);
-        s[4]= Sprite.get(R.drawable.s4,size);
-        return s;
+    public static Bitmap[] makeStrites(int size, Bitmap[] sprites){
+        if (sprites == null)
+            sprites= new Bitmap[5];
+        sprites[1]= Sprite.get(R.drawable.s1,size);
+        sprites[2]= Sprite.get(R.drawable.s2,size);
+        sprites[3]= Sprite.get(R.drawable.s3,size);
+        sprites[4]= Sprite.get(R.drawable.s4,size);
+        return sprites;
     }
 }

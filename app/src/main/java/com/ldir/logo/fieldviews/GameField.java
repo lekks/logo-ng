@@ -79,8 +79,8 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
         mSizeX = width;
         mSizeY = height;
-        this.mFSpan = Math.min((float) mSizeX / (float) GameMap.COLS, (float) mSizeY / (float) GameMap.ROWS);
-        Log.v("GameField", "Field view size changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + mFSpan + ")");
+        this.mFSpan = GameMap.calcCellSize(mSizeX,mSizeY);
+        Log.v("GameField", "Field view mSize changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + mFSpan + ")");
     }
 
     private void createRender() {

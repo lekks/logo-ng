@@ -5,15 +5,15 @@
     android:padding="10dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:text="New Text"
         android:id="@+id/listLevelItemLabel"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <com.ldir.logo.fieldviews.LevelField
-        android:id="@+id/levelView"
+        android:id="@+id/levelListField"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/listLevelItemLabel"

@@ -1,76 +1,63 @@
 package com.ldir.logo.activities;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.ldir.logo.R;
+import com.ldir.logo.fieldviews.LevelField;
+import com.ldir.logo.game.MissionLoader;
 
 public class SelectLevelActivity extends Activity {
-
+    private Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_level);
+        font = Typeface.createFromAsset(getAssets(),"zebulon.ttf");
+        LevelsListAdapter adapter = new LevelsListAdapter();
+        final GridView grid = (GridView) findViewById(R.id.levelsGrid);
+        grid.setAdapter(adapter);
 
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
-        LazyAdapter adapter = new LazyAdapter();
-        final GridView g = (GridView) findViewById(R.id.levelsGrid);
-        g.setAdapter(adapter);
+        TextView textView =  (TextView) findViewById(R.id.selectLevel);
+        textView.setTypeface(font);
+
     }
 
-}
-
-class LazyAdapter extends BaseAdapter {
-
-    @Override
-    public int getCount() {
-        return 100;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null)
-        {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(R.layout.list_level, parent,false);
-            TextView textView =  (TextView) convertView.findViewById(R.id.listLevelItemLabel);
-            textView.setText("L="+position);
+    class LevelsListAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return MissionLoader.levelNumber();
         }
-
-//        TextView chapterName = (TextView)convertView.findViewById(R.id.textView1);
-//        TextView chapterDesc = (TextView)convertView.findViewById(R.id.textView2);
-//
-//        codeLearnChapter chapter = codeLearnChapterList.get(arg0);
-//
-//        chapterName.setText(chapter.chapterName);
-//        chapterDesc.setText(chapter.chapterDescription);
-
-        return convertView;
-
-//        return null;
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView==null) {
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                convertView = inflater.inflate(R.layout.list_level, parent,false);
+            }
+            TextView textView =  (TextView) convertView.findViewById(R.id.listLevelItemLabel);
+            textView.setTypeface(font);
+            textView.setText(getString(R.string.level)+Integer.toString(position+1));
+            LevelField levelField =  (LevelField ) convertView.findViewById(R.id.levelListField);
+            levelField.setLevel(position);
+            return convertView;
+        }
     }
+
+
 }

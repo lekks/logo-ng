@@ -12,10 +12,14 @@ import com.ldir.logo.activities.GameApp;
 /**
  * Created by Ldir on 24.01.2015.
  */
+
+//TODO http://developer.android.com/training/displaying-bitmaps/index.html
+//http://stackoverflow.com/questions/1955410/bitmapfactory-oom-driving-me-nuts/
+
 public class Sprite {
 
 
-    private static SparseArray<SparseArray<Bitmap>> cache = new SparseArray<SparseArray<Bitmap>>(); //TODO SparseArray
+    private static SparseArray<SparseArray<Bitmap>> cache = new SparseArray<SparseArray<Bitmap>>();
 
     public static int countCacheForTest()  {
         int cnt=0;
@@ -33,6 +37,29 @@ public class Sprite {
         }
         Log.v("Sprite", "Total:" + cnt);
         return cnt;
+    }
+
+
+
+    private Bitmap createPreScaled(int id,int size) {
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(GameApp.getAppResources(), id, o);
+
+        //The new size we want to scale to
+        final int REQUIRED_SIZE= size;
+
+        //Find the correct scale value. It should be the power of 2.
+        int scale=1;
+        while(o.outWidth/scale/2>=REQUIRED_SIZE && o.outHeight/scale/2>=REQUIRED_SIZE)
+            scale*=2;
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize=scale;
+        Bitmap orig = BitmapFactory.decodeResource(GameApp.getAppResources(), id, o2);
+        return orig;
     }
 
     private static Bitmap makeBitmap(int id,int size) // can throw NullPointerException

@@ -34,7 +34,7 @@ public class DynamicRender extends Thread {
         this.mRows = gameMap.ROWS;
         this.mCols = gameMap.COLS;
 
-        Bitmap[] sprites = FieldGraphics.makeStrites((int) sellSize);
+        Bitmap[] sprites = FieldGraphics.makeStrites((int) sellSize, null);
         mUnderlayer = FieldGraphics.makeUnderlayer(size);
         mCells = new Transition[mRows][];
         for (int i = 0; i < mRows; i++) {

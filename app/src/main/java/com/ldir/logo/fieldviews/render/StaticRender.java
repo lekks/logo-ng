@@ -35,14 +35,14 @@ public class StaticRender {
 
         int sizeX = width;
         int sizeY = height;
-        float fspan = Math.min((float)sizeX/(float)GameMap.COLS, (float)sizeY/(float)GameMap.ROWS);
+        float fspan =  GameMap.calcCellSize(sizeX,sizeY);
         Log.v("Mission Field", "Static mRender init " + width + "," + height + " ;span " + "," + "(" + fspan + ")");
 
         this.mMap =gameMap;
         this.mRows =gameMap.ROWS;
         this.mCols =gameMap.COLS;
 
-        mSprites = FieldGraphics.makeStrites((int) fspan);
+        mSprites = FieldGraphics.makeStrites((int) fspan, null);
         mUnderlayer = FieldGraphics.makeUnderlayer(width);
         mCells = new Rect[mRows][];
         for(int i=0;i< mRows;i++){
