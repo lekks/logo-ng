@@ -31,10 +31,14 @@ public class Game {
     private static ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture mTimerFuture;
 
-
-    public static GameMap getGoalMap() {
-        return gameLevel.map;
+    public static int getCurrenLevel() {
+        return level;
     }
+
+
+//   public static GameMap getGoalMap() {
+//        return gameLevel.map;
+//    }
 
     public static GameMap getGameMap() {
         return gameMap;
@@ -174,7 +178,7 @@ public class Game {
         public void update(Observable observable, Object arg) {
             switch (globalState){
                 case PLAYING: // TODO Сделать тоже самое при окончании таймера
-                    if (Game.gameMap.isEqual(Game.getGoalMap())) {
+                    if (Game.gameMap.isEqual(Game.gameLevel.map)) {
                         if(Game.lastLevel()) {
                             changeState(GlobalState.GAME_WIN);
                         } else {

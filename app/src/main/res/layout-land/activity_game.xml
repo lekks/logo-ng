@@ -90,7 +90,7 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <com.ldir.logo.fieldviews.MissionField
+        <com.ldir.logo.fieldviews.LevelField
             android:id="@+id/misionView"
             android:layout_width="fill_parent"
             android:layout_height="0dp"

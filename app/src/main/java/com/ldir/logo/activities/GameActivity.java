@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.GameField;
-import com.ldir.logo.fieldviews.MissionField;
+import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.music.Music;
@@ -29,7 +29,7 @@ public class GameActivity extends Activity {
     private final int GAME_OPT_ACTIVITY = 4;
 
 	private GameField mGameField;
-	private MissionField mMissionField;
+	private LevelField mLevelField;
     private TextView mTimeLabel;
     private TextView mLevelLabel;
     private int mLevelTime;
@@ -54,7 +54,8 @@ public class GameActivity extends Activity {
     private Observer onMissionChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            mMissionField.invalidate();
+            mLevelField.setLevel(Game.getCurrenLevel());
+            mLevelField.invalidate();
         }
     };
     private Observer onTimeChange = new Observer(){
@@ -216,7 +217,8 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
         mGameField = (GameField)findViewById(R.id.fieldSurface);
         mGameField.setFieldPressHandler(new OnFieldPressed());
-        mMissionField = (MissionField)findViewById(R.id.misionView);
+        mLevelField = (LevelField)findViewById(R.id.misionView);
+        mLevelField.setLevel(Game.getCurrenLevel());
 
         mTimeLabel = (TextView) findViewById(R.id.timeLabel);
         mLevelLabel = (TextView) findViewById(R.id.levelLabel);
@@ -238,7 +240,7 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Destroy");
         Game.observedState.deleteObserver(onGameChange);
         mGameField.destroy();
-        mMissionField.destroy();
+        mLevelField.destroy();
     }
 
 }
