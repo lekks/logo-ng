@@ -5,6 +5,11 @@ import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
+import com.ldir.logo.game.MissionLoader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
@@ -24,8 +29,10 @@ public class LogoTest extends ApplicationTestCase<Application> {
     }
 
 
+
     public void testSomething() {
-        Log.i("Test", "Test 1");
+        //Log.i("Test JSON", MissionLoader.loadJSONFromAsset());
+        MissionLoader.loadLevels();
         assertEquals(true,true);
     }
     public void testOther() {

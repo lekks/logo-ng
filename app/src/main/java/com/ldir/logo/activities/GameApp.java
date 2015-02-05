@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.ldir.logo.game.Game;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class GameApp  extends Application{
 
     public static final String SHARED_SETTINGS = "com.ldir.logo";
@@ -31,6 +34,9 @@ public class GameApp  extends Application{
     }
     public static Resources getAppResources() {
         return GameApp.resources;
+    }
+    public static InputStream getAsset(String path) throws IOException {
+        return GameApp.getAppContext().getAssets().open(path);
     }
 
 }

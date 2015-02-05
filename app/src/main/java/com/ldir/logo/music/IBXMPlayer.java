@@ -82,7 +82,8 @@ public class IBXMPlayer extends Thread {
             }
 		} catch (Throwable x) {
             x.printStackTrace();
-		} finally {
+            throw new RuntimeException();
+        } finally {
 			if (track != null) {
 				track.stop();
 				track.release();

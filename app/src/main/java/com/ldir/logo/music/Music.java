@@ -18,9 +18,10 @@ public class Music {
         if(isON && getMusicEnabled()) {
             if (music == null) {
                 try {
-                    music = new IBXMPlayer(GameApp.getAppContext().getAssets().open("mus/menu/1.xm"));
+                    music = new IBXMPlayer(GameApp.getAsset("mus/menu/1.xm"));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    throw new RuntimeException();
                 }
             }
         } else {
@@ -30,6 +31,7 @@ public class Music {
                     music = null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    throw new RuntimeException();
                 }
             }
         }
