@@ -58,6 +58,7 @@ public class GameActivity extends Activity {
             mLevelField.invalidate();
         }
     };
+
     private Observer onTimeChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
@@ -65,7 +66,6 @@ public class GameActivity extends Activity {
             mUI_handler.postDelayed(mUpdateTimerLabel,0);
         }
     };
-
 
     public Observer onGameChange = new Observer(){
         @Override

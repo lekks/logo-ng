@@ -32,31 +32,21 @@ public class MissionLoader {
     }
 
 
-    public static int levelNumber(){
+    public static int length(){
         if(levels == null)
             loadLevels();
         return levels.length;
     }
 
-    public static boolean lastLevel(int n) {
-        if (n+1 < levelNumber())
-            return false;
-        else
-            return true;
-    }
-
-	public static boolean load(GameLevel level, int n)
-	{
+    public static GameLevel get(int n)
+    {
         if(levels == null)
             loadLevels();
-
-		if(n < levels.length) {
-            level.time = levels[n].time;
-            level.map.assign(levels[n].map);
-            return true;
+        if(n < levels.length) {
+            return levels[n];
         } else
-            return false;
-	}
+            return null;
+    }
 
     public static void loadLevels() {
         String json = getLevelsJSon("levels.json");

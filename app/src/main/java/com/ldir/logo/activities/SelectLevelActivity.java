@@ -34,7 +34,7 @@ public class SelectLevelActivity extends Activity {
     class LevelsListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return MissionLoader.levelNumber();
+            return MissionLoader.length();
         }
         @Override
         public Object getItem(int position) {

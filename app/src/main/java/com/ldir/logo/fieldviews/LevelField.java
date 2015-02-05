@@ -56,7 +56,7 @@ public class LevelField extends android.view.View {
 
 class LevelRender {
     private boolean mDisabled=true;
-    private GameLevel mGameLevel = new GameLevel();
+    private GameLevel mGameLevel;
     private float mCellSize;
     private Bitmap[] mSprites=new Bitmap[5];
     private Bitmap mUnderlayer;
@@ -73,14 +73,14 @@ class LevelRender {
     }
 
     public void loadLevel(int level) {
-        mDisabled = ! MissionLoader.load(mGameLevel,level);
+        mGameLevel = MissionLoader.get(level);
     }
 
     public void paint(Canvas canvas) {
         if(mCellSize == 0) // бывает и такое
             return;
         canvas.drawBitmap(mUnderlayer, 0, 0, paint);
-        if (mDisabled)
+        if (mGameLevel == null)
             return;
         for(int i=0;i< GameMap.ROWS;i++){
             for(int j=0;j< GameMap.COLS;j++){

@@ -32,7 +32,7 @@ public class LogoTest extends ApplicationTestCase<Application> {
 
     public void testSomething() {
         //Log.i("Test JSON", MissionLoader.loadJSONFromAsset());
-        MissionLoader.loadLevels();
+//        MissionLoader.loadLevels();
         assertEquals(true,true);
     }
     public void testOther() {

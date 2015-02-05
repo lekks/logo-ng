@@ -2,6 +2,8 @@ package com.ldir.logo.game;
 
 import android.util.Log;
 
+import com.ldir.logo.util.Observed;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
@@ -9,8 +11,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import com.ldir.logo.util.Observed;
 
 // Тут состредоточим всю логику
 
@@ -23,7 +23,7 @@ public class Game {
     public static Observed.Event missionChanged = new  Observed.Event();
     public static Observed.Value<Integer> timerChanged = new  Observed.Value<Integer>();
 
-    private static GameLevel gameLevel = new GameLevel();
+    private static GameLevel gameLevel;
     private static GameMap gameMap = new GameMap();
     private static int levelTime;
 	private static int level;
@@ -62,8 +62,9 @@ public class Game {
     }
 
     public static boolean skipLevel(){
-        if(MissionLoader.load(gameLevel,level+1)) {
-            ++level;
+
+        if(!lastLevel()) {
+            gameLevel = MissionLoader.get(++level);
             missionChanged.update();
             reset();
             return true;
@@ -73,15 +74,20 @@ public class Game {
     }
 
     private static boolean lastLevel(){
-        return MissionLoader.lastLevel(level);
+        if (level+1 < MissionLoader.length())
+            return false;
+        else
+            return true;
     }
 
-
+    private static GameMap last;
     public static boolean makeMove(GameMap.Pos clickPos) {
-        GameMap last = new GameMap(); // TODO Сделать статическую переменную, потом коприровать по необходимости
+        if( last == null)
+            last = new GameMap();
         last.assign(Game.gameMap);
         if (gameMap.gameMove(clickPos.row, clickPos.col)) {
             history.add(last);
+            last = null;
             fieldChanged.update();
             return true;
         } else
@@ -92,7 +98,7 @@ public class Game {
     public static void restartGame()
     {
         level = 0;
-        MissionLoader.load(gameLevel, level);
+        gameLevel = MissionLoader.get(level);
         missionChanged.update();
         reset();
     }
