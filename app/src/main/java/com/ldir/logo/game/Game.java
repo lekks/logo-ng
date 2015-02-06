@@ -27,7 +27,7 @@ public class Game {
     private static GameMap gameMap = new GameMap();
     private static int levelTime;
 	private static int level;
-    private static Stack<GameMap> history = new Stack<GameMap>();
+    private static MapHistory history = new MapHistory();
     private static ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture mTimerFuture;
 
@@ -45,8 +45,8 @@ public class Game {
     }
 
     public static boolean undo(){
-        if(history.size() != 0 ){
-            GameMap last = history.pop();
+        GameMap last = history.pop();
+        if(last != null ){
             Game.gameMap.assign(last);
             fieldChanged.update();
             return true;
@@ -80,18 +80,16 @@ public class Game {
             return true;
     }
 
-    private static GameMap last;
     public static boolean makeMove(GameMap.Pos clickPos) {
-        if( last == null)
-            last = new GameMap();
-        last.assign(Game.gameMap);
+
+        history.push(Game.gameMap);
         if (gameMap.gameMove(clickPos.row, clickPos.col)) {
-            history.add(last);
-            last = null;
             fieldChanged.update();
             return true;
-        } else
+        } else {
+            history.pop();
             return false;
+        }
     }
 
 
@@ -109,7 +107,7 @@ public class Game {
         PAUSE,
         LEVEL_COMPLETE,
         GAME_OVER,
-        GAME_WIN,
+        GAME_COMPLETE,
         GAME_LOST,
     }
 
@@ -163,7 +161,7 @@ public class Game {
     public static void exitPlayground()  {
         mTimerFuture.cancel(false);
         switch (globalState) {
-            case GAME_WIN:
+            case GAME_COMPLETE:
             case LEVEL_COMPLETE:
                 break;
             default:
@@ -186,7 +184,7 @@ public class Game {
                 case PLAYING: // TODO Сделать тоже самое при окончании таймера
                     if (Game.gameMap.isEqual(Game.gameLevel.map)) {
                         if(Game.lastLevel()) {
-                            changeState(GlobalState.GAME_WIN);
+                            changeState(GlobalState.GAME_COMPLETE);
                         } else {
                             changeState(GlobalState.LEVEL_COMPLETE);
                         }

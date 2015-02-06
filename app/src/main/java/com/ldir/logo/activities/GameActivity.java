@@ -80,7 +80,7 @@ public class GameActivity extends Activity {
                 case GAME_LOST:
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
                     break;
-                case GAME_WIN:
+                case GAME_COMPLETE:
                     startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class), GAME_WIN_ACTIVITY);
                     break;
                 case LEVEL_COMPLETE:
