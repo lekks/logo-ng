@@ -20,6 +20,7 @@ import com.ldir.logo.util.Observed;
  */
 public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
+    private GameMap map;
     private int mSizeX = 1;
     private int mSizeY = 1;
     private float mFSpan = 0; // Размер клетки точек
@@ -60,6 +61,11 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    public void setMap(GameMap map)
+    {
+        this.map = map;
+    }
+
     public void destroy() {
     }
 
@@ -83,7 +89,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     private void createRender() {
         if( !isInEditMode() ) {
-            mRender = new DynamicRender(getHolder(), Game.getGameMap(), mFSpan, mSizeX);
+            mRender = new DynamicRender(getHolder(), map, mFSpan, mSizeX);
             mRender.transitionEndEvent.addObserver(this.transitionEndEvent);
             mRender.start();
             mRender.repaint();
@@ -139,7 +145,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
         int row = (int) (cY / mFSpan);
         int col = (int) (cX / mFSpan);
-        if (row < Game.getGameMap().ROWS && col < GameMap.COLS) {
+        if (row < GameMap.ROWS && col < GameMap.COLS) {
             retPos.set(row, col);
             return true;
         } else

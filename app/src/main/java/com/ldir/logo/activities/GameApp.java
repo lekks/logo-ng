@@ -25,8 +25,6 @@ public class GameApp  extends Application{
         Log.i("GameApp", "onCreate");
         GameApp.context = getApplicationContext();
         GameApp.resources = getResources();
-
-        Game.restartGame();
     }
 
     public static Context getAppContext() {

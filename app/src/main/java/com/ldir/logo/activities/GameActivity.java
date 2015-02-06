@@ -28,6 +28,8 @@ public class GameActivity extends Activity {
     private final int GAME_LOST_ACTIVITY = 3;
     private final int GAME_OPT_ACTIVITY = 4;
 
+    private Game game = new Game();
+
 	private GameField mGameField;
 	private LevelField mLevelField;
     private TextView mTimeLabel;
@@ -54,7 +56,7 @@ public class GameActivity extends Activity {
     private Observer onMissionChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            mLevelField.setLevel(Game.getCurrenLevel());
+            mLevelField.setLevel(game.getCurrenLevel());
             mLevelField.invalidate();
         }
     };
@@ -75,7 +77,7 @@ public class GameActivity extends Activity {
             switch (state.newState) {
                 case GAME_OVER:
                     finish();
-                    Game.restartGame();
+                    game.restartGame();
                     break;
                 case GAME_LOST:
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
@@ -95,16 +97,16 @@ public class GameActivity extends Activity {
     {
         switch (requestCode) {
             case NEXT_LEVEL_ACTIVITY:
-                Game.skipLevel();
+                game.skipLevel();
                 break;
             case GAME_WIN_ACTIVITY:
-                Game.gameOver();
+                game.gameOver();
                 break;
             case GAME_LOST_ACTIVITY:
-                Game.gameOver();
+                game.gameOver();
                 break;
             case GAME_OPT_ACTIVITY:
-//                Game.exitOptScreen();
+//                game.exitOptScreen();
                 if (resultCode == RESULT_OK && data != null) {
                     int cmd = data.getIntExtra(GameOptActvity.CMD,0);
                     switch (cmd) {
@@ -112,10 +114,10 @@ public class GameActivity extends Activity {
                             finish();
                             break;
                         case GameOptActvity.CMD_RESET:
-                            Game.reset();
+                            game.reset();
                             break;
                         case GameOptActvity.CMD_RESTART:
-                            Game.restartGame();
+                            game.restartGame();
                             break;
                     }
                 }
@@ -127,7 +129,7 @@ public class GameActivity extends Activity {
     {
         @Override
         public void onPress(GameMap.Pos clickPos) {
-            Game.makeMove(clickPos);
+            game.makeMove(clickPos);
         }
     }
 
@@ -137,13 +139,13 @@ public class GameActivity extends Activity {
         switch (item.getItemId())
         {
         case R.id.menu_undo:
-            Game.undo();
+            game.undo();
             return true;
         case R.id.menu_newgame:
-            Game.restartGame();
+            game.restartGame();
             return true;
         case R.id.menu_reset:
-            Game.reset();
+            game.reset();
             return true;
          default:
             return super.onOptionsItemSelected(item);
@@ -155,14 +157,14 @@ public class GameActivity extends Activity {
     }
 
     public void onUndoButton(View v){
-        Game.undo();
+        game.undo();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.i("GameActivity", "Resume");
-        Game.enterPlayground();
+        game.enterPlayground();
     }
 
     @Override
@@ -175,17 +177,17 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         Log.i("GameActivity", "Pause");
-        Game.exitPlayground();
+        game.exitPlayground();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.i("GameActivity", "Start");
-        Game.timerChanged.addObserver(onTimeChange);
-        Game.fieldChanged.addObserver(onFieldChange);
-        Game.missionChanged.addObserver(onMissionChange);
-        mGameField.transitionEndEvent.addObserver(Game.onFieldTransitionEnd);
+        game.timerChanged.addObserver(onTimeChange);
+        game.fieldChanged.addObserver(onFieldChange);
+        game.missionChanged.addObserver(onMissionChange);
+        mGameField.transitionEndEvent.addObserver(game.onFieldTransitionEnd);
         Music.setMusicOn(true);
 //        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
@@ -195,9 +197,9 @@ public class GameActivity extends Activity {
     protected void onStop() {
         super.onStop();
         Log.i("GameActivity", "Stop");
-        Game.fieldChanged.deleteObserver(onFieldChange);
-        Game.missionChanged.deleteObserver(onMissionChange);
-        mGameField.transitionEndEvent.deleteObserver(Game.onFieldTransitionEnd);
+        game.fieldChanged.deleteObserver(onFieldChange);
+        game.missionChanged.deleteObserver(onMissionChange);
+        mGameField.transitionEndEvent.deleteObserver(game.onFieldTransitionEnd);
         Music.setMusicOn(false);
     }
 
@@ -218,7 +220,7 @@ public class GameActivity extends Activity {
         mGameField = (GameField)findViewById(R.id.fieldSurface);
         mGameField.setFieldPressHandler(new OnFieldPressed());
         mLevelField = (LevelField)findViewById(R.id.misionView);
-        mLevelField.setLevel(Game.getCurrenLevel());
+        mLevelField.setLevel(game.getCurrenLevel());
 
         mTimeLabel = (TextView) findViewById(R.id.timeLabel);
         mLevelLabel = (TextView) findViewById(R.id.levelLabel);
@@ -230,7 +232,10 @@ public class GameActivity extends Activity {
         mLevelLabel.setTypeface(font);
         patternLabel.setTypeface(font);
 
-        Game.observedState.addObserver(onGameChange);
+        game.restartGame();
+        mGameField.setMap(game.getGameMap());
+
+        game.observedState.addObserver(onGameChange);
     }
 
 
@@ -238,7 +243,7 @@ public class GameActivity extends Activity {
     public void onDestroy(){
         super.onDestroy();
         Log.i("GameActivity", "Destroy");
-        Game.observedState.deleteObserver(onGameChange);
+        game.observedState.deleteObserver(onGameChange);
         mGameField.destroy();
         mLevelField.destroy();
     }
