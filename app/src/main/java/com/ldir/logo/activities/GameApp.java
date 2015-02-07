@@ -28,17 +28,17 @@ public class GameApp  extends Application{
         GameApp.resources = getResources();
     }
 
-    public static Context getAppContext() {
-        return GameApp.context;
-    }
+//    public static Context getAppContext() {
+//        return GameApp.context;
+//    }
     public static Resources getAppResources() {
         return GameApp.resources;
     }
     public static InputStream getAsset(String path) throws IOException {
-        return GameApp.getAppContext().getAssets().open(path);
+        return GameApp.context.getAssets().open(path);
     }
     public static SharedPreferences getGamePreferences(){
-        return GameApp.getAppContext().getSharedPreferences(SHARED_SETTINGS, MODE_PRIVATE);
+        return GameApp.context.getSharedPreferences(SHARED_SETTINGS, MODE_PRIVATE);
 
     }
 

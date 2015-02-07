@@ -20,6 +20,10 @@ import com.ldir.logo.music.Music;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class GameActivity extends Activity {
 
@@ -29,20 +33,14 @@ public class GameActivity extends Activity {
     private final int GAME_OPT_ACTIVITY = 4;
 
     private Game game = new Game();
+    private ScheduledFuture mTimerFuture;
+    private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
 	private GameField mGameField;
 	private LevelField mLevelField;
     private TextView mTimeLabel;
     private TextView mLevelLabel;
-    private int mLevelTime;
     private Handler mUI_handler = new Handler();
-    private Runnable mUpdateTimerLabel = new Runnable() {
-        @Override
-        public void run() {
-            mTimeLabel.setText(getString(R.string.timeLabelText)+String.format("%d:%02d", mLevelTime/60, mLevelTime % 60));
-        }
-    };
-
     private void processFieldChange()
     {
         mGameField.drawField();
@@ -64,8 +62,8 @@ public class GameActivity extends Activity {
     private Observer onTimeChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            mLevelTime = (Integer)arg;
-            mUI_handler.postDelayed(mUpdateTimerLabel,0);
+            int levelTime = (Integer)arg;
+            mTimeLabel.setText(getString(R.string.timeLabelText)+String.format("%d:%02d", levelTime /60, levelTime  % 60));
         }
     };
 
@@ -160,11 +158,31 @@ public class GameActivity extends Activity {
         game.undo();
     }
 
+
+    private void startTimer() { // Запуск таймера в текущем потоке
+        //TODO перейти на java 8 и lambda
+        mTimerFuture = mTimerExecutor.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                mUI_handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.onSecondTimer();
+                    }
+                }, 0);
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+    }
+
+    private void stopTimer() {
+        mTimerFuture.cancel(false);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.i("GameActivity", "Resume");
         game.enterPlayground();
+        startTimer();
     }
 
     @Override
@@ -177,8 +195,10 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         Log.i("GameActivity", "Pause");
+        stopTimer();
         game.exitPlayground();
     }
+
 
     @Override
     protected void onStart() {

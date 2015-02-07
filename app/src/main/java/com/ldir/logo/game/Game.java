@@ -24,22 +24,8 @@ public class Game {
     private GameLevel gameLevel;
     private GameMap gameMap = new GameMap();
     private int levelTime;
-    private Runnable onTimerTick = new Runnable() {
-        @Override
-        public void run() {
-//            Log.d("Timer","Tick");
-            if (levelTime > 0) {
-                --levelTime;
-                timerChanged.update(levelTime);
-            } else {
-                timerChanged.update(levelTime);
-                changeState(GlobalState.GAME_LOST);
-            }
-        }
-    };
     private int level;
     private MapHistory history = new MapHistory();
-    private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
     public enum GlobalState {
         UNDEFINED,
@@ -61,7 +47,16 @@ public class Game {
         }
     }
 
-    private ScheduledFuture mTimerFuture;
+    public void onSecondTimer() {
+        if (levelTime > 0) {
+            --levelTime;
+            timerChanged.update(levelTime);
+        } else {
+            timerChanged.update(levelTime);
+            changeState(GlobalState.GAME_LOST);
+        }
+    };
+
     private GlobalState globalState = GlobalState.UNDEFINED;
     public Observer onFieldTransitionEnd = new Observer() {
         @Override
@@ -156,11 +151,9 @@ public class Game {
 
     public void enterPlayground() {
         changeState(GlobalState.PLAYING);
-        mTimerFuture = mTimerExecutor.scheduleAtFixedRate(onTimerTick, 1, 1, TimeUnit.SECONDS);
     }
 
     public void exitPlayground() {
-        mTimerFuture.cancel(false);
         switch (globalState) {
             case GAME_COMPLETE:
             case LEVEL_COMPLETE:
