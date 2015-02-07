@@ -2,6 +2,7 @@ package com.ldir.logo.activities;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
 
@@ -12,7 +13,7 @@ import java.io.InputStream;
 
 public class GameApp  extends Application{
 
-    public static final String SHARED_SETTINGS = "com.ldir.logo";
+    private static final String SHARED_SETTINGS = "com.ldir.logo";
     public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
 
     private static Context context;
@@ -35,6 +36,10 @@ public class GameApp  extends Application{
     }
     public static InputStream getAsset(String path) throws IOException {
         return GameApp.getAppContext().getAssets().open(path);
+    }
+    public static SharedPreferences getGamePreferences(){
+        return GameApp.getAppContext().getSharedPreferences(SHARED_SETTINGS, MODE_PRIVATE);
+
     }
 
 }

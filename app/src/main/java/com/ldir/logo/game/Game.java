@@ -144,11 +144,6 @@ public class Game {
         reset();
     }
 
-//    private  void onChangeState(StateChange state)
-//    {
-//
-//    }
-
     private synchronized void changeState(GlobalState newState) {
         if (!globalState.equals(newState)) {
             mStateChange.set(globalState, newState);

@@ -43,14 +43,14 @@ public class Music {
     }
 
     public static void setMusicEnabled(boolean musicEnabled) {
-        SharedPreferences.Editor editor =  GameApp.getAppContext().getSharedPreferences(GameApp.SHARED_SETTINGS, GameApp.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
         editor.putBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, musicEnabled);
         editor.commit();
         updade();
     }
 
     public static boolean getMusicEnabled() {
-        SharedPreferences sharedPrefs = GameApp.getAppContext().getSharedPreferences(GameApp.SHARED_SETTINGS, GameApp.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = GameApp.getGamePreferences();
         return sharedPrefs.getBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, true);
     }
 
