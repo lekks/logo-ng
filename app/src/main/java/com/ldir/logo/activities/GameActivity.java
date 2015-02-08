@@ -70,9 +70,9 @@ public class GameActivity extends Activity {
     public Observer onGameChange = new Observer(){
         @Override
         public void update(Observable observable, Object arg) {
-            Game.StateChange state = (Game.StateChange) arg;
+            Game.GameState state = (Game.GameState) arg;
 
-            switch (state.newState) {
+            switch (state) {
                 case GAME_OVER:
                     finish();
                     game.restartGame();
@@ -87,6 +87,13 @@ public class GameActivity extends Activity {
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
             }
+        }
+    };
+
+    public Observer onFieldTransitionEnd = new Observer() {
+        @Override
+        public void update(Observable observable, Object arg) {
+            game.testLevelCompleted();
         }
     };
 
@@ -207,7 +214,7 @@ public class GameActivity extends Activity {
         game.timerChanged.addObserver(onTimeChange);
         game.fieldChanged.addObserver(onFieldChange);
         game.missionChanged.addObserver(onMissionChange);
-        mGameField.transitionEndEvent.addObserver(game.onFieldTransitionEnd);
+        mGameField.transitionEndEvent.addObserver(onFieldTransitionEnd);
         Music.setMusicOn(true);
 //        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
 
@@ -219,7 +226,7 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Stop");
         game.fieldChanged.deleteObserver(onFieldChange);
         game.missionChanged.deleteObserver(onMissionChange);
-        mGameField.transitionEndEvent.deleteObserver(game.onFieldTransitionEnd);
+        mGameField.transitionEndEvent.deleteObserver(onFieldTransitionEnd);
         Music.setMusicOn(false);
     }
 

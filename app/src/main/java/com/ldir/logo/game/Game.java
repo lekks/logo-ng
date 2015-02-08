@@ -4,13 +4,6 @@ import android.util.Log;
 
 import com.ldir.logo.util.Observed;
 
-import java.util.Observable;
-import java.util.Observer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 // Тут состредоточим всю логику
 
 // TODO попрятать всё что можно
@@ -18,8 +11,8 @@ public class Game {
 
     public Observed.Event fieldChanged = new Observed.Event();
     public Observed.Event missionChanged = new Observed.Event();
-    public Observed.Value<Integer> timerChanged = new Observed.Value<Integer>();
-    public Observed.Value<StateChange> observedState = new Observed.Value<StateChange>();
+    public Observed.Value<Integer> timerChanged = new Observed.Value<>();
+    public Observed.Value<GameState> observedState = new Observed.Value<>();
 
     private GameLevel gameLevel;
     private GameMap gameMap = new GameMap();
@@ -27,7 +20,21 @@ public class Game {
     private int level;
     private MapHistory history = new MapHistory();
 
-    public enum GlobalState {
+    public void testLevelCompleted() {
+        switch (globalState) {
+            case PLAYING: // TODO Сделать тоже самое при окончании таймера
+                if (gameMap.isEqual(gameLevel.map)) {
+                    if (lastLevel()) {
+                        changeState(GameState.GAME_COMPLETE);
+                    } else {
+                        changeState(GameState.LEVEL_COMPLETE);
+                    }
+                }
+                break;
+        }
+    }
+
+    public enum GameState {
         UNDEFINED,
         PLAYING,
         PAUSE,
@@ -37,44 +44,17 @@ public class Game {
         GAME_LOST,
     }
 
-    public class StateChange {
-        public GlobalState oldState = GlobalState.UNDEFINED;
-        public GlobalState newState = GlobalState.UNDEFINED;
-
-        void set(GlobalState from, GlobalState to) {
-            oldState = from;
-            newState = to;
-        }
-    }
-
     public void onSecondTimer() {
         if (levelTime > 0) {
             --levelTime;
             timerChanged.update(levelTime);
         } else {
             timerChanged.update(levelTime);
-            changeState(GlobalState.GAME_LOST);
+            changeState(GameState.GAME_LOST);
         }
     };
 
-    private GlobalState globalState = GlobalState.UNDEFINED;
-    public Observer onFieldTransitionEnd = new Observer() {
-        @Override
-        public void update(Observable observable, Object arg) {
-            switch (globalState) {
-                case PLAYING: // TODO Сделать тоже самое при окончании таймера
-                    if (gameMap.isEqual(gameLevel.map)) {
-                        if (lastLevel()) {
-                            changeState(GlobalState.GAME_COMPLETE);
-                        } else {
-                            changeState(GlobalState.LEVEL_COMPLETE);
-                        }
-                    }
-                    break;
-            }
-        }
-    };
-    private StateChange mStateChange = new StateChange();
+    private GameState globalState = GameState.UNDEFINED;
 
     public int getCurrenLevel() {
         return level;
@@ -139,18 +119,17 @@ public class Game {
         reset();
     }
 
-    private synchronized void changeState(GlobalState newState) {
+    private synchronized void changeState(GameState newState) {
         if (!globalState.equals(newState)) {
-            mStateChange.set(globalState, newState);
             Log.i("State changed", "From " + globalState + " to " + newState);
             globalState = newState;
-//            onChangeState(mStateChange);
-            observedState.update(mStateChange);
+            observedState.update(newState);
         }
     }
 
     public void enterPlayground() {
-        changeState(GlobalState.PLAYING);
+        changeState(GameState.PLAYING);
+        testLevelCompleted();
     }
 
     public void exitPlayground() {
@@ -159,20 +138,13 @@ public class Game {
             case LEVEL_COMPLETE:
                 break;
             default:
-                changeState(GlobalState.PAUSE);
+                changeState(GameState.PAUSE);
         }
     }
 
     public void gameOver() {
-        changeState(GlobalState.GAME_OVER);
+        changeState(GameState.GAME_OVER);
     }
-
-    public void exitOptScreen() {
-        if (globalState != GlobalState.PLAYING)
-            changeState(GlobalState.PAUSE);
-    }
-
-
 
 
 }
