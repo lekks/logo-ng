@@ -10,8 +10,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.BitSet;
 
-public class MissionLoader {
+public class Levels {
     private static GameLevel[] levels;
 
     private static String getLevelsJSon(String name) {

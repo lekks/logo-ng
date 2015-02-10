@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.LevelField;
-import com.ldir.logo.game.MissionLoader;
+import com.ldir.logo.game.Levels;
 
 public class SelectLevelActivity extends Activity {
     private Typeface font;
@@ -34,7 +34,7 @@ public class SelectLevelActivity extends Activity {
     class LevelsListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return MissionLoader.length();
+            return Levels.length();
         }
         @Override
         public Object getItem(int position) {

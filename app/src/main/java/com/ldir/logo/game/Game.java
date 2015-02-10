@@ -84,7 +84,7 @@ public class Game {
     public boolean skipLevel() {
 
         if (!lastLevel()) {
-            gameLevel = MissionLoader.get(++level);
+            gameLevel = Levels.get(++level);
             missionChanged.update();
             reset();
             return true;
@@ -94,7 +94,7 @@ public class Game {
     }
 
     private boolean lastLevel() {
-        if (level + 1 < MissionLoader.length())
+        if (level + 1 < Levels.length())
             return false;
         else
             return true;
@@ -114,7 +114,7 @@ public class Game {
 
     public void restartGame() {
         level = 0;
-        gameLevel = MissionLoader.get(level);
+        gameLevel = Levels.get(level);
         missionChanged.update();
         reset();
     }

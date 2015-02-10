@@ -1,14 +1,11 @@
 package com.ldir.logo;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 
-import com.ldir.logo.fieldviews.render.Sprite;
 import com.ldir.logo.game.GameProgress;
-
-import java.util.BitSet;
+import com.ldir.logo.game.Levels;
 
 
 /**
@@ -30,16 +27,19 @@ public class LevelsBundleTest extends ApplicationTestCase<Application> {
         super.tearDown();
     }
 
-
-    //http://stackoverflow.com/questions/2836646/java-serializable-object-to-byte-array
-    //http://stackoverflow.com/questions/2473597/bitset-to-and-from-integer-long/2473719#2473719
-
     public void testSprite() {
         Log.i("Test", "Levels test 1");
-        GameProgress progr=new GameProgress(100);
-        progr.setCompleted(4);
-        progr.setCompleted(64);
-        Log.i("Test", "BitSet is " + progr.getBundle());
+        GameProgress progress = new GameProgress();
+        progress.clearProgress();
+        progress.setCompleted(0);
+        progress.setCompleted(37);
+        progress.setOpened(64);
+        progress.setCompleted(64);
+        progress.setOpened(13);
+        String bundle = progress.bundleState();
+        Log.i("Test", "BitSet is " + bundle);
+//        assertEquals("{\"completed\":[0,37,64]}",bundle);
+//        for (int i )
    }
 
 }

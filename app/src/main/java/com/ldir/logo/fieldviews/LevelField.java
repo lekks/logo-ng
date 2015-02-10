@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import com.ldir.logo.fieldviews.render.FieldGraphics;
 import com.ldir.logo.game.GameLevel;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.game.MissionLoader;
+import com.ldir.logo.game.Levels;
 
 
 public class LevelField extends android.view.View {
@@ -73,7 +73,7 @@ class LevelRender {
     }
 
     public void loadLevel(int level) {
-        mGameLevel = MissionLoader.get(level);
+        mGameLevel = Levels.get(level);
     }
 
     public void paint(Canvas canvas) {
