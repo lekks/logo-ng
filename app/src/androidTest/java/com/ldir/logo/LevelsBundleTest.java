@@ -28,7 +28,6 @@ public class LevelsBundleTest extends ApplicationTestCase<Application> {
     }
 
     public void testSprite() {
-        Log.i("Test", "Levels test 1");
         GameProgress progress = new GameProgress();
         progress.clearProgress();
         progress.setCompleted(0);
@@ -38,8 +37,19 @@ public class LevelsBundleTest extends ApplicationTestCase<Application> {
         progress.setOpened(13);
         String bundle = progress.bundleState();
         Log.i("Test", "BitSet is " + bundle);
-//        assertEquals("{\"completed\":[0,37,64]}",bundle);
-//        for (int i )
+        progress.clearProgress();
+        Log.i("Test", "BitSet clear is " + progress.bundleState());
+        progress.setOpened(14);
+        progress.setCompleted(17);
+        progress.restoreState(bundle);
+        String bundle2 = progress.bundleState();
+        Log.i("Test", "BitSet restored is " + progress.bundleState());
+        assertEquals(bundle,bundle2);
+        assertTrue(progress.isCompleted(37));
+        assertTrue(progress.isCompleted(64));
+        assertTrue(progress.isOpened(13));
+        assertFalse(progress.isCompleted(14));
+        assertFalse(progress.isOpened(16));
    }
 
 }

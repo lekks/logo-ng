@@ -50,5 +50,17 @@ public class GameProgress {
 
     public void restoreState(String bundle) {
         clearProgress();
+        try {
+            JSONObject obj = new JSONObject(bundle);
+            JSONArray jlevels = obj.getJSONArray("completed");
+            for (int i = 0; i < jlevels.length(); i++)
+                setCompleted(jlevels.getInt(i));
+            jlevels = obj.getJSONArray("opened");
+            for (int i = 0; i < jlevels.length(); i++)
+                setOpened(jlevels.getInt(i));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 }
