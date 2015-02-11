@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.ldir.logo.game.GameMap;
@@ -28,19 +29,23 @@ public class DynamicRender extends Thread {
     private boolean mTransitionStarted = false;
 
     public DynamicRender(SurfaceHolder surfaceHolder, GameMap gameMap, float sellSize, int size) {
+//        Log.i("Dynamic render","Size="+size);
+//        Log.i("Dynamic render","Cell "+sellSize);
         this.mSurfaceHolder = surfaceHolder;
         mCSize = sellSize;
+        sellSize = sellSize;
         mMap = gameMap;
         this.mRows = gameMap.ROWS;
         this.mCols = gameMap.COLS;
 
-        Bitmap[] sprites = FieldGraphics.makeStrites((int) sellSize, null);
+        Bitmap[] sprites = FieldGraphics.makeStrites(sellSize, null);
         mUnderlayer = FieldGraphics.makeUnderlayer(size);
         mCells = new Transition[mRows][];
         for (int i = 0; i < mRows; i++) {
             mCells[i] = new Transition[mCols];
             for (int j = 0; j < mCols; j++) {
-                Rect rect = new Rect((int) (j * sellSize), (int) (i * sellSize), (int) ((j + 1) * sellSize), (int) ((i + 1) * sellSize));
+                Rect rect = new Rect();
+                FieldGraphics.placeRect(rect,i,j,sellSize);
                 mCells[i][j] = new Transition(rect, sprites);
             }
         }

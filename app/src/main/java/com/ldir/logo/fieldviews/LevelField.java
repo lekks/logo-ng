@@ -67,7 +67,7 @@ class LevelRender {
     public void setSize(int size) {
         mCellSize = GameMap.calcCellSize(size,size);
         if(size>0) {
-            FieldGraphics.makeStrites((int) mCellSize, mSprites);
+            FieldGraphics.makeStrites(mCellSize, mSprites);
             mUnderlayer = FieldGraphics.makeUnderlayer(size);
         }
     }
@@ -85,7 +85,7 @@ class LevelRender {
         for(int i=0;i< GameMap.ROWS;i++){
             for(int j=0;j< GameMap.COLS;j++){
                 int val = mGameLevel.map.get(i, j);
-                rect.set((int)(j*mCellSize), (int)(i*mCellSize),(int)((j+1)*mCellSize), (int)((i+1)*mCellSize));
+                FieldGraphics.placeRect(rect,i,j,mCellSize);
                 if(val>0 && mSprites[val] != null) {
                     canvas.drawBitmap(mSprites[val], rect.left, rect.top, paint);
                 }
