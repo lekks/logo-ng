@@ -15,6 +15,7 @@ public class GameApp  extends Application{
 
     private static final String SHARED_SETTINGS = "com.ldir.logo";
     public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
+    public static final String SHARED_SETTINGS_LEVELS_PROGRESS = "LEVELS_PROGRESS";
 
     private static Context context;
     private static Resources resources;

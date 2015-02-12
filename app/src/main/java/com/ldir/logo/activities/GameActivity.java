@@ -36,38 +36,40 @@ public class GameActivity extends Activity {
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
-	private GameField mGameField;
-	private LevelField mLevelField;
+    private GameField mGameField;
+    private LevelField mLevelField;
     private TextView mTimeLabel;
     private TextView mLevelLabel;
     private Handler mUI_handler = new Handler();
-    private void processFieldChange()
-    {
+
+    private void processFieldChange() {
         mGameField.drawField();
     }
-    private Observer onFieldChange = new Observer(){
+
+    private Observer onFieldChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             processFieldChange();
         }
     };
-    private Observer onMissionChange = new Observer(){
+    private Observer onMissionChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             mLevelField.setLevel(game.getCurrenLevel());
             mLevelField.invalidate();
+            mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
         }
     };
 
-    private Observer onTimeChange = new Observer(){
+    private Observer onTimeChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            int levelTime = (Integer)arg;
-            mTimeLabel.setText(getString(R.string.timeLabelText)+String.format("%d:%02d", levelTime /60, levelTime  % 60));
+            int levelTime = (Integer) arg;
+            mTimeLabel.setText(getString(R.string.timeLabelText) + String.format("%d:%02d", levelTime / 60, levelTime % 60));
         }
     };
 
-    public Observer onGameChange = new Observer(){
+    public Observer onGameChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             Game.GameState state = (Game.GameState) arg;
@@ -89,6 +91,9 @@ public class GameActivity extends Activity {
             }
         }
     };
+
+
+
 
     public Observer onFieldTransitionEnd = new Observer() {
         @Override
@@ -213,7 +218,6 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Start");
         game.timerChanged.addObserver(onTimeChange);
         game.fieldChanged.addObserver(onFieldChange);
-        game.missionChanged.addObserver(onMissionChange);
         mGameField.transitionEndEvent.addObserver(onFieldTransitionEnd);
         Music.setMusicOn(true);
 //        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
@@ -225,7 +229,6 @@ public class GameActivity extends Activity {
         super.onStop();
         Log.i("GameActivity", "Stop");
         game.fieldChanged.deleteObserver(onFieldChange);
-        game.missionChanged.deleteObserver(onMissionChange);
         mGameField.transitionEndEvent.deleteObserver(onFieldTransitionEnd);
         Music.setMusicOn(false);
     }
@@ -247,7 +250,6 @@ public class GameActivity extends Activity {
         mGameField = (GameField)findViewById(R.id.fieldSurface);
         mGameField.setFieldPressHandler(new OnFieldPressed());
         mLevelField = (LevelField)findViewById(R.id.misionView);
-        mLevelField.setLevel(game.getCurrenLevel());
 
         mTimeLabel = (TextView) findViewById(R.id.timeLabel);
         mLevelLabel = (TextView) findViewById(R.id.levelLabel);
@@ -258,10 +260,11 @@ public class GameActivity extends Activity {
         mTimeLabel.setTypeface(font);
         mLevelLabel.setTypeface(font);
         patternLabel.setTypeface(font);
+        game.missionChanged.addObserver(onMissionChange);
 
         game.restartGame();
         mGameField.setMap(game.getGameMap());
-
+//        updateCurrentLevel();
         game.observedState.addObserver(onGameChange);
     }
 
@@ -271,6 +274,7 @@ public class GameActivity extends Activity {
         super.onDestroy();
         Log.i("GameActivity", "Destroy");
         game.observedState.deleteObserver(onGameChange);
+        game.missionChanged.deleteObserver(onMissionChange);
         mGameField.destroy();
         mLevelField.destroy();
     }

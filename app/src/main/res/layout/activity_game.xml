@@ -58,7 +58,7 @@
                 android:paddingLeft="20dp">
 
                 <TextView
-                    android:text="LEVEL 1"
+                    android:text="@string/level_label"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/levelLabel"
