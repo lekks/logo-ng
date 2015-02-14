@@ -98,7 +98,7 @@ public class GameActivity extends Activity {
     public Observer onFieldTransitionEnd = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            game.testLevelCompleted();
+            game.moveCompleted();
         }
     };
 
@@ -107,7 +107,7 @@ public class GameActivity extends Activity {
     {
         switch (requestCode) {
             case NEXT_LEVEL_ACTIVITY:
-                game.skipLevel();
+                game.nextLevel();
                 break;
             case GAME_WIN_ACTIVITY:
                 game.gameOver();

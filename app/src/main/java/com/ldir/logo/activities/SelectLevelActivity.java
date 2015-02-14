@@ -60,15 +60,26 @@ public class SelectLevelActivity extends Activity {
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            int level = position;
             if(convertView==null) {
                 LayoutInflater inflater = LayoutInflater.from(SelectLevelActivity.this);
                 convertView = inflater.inflate(R.layout.list_level, parent,false);
             }
             TextView textView =  (TextView) convertView.findViewById(R.id.listLevelItemLabel);
             textView.setTypeface(font);
-            textView.setText(getString(R.string.level_label)+Integer.toString(position+1));
+            textView.setText(getString(R.string.level_label)+Integer.toString(level+1));
+
+            textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
+
+            if(Levels.isCompleted(level))
+                textView.setText("Completed");
+            else if(Levels.isOpened(level))
+                textView.setText("Openened");
+            else
+                textView.setText("Closed");
+
             LevelField levelField =  (LevelField ) convertView.findViewById(R.id.levelListField);
-            levelField.setLevel(position);
+            levelField.setLevel(level);
             return convertView;
         }
     }

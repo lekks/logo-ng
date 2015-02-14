@@ -20,10 +20,11 @@ public class GamePlay {
     private int level;
     private MapHistory history = new MapHistory();
 
-    public void testLevelCompleted() {
+    public void moveCompleted() {
         switch (globalState) {
             case PLAYING: // TODO Сделать тоже самое при окончании таймера
                 if (gameMap.isEqual(gameLevel.map)) {
+                    Levels.setCompleted(getCurrenLevel());
                     if (lastLevel()) {
                         changeState(GameState.GAME_COMPLETE);
                     } else {
@@ -81,7 +82,7 @@ public class GamePlay {
         fieldChanged.update();
     }
 
-    public boolean skipLevel() {
+    public boolean nextLevel() {
 
         if (!lastLevel()) {
             gameLevel = Levels.getLevel(++level);
@@ -129,7 +130,7 @@ public class GamePlay {
 
     public void enterPlayground() {
         changeState(GameState.PLAYING);
-        testLevelCompleted();
+        moveCompleted();
     }
 
     public void exitPlayground() {
