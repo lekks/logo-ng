@@ -7,7 +7,7 @@ import com.ldir.logo.util.Observed;
 // Тут состредоточим всю логику
 
 // TODO попрятать всё что можно
-public class Game {
+public class GamePlay {
 
     public Observed.Event fieldChanged = new Observed.Event();
     public Observed.Event missionChanged = new Observed.Event();
@@ -84,7 +84,7 @@ public class Game {
     public boolean skipLevel() {
 
         if (!lastLevel()) {
-            gameLevel = Levels.get(++level);
+            gameLevel = Levels.getLevel(++level);
             missionChanged.update();
             reset();
             return true;
@@ -94,7 +94,7 @@ public class Game {
     }
 
     private boolean lastLevel() {
-        if (level + 1 < Levels.length())
+        if (level + 1 < Levels.levelsCount())
             return false;
         else
             return true;
@@ -114,7 +114,7 @@ public class Game {
 
     public void restartGame() {
         level = 0;
-        gameLevel = Levels.get(level);
+        gameLevel = Levels.getLevel(level);
         missionChanged.update();
         reset();
     }

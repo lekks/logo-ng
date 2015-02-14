@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
 
-import com.ldir.logo.game.Game;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,6 +14,7 @@ public class GameApp  extends Application{
     private static final String SHARED_SETTINGS = "com.ldir.logo";
     public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
     public static final String SHARED_SETTINGS_LEVELS_PROGRESS = "LEVELS_PROGRESS";
+    public static final String SHARED_SETTINGS_CURRNT_LEVEL= "CURRENT_LEVEL";
 
     private static Context context;
     private static Resources resources;

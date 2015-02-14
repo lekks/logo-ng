@@ -9,7 +9,7 @@ import java.util.BitSet;
 /**
  * Created by Ldir on 08.02.2015.
  */
-public class GameProgress {
+class GameProgress {
     private BitSet completed = new BitSet(32);
     private BitSet opened = new BitSet(32);
 

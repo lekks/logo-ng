@@ -48,7 +48,7 @@ public class SelectLevelActivity extends Activity {
     class LevelsListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return Levels.length();
+            return Levels.levelsCount();
         }
         @Override
         public Object getItem(int position) {

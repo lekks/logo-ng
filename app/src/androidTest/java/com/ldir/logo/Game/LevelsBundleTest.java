@@ -1,11 +1,8 @@
-package com.ldir.logo;
+package com.ldir.logo.game;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.util.Log;
-
-import com.ldir.logo.game.GameProgress;
-import com.ldir.logo.game.Levels;
 
 
 /**

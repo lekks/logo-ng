@@ -73,7 +73,7 @@ class LevelRender {
     }
 
     public void loadLevel(int level) {
-        mGameLevel = Levels.get(level);
+        mGameLevel = Levels.getLevel(level);
     }
 
     public void paint(Canvas canvas) {

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.LevelField;
-import com.ldir.logo.game.Game;
+import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.music.Music;
 
@@ -32,7 +32,7 @@ public class GameActivity extends Activity {
     private final int GAME_LOST_ACTIVITY = 3;
     private final int GAME_OPT_ACTIVITY = 4;
 
-    private Game game = new Game();
+    private GamePlay game = new GamePlay();
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
@@ -72,7 +72,7 @@ public class GameActivity extends Activity {
     public Observer onGameChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            Game.GameState state = (Game.GameState) arg;
+            GamePlay.GameState state = (GamePlay.GameState) arg;
 
             switch (state) {
                 case GAME_OVER:

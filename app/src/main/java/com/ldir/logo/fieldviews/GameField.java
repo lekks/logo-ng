@@ -11,7 +11,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.ldir.logo.fieldviews.render.DynamicRender;
-import com.ldir.logo.game.Game;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.util.Observed;
 
