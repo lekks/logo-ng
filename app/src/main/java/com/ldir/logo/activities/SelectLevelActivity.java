@@ -38,8 +38,10 @@ public class SelectLevelActivity extends Activity {
     class LevelStarter implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(SelectLevelActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            int level = position;
+//            Toast.makeText(SelectLevelActivity.this, "" + level, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
+            intent.putExtra("from", level);
             startActivity(intent);
         }
     }

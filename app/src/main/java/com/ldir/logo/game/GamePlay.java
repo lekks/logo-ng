@@ -113,8 +113,8 @@ public class GamePlay {
         }
     }
 
-    public void restartGame() {
-        level = 0;
+    public void restartGame(int from_level) {
+        level = from_level;
         gameLevel = Levels.getLevel(level);
         missionChanged.update();
         reset();

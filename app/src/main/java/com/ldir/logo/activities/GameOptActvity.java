@@ -13,8 +13,7 @@ import com.ldir.logo.music.Music;
 public class GameOptActvity extends Activity {
         public final static String CMD="cmd";
         public final static int CMD_RESET=1;
-        public final static int CMD_RESTART=2;
-        public final static int CMD_EXIT=3;
+        public final static int CMD_EXIT=2;
 
     private ToggleButton mMusicTogglel;
 
@@ -39,9 +38,6 @@ public class GameOptActvity extends Activity {
     }
 
 
-    public void onRestartButton(View v){
-        retCmd(CMD_RESTART);
-    }
     public void onResetButton(View v){
         retCmd(CMD_RESET);
     }

@@ -77,7 +77,7 @@ public class GameActivity extends Activity {
             switch (state) {
                 case GAME_OVER:
                     finish();
-                    game.restartGame();
+                    game.restartGame(0);
                     break;
                 case GAME_LOST:
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
@@ -126,9 +126,6 @@ public class GameActivity extends Activity {
                         case GameOptActvity.CMD_RESET:
                             game.reset();
                             break;
-                        case GameOptActvity.CMD_RESTART:
-                            game.restartGame();
-                            break;
                     }
                 }
                 break;
@@ -150,9 +147,6 @@ public class GameActivity extends Activity {
         {
         case R.id.menu_undo:
             game.undo();
-            return true;
-        case R.id.menu_newgame:
-            game.restartGame();
             return true;
         case R.id.menu_reset:
             game.reset();
@@ -262,7 +256,10 @@ public class GameActivity extends Activity {
         patternLabel.setTypeface(font);
         game.missionChanged.addObserver(onMissionChange);
 
-        game.restartGame();
+
+        int from_level = getIntent().getIntExtra("from",0);
+
+        game.restartGame(from_level);
         mGameField.setMap(game.getGameMap());
 //        updateCurrentLevel();
         game.observedState.addObserver(onGameChange);

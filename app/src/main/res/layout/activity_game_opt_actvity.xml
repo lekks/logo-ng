@@ -11,13 +11,6 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Restart Game"
-            android:onClick="onRestartButton"
-            android:id="@+id/button2"
-            android:layout_gravity="center_vertical" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Reset Game"
             android:onClick="onResetButton"
             android:id="@+id/button"
