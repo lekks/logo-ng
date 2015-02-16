@@ -163,7 +163,8 @@ public class GameActivity extends Activity {
     }
 
     public void onUndoButton(View v){
-        game.undo();
+        if(!game.undo())
+            finish();
     }
 
 
