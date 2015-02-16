@@ -16,6 +16,7 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
+import com.ldir.logo.game.Levels;
 import com.ldir.logo.music.Music;
 
 import java.util.Observable;
@@ -55,6 +56,7 @@ public class GameActivity extends Activity {
     private Observer onMissionChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
+            Levels.saveCurrentLevel(game.getCurrenLevel());
             mLevelField.setLevel(game.getCurrenLevel());
             mLevelField.invalidate();
             mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
@@ -256,8 +258,12 @@ public class GameActivity extends Activity {
         patternLabel.setTypeface(font);
         game.missionChanged.addObserver(onMissionChange);
 
-
-        int from_level = getIntent().getIntExtra("from",0);
+        int from_level;
+        if(getIntent().hasExtra("from")) {
+            from_level = getIntent().getIntExtra("from", 0);
+        } else {
+            from_level = Levels.restoreCurrentLevel();
+        }
 
         game.restartGame(from_level);
         mGameField.setMap(game.getGameMap());
