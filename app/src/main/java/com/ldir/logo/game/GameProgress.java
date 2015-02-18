@@ -11,36 +11,48 @@ import java.util.BitSet;
  */
 class GameProgress {
     private BitSet completed = new BitSet(32);
-    private BitSet opened = new BitSet(32);
+//    private BitSet opened = new BitSet(32);
+    public final static int GROUP_SIZE = 5; // для тестирования
+    private int lastOpened = 0;
 
     public void clearProgress() {
         completed.clear();
-        opened.clear();
+        lastOpened = 0;
     }
     public void setCompleted(int level){
         completed.set(level);
+        tryOpenGroup(level);
     }
     public boolean isCompleted(int level){
         return completed.get(level);
     }
-    public void setOpened(int level){
-        opened.set(level);
+
+    private void tryOpenGroup(int level) {
+        int gr = level/GROUP_SIZE;
+        if(lastOpened > gr)
+            return;
+        int cnt = 0;
+        for (int i = gr*GROUP_SIZE; i < (gr+1)*GROUP_SIZE; ++i){
+            if(isCompleted(i))
+                ++cnt;
+        }
+        if(cnt == GROUP_SIZE){
+            lastOpened=gr+1;
+        }
     }
+
     public boolean isOpened(int level){
-        return opened.get(level);
+        return level/GROUP_SIZE <= lastOpened;
     }
 
     public String bundleState() {
         JSONObject json = new JSONObject();
         JSONArray jcompl = new JSONArray ();
-        JSONArray jopend = new JSONArray ();
         try {
             for (int i = completed.nextSetBit(0); i >= 0; i = completed.nextSetBit(i + 1))
                 jcompl.put(i);
-            for (int i = opened.nextSetBit(0); i >= 0; i = opened.nextSetBit(i + 1))
-                jopend.put(i);
             json.put("completed",jcompl);
-            json.put("opened",jopend);
+            json.put("opened_group",lastOpened);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -52,12 +64,10 @@ class GameProgress {
         clearProgress();
         try {
             JSONObject obj = new JSONObject(bundle);
+            lastOpened  = obj.optInt("opened_group",0);
             JSONArray jlevels = obj.getJSONArray("completed");
             for (int i = 0; i < jlevels.length(); i++)
                 setCompleted(jlevels.getInt(i));
-            jlevels = obj.getJSONArray("opened");
-            for (int i = 0; i < jlevels.length(); i++)
-                setOpened(jlevels.getInt(i));
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException();

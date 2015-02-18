@@ -33,16 +33,13 @@ public class Levels {
     public static void clearProgress() {
         progress().clearProgress();
     }
+
     public static void setCompleted(int level){
         progress().setCompleted(level);
         saveProgress();
     }
     public static boolean isCompleted(int level){
         return progress().isCompleted(level);
-    }
-    public static void setOpened(int level){
-        progress().setOpened(level);
-        saveProgress();
     }
 
     public static boolean isOpened(int level){
