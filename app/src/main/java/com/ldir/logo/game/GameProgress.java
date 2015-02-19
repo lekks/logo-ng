@@ -11,19 +11,18 @@ import java.util.BitSet;
  */
 class GameProgress {
     private BitSet completed = new BitSet(32);
-//    private BitSet opened = new BitSet(32);
     public final static int GROUP_SIZE = 5; // для тестирования
     private int lastOpened = 0;
 
-    public void clearProgress() {
+    void clearProgress() {
         completed.clear();
         lastOpened = 0;
     }
-    public void setCompleted(int level){
+    void setCompleted(int level){
         completed.set(level);
         tryOpenGroup(level);
     }
-    public boolean isCompleted(int level){
+    boolean isCompleted(int level){
         return completed.get(level);
     }
 
@@ -41,11 +40,22 @@ class GameProgress {
         }
     }
 
-    public boolean isOpened(int level){
+    boolean isOpened(int level){
         return level/GROUP_SIZE <= lastOpened;
     }
 
-    public String bundleState() {
+    int nextOpened(int current) {
+        if (isOpened(current + 1) && !isCompleted(current + 1)) {
+            return current + 1;
+        }
+        for (int i = 0; i < (lastOpened + 1) * GROUP_SIZE; ++i) {
+            if (isOpened(i) && !isCompleted(i))
+                return i;
+        }
+        return 0;
+    }
+
+    String bundleState() {
         JSONObject json = new JSONObject();
         JSONArray jcompl = new JSONArray ();
         try {
@@ -60,7 +70,7 @@ class GameProgress {
         return json.toString();
     }
 
-    public void restoreState(String bundle) {
+    void restoreState(String bundle) {
         clearProgress();
         try {
             JSONObject obj = new JSONObject(bundle);

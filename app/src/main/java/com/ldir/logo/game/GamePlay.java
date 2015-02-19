@@ -82,16 +82,11 @@ public class GamePlay {
         fieldChanged.update();
     }
 
-    public boolean nextLevel() {
-
-        if (!lastLevel()) {
-            gameLevel = Levels.getLevel(++level);
-            missionChanged.update();
-            reset();
-            return true;
-        } else {
-            return false;
-        }
+    public void nextLevel() {
+        level = Levels.nextOpened(level);
+        gameLevel = Levels.getLevel(level);
+        missionChanged.update();
+        reset();
     }
 
     private boolean lastLevel() {

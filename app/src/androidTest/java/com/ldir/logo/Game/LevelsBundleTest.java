@@ -70,7 +70,34 @@ public class LevelsBundleTest extends ApplicationTestCase<Application> {
         assertOpened(progress,GameProgress.GROUP_SIZE*2);
         progress.setCompleted(i++);
         assertOpened(progress,GameProgress.GROUP_SIZE*3);
-//        progress.tryOpenGroup()
+        progress.clearProgress();
+        assertOpened(progress,GameProgress.GROUP_SIZE);
 
         }
+
+    public void testGroupSelect() {
+        GameProgress progress = new GameProgress();
+
+        for(int i=0;i<GameProgress.GROUP_SIZE-1;i++) {
+            assertEquals(i + 1, progress.nextOpened(i));
+        }
+        assertEquals(0,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+        assertEquals(0,progress.nextOpened(GameProgress.GROUP_SIZE));
+
+        progress.setCompleted(1);
+        assertEquals(0,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+        progress.setCompleted(0);
+        assertEquals(2,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+        progress.setCompleted(3);
+        assertEquals(2,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+
+        for(int i=3;i<GameProgress.GROUP_SIZE;i++) {
+            progress.setCompleted(i);
+        }
+        assertEquals(2,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+        progress.setCompleted(2);
+        assertEquals(GameProgress.GROUP_SIZE,progress.nextOpened(GameProgress.GROUP_SIZE-1));
+
+    }
+
     }

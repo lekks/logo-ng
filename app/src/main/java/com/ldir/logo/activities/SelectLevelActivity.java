@@ -40,9 +40,11 @@ public class SelectLevelActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int level = position;
 //            Toast.makeText(SelectLevelActivity.this, "" + level, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
-            intent.putExtra("from", level);
-            startActivity(intent);
+            if(level == 0 || Levels.isCompleted(level) || Levels.isOpened(level) ) {
+                Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
+                intent.putExtra("from", level);
+                startActivity(intent);
+            }
         }
     }
 
@@ -73,8 +75,8 @@ public class SelectLevelActivity extends Activity {
 
             textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
 
-            if(Levels.isCompleted(level))
-                textView.setText("Completed");
+            if(level ==0 || Levels.isCompleted(level))
+                textView.setText("Complete");
             else if(Levels.isOpened(level))
                 textView.setText("Openened");
             else

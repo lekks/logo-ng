@@ -46,6 +46,9 @@ public class Levels {
         return progress().isOpened(level);
     }
 
+    public static int nextOpened(int current) {
+        return progress().nextOpened(current);
+    }
     public static int restoreCurrentLevel() {
         SharedPreferences sharedPrefs = GameApp.getGamePreferences();
         return sharedPrefs.getInt(GameApp.SHARED_SETTINGS_CURRNT_LEVEL, 0);
