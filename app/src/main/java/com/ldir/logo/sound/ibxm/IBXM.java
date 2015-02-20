@@ -1,5 +1,5 @@
 
-package com.ldir.logo.music.ibxm;
+package com.ldir.logo.sound.ibxm;
 
 /*
 	ProTracker, Scream Tracker 3, FastTracker 2 Replay (c)2014 mumart@gmail.com

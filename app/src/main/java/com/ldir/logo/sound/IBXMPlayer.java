@@ -1,12 +1,12 @@
-package com.ldir.logo.music;
+package com.ldir.logo.sound;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
 
-import com.ldir.logo.music.ibxm.IBXM;
-import com.ldir.logo.music.ibxm.Module;
+import com.ldir.logo.sound.ibxm.IBXM;
+import com.ldir.logo.sound.ibxm.Module;
 
 import java.io.IOException;
 import java.io.InputStream;

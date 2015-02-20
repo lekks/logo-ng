@@ -1,5 +1,5 @@
 
-package com.ldir.logo.music.ibxm;
+package com.ldir.logo.sound.ibxm;
 
 public class Channel {
 	public static final int NEAREST = 0, LINEAR = 1, SINC = 2;

@@ -1,5 +1,5 @@
 
-package com.ldir.logo.music.ibxm;
+package com.ldir.logo.sound.ibxm;
 
 public class Envelope {
 	public boolean enabled = false, sustain = false, looped = false;

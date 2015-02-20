@@ -1,5 +1,5 @@
 
-package com.ldir.logo.music.ibxm;
+package com.ldir.logo.sound.ibxm;
 
 public class Instrument {
 	public String name = "";

@@ -1,5 +1,5 @@
 
-package com.ldir.logo.music.ibxm;
+package com.ldir.logo.sound.ibxm;
 
 /* A data array dynamically loaded from an InputStream. */
 public class Data {

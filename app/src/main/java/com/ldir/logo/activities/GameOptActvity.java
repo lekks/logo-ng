@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import com.ldir.logo.R;
-import com.ldir.logo.music.Music;
+import com.ldir.logo.sound.Music;
 
 public class GameOptActvity extends Activity {
         public final static String CMD="cmd";

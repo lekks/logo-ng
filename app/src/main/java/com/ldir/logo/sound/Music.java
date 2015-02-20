@@ -1,4 +1,4 @@
-package com.ldir.logo.music;
+package com.ldir.logo.sound;
 
 import android.content.SharedPreferences;
 

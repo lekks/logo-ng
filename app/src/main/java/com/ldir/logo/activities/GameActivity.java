@@ -17,7 +17,8 @@ import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.game.Levels;
-import com.ldir.logo.music.Music;
+import com.ldir.logo.sound.GameSound;
+import com.ldir.logo.sound.Music;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -33,6 +34,7 @@ public class GameActivity extends Activity {
     private final int GAME_LOST_ACTIVITY = 3;
     private final int GAME_OPT_ACTIVITY = 4;
 
+    private GameSound clickSound;
     private GamePlay game = new GamePlay();
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -138,7 +140,9 @@ public class GameActivity extends Activity {
     {
         @Override
         public void onPress(GameMap.Pos clickPos) {
-            game.makeMove(clickPos);
+            if(game.makeMove(clickPos)){
+                clickSound.play();
+            };
         }
     }
 
@@ -270,6 +274,9 @@ public class GameActivity extends Activity {
         mGameField.setMap(game.getGameMap());
 //        updateCurrentLevel();
         game.observedState.addObserver(onGameChange);
+
+        clickSound = new GameSound(this);
+
     }
 
 
