@@ -20,6 +20,6 @@ public class GameSound {
     }
 
     public void play(){
-        mSoundPool.play(mSound, 1.0f, 1.0f, 0, 0, 1.0f);
+//        mSoundPool.play(mSound, 0.3f, 0.3f, 0, 0, 1.0f);
     }
 }

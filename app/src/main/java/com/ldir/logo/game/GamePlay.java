@@ -14,11 +14,12 @@ public class GamePlay {
     public Observed.Value<Integer> timerChanged = new Observed.Value<>();
     public Observed.Value<GameState> observedState = new Observed.Value<>();
 
-    private GameLevel gameLevel;
+    private GameLevel gameLevel = new GameLevel();
     private GameMap gameMap = new GameMap();
     private int levelTime;
     private int level;
     private MapHistory history = new MapHistory();
+
 
     public void moveCompleted() {
         switch (globalState) {
@@ -76,6 +77,7 @@ public class GamePlay {
     }
 
     public void reset() {
+        Log.i("Game reset","");
         levelTime = gameLevel.time + 1;
         gameMap.resetField();
         history.clear();
@@ -109,6 +111,7 @@ public class GamePlay {
     }
 
     public void restartGame(int from_level) {
+        Log.i("Game restart","From "+level);
         level = from_level;
         gameLevel = Levels.getLevel(level);
         missionChanged.update();

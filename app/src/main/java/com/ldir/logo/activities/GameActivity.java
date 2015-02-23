@@ -35,7 +35,7 @@ public class GameActivity extends Activity {
     private final int GAME_OPT_ACTIVITY = 4;
 
     private GameSound clickSound;
-    private GamePlay game = new GamePlay();
+    private static GamePlay game;
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
@@ -58,11 +58,7 @@ public class GameActivity extends Activity {
     private Observer onMissionChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            Levels.saveCurrentLevel(game.getCurrenLevel());
-            mLevelField.setLevel(game.getCurrenLevel());
-            mLevelField.invalidate();
-            mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
-        }
+            updateMissionViews();        }
     };
 
     private Observer onTimeChange = new Observer() {
@@ -96,6 +92,12 @@ public class GameActivity extends Activity {
         }
     };
 
+    public void updateMissionViews() {
+        Levels.saveCurrentLevel(game.getCurrenLevel());
+        mLevelField.setLevel(game.getCurrenLevel());
+        mLevelField.invalidate();
+        mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
+    }
 
 
 
@@ -261,22 +263,23 @@ public class GameActivity extends Activity {
         mTimeLabel.setTypeface(font);
         mLevelLabel.setTypeface(font);
         patternLabel.setTypeface(font);
+
+        if(game == null)
+            game = new GamePlay();
         game.missionChanged.addObserver(onMissionChange);
-
-        int from_level;
-        if(getIntent().hasExtra("from")) {
-            from_level = getIntent().getIntExtra("from", 0);
-        } else {
-            from_level = Levels.restoreCurrentLevel();
-        }
-
-        game.restartGame(from_level);
-        mGameField.setMap(game.getGameMap());
-//        updateCurrentLevel();
         game.observedState.addObserver(onGameChange);
 
-        clickSound = new GameSound(this);
+        if(getIntent().hasExtra("from")) {
+            Log.i("GameActivity", "Extra from");
+            int from_level;
+            from_level = getIntent().getIntExtra("from", 0);
+            getIntent().removeExtra("from");
+            game.restartGame(from_level);
+        } else
+            updateMissionViews();
 
+        mGameField.setMap(game.getGameMap());
+        clickSound = new GameSound(this);
     }
 
 

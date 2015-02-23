@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.ldir.logo.R;
+import com.ldir.logo.game.Levels;
 
 public class MenuActivity extends Activity {
 
@@ -21,7 +22,9 @@ public class MenuActivity extends Activity {
 
     public void onStartGame(View v){
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("from", Levels.restoreCurrentLevel());
         startActivity(intent);
+
     }
 
     public void onSelectLevels(View v){
