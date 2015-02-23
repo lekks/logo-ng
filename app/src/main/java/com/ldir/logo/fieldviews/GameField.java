@@ -19,9 +19,9 @@ import com.ldir.logo.util.Observed;
  */
 public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
-    private GameMap map;
-    private int mSizeX = 1;
-    private int mSizeY = 1;
+    private GameMap mMap;
+    private int mWidth = 1;
+    private int mHeight = 1;
     private float mFSpan = 0; // Размер клетки точек
     private DynamicRender mRender;
     private GameMap.Pos mClickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
@@ -62,7 +62,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setMap(GameMap map)
     {
-        this.map = map;
+        this.mMap = map;
     }
 
     public void destroy() {
@@ -80,18 +80,18 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-        mSizeX = width;
-        mSizeY = height;
-        this.mFSpan = GameMap.calcCellSize(mSizeX,mSizeY);
+        mWidth = width;
+        mHeight = height;
+        this.mFSpan = GameMap.calcCellSize(width, height);
         Log.v("GameField", "Field view mSize changed from " + oldw + "," + oldh + " to " + width + "," + height + " ;span " + "," + "(" + mFSpan + ")");
     }
 
     private void createRender() {
         if( !isInEditMode() ) {
-            mRender = new DynamicRender(getHolder(), map, mFSpan, mSizeX);
+            mRender = new DynamicRender(getHolder(), mFSpan, mWidth);
             mRender.transitionEndEvent.addObserver(this.transitionEndEvent);
             mRender.start();
-            mRender.repaint();
+            mRender.repaint(mMap);
         }
     }
 
@@ -137,7 +137,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawField() {
         if (mRender != null) {
-            mRender.repaint();
+            mRender.repaint(mMap);
         }
     }
 

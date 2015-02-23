@@ -44,9 +44,8 @@ public class Transition {
         mHSize = mSize /2;
     }
 
-    public void setGoal(int goal,long sysTime)
+    public final void setGoal(int goal,long sysTime)
     {
-//        Log.i("Verbose", "mState mGoal " + mGoal+"(mCurrent "+this.mGoal+"),mState="+mState);
         if(this.mGoal != goal) {
             setState(TRANS_STATE_GO, sysTime);
             mCurrent = this.mGoal;
@@ -54,21 +53,15 @@ public class Transition {
         }
     }
 
-    private final void setState(int state, long sysTIme)
+    private void setState(int state, long sysTIme)
     {
         if(this.mState != state) {
             mStateTime = sysTIme;
-//            Log.i("Verbose", "mState to " + mState);
-
-//            switch(mState){
-//                case TRANS_STATE_GO:
-//                    break;
-//            }
             this.mState = state;
         }
     }
 
-    public boolean transStep(Canvas canvas, long sysTime)
+    public final boolean transStep(Canvas canvas, long sysTime)
     {
         long trTime = sysTime - mStateTime;
         final int TR_TIME = 250;

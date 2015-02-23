@@ -11,15 +11,15 @@ import com.ldir.logo.R;
  */
 
 public class GameSound {
-    final SoundPool soundPool;
-    final int sound;
+    final SoundPool mSoundPool;
+    final int mSound;
 
     public GameSound(Context context) {
-        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        sound = soundPool.load(context, R.raw.alert5, 1);
+        mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mSound = mSoundPool.load(context, R.raw.laser_s, 1);
     }
 
     public void play(){
-        soundPool.play(sound, 1.0f, 1.0f, 0, 0, 1.0f);
+        mSoundPool.play(mSound, 1.0f, 1.0f, 0, 0, 1.0f);
     }
 }
