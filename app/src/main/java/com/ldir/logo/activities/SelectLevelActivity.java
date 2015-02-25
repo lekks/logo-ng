@@ -75,7 +75,7 @@ public class SelectLevelActivity extends Activity {
 
             textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
 
-            if(level ==0 || Levels.isCompleted(level))
+            if(Levels.isCompleted(level))
                 textView.setText("Complete");
             else if(Levels.isOpened(level))
                 textView.setText("Openened");
