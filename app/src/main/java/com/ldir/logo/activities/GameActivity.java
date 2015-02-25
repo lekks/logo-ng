@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +66,7 @@ public class GameActivity extends Activity {
         @Override
         public void update(Observable observable, Object arg) {
             int levelTime = (Integer) arg;
-            mTimeLabel.setText(getString(R.string.timeLabelText) + String.format("%d:%02d", levelTime / 60, levelTime % 60));
+            mTimeLabel.setText(getString(R.string.timeLabelText) + String.format("%02d:%02d", levelTime / 60, levelTime % 60));
         }
     };
 
@@ -148,31 +149,13 @@ public class GameActivity extends Activity {
         }
     }
 
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-        case R.id.menu_undo:
-            game.undo();
-            return true;
-        case R.id.menu_reset:
-            game.reset();
-            return true;
-         default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void onOptionButton(View v){
-        startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
-    }
-
-    public void onUndoButton(View v){
+    public void onBackPressed() {
         if(!game.undo())
-            finish();
+            super.onBackPressed();
     }
-
 
     private void startTimer() { // Запуск таймера в текущем потоке
         //TODO перейти на java 8 и lambda
@@ -236,12 +219,37 @@ public class GameActivity extends Activity {
         Music.setMusicOn(false);
     }
 
-
+/*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu_undo:
+                game.undo();
+                return true;
+            case R.id.menu_reset:
+                game.reset();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-        return true;
+        return false;
+    }
+*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+            startActivityForResult(new Intent(GameActivity.this, GameOptActvity.class), GAME_OPT_ACTIVITY);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -256,13 +264,11 @@ public class GameActivity extends Activity {
 
         mTimeLabel = (TextView) findViewById(R.id.timeLabel);
         mLevelLabel = (TextView) findViewById(R.id.levelLabel);
-        TextView patternLabel = (TextView) findViewById(R.id.patternLabel);
 
         Typeface font = Typeface.createFromAsset(getAssets(),"zebulon.ttf");
 
         mTimeLabel.setTypeface(font);
         mLevelLabel.setTypeface(font);
-        patternLabel.setTypeface(font);
 
         if(game == null)
             game = new GamePlay();

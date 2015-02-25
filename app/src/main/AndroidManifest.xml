@@ -56,8 +56,7 @@
         <activity
             android:name=".activities.GameOptActvity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_game_opt_actvity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@style/OptionsTheme" >
         </activity>
         <activity
             android:name=".activities.SelectLevelActivity"
