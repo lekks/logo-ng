@@ -23,19 +23,15 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:id="@+id/imageView"
             android:src="@drawable/menu_logo"
             android:layout_gravity="center"
             android:layout_alignParentTop="false"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="50dp" />
 
         <LinearLayout
             android:orientation="vertical"
