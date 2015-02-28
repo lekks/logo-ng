@@ -71,7 +71,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.v("GameField", "onMeasure " + widthMeasureSpec + "," + heightMeasureSpec);
+        Log.v("GameField", "onMeasure " + getMeasuredWidth() + "," + getMeasuredHeight());
         int[] constraints = {getMeasuredWidth(), getMeasuredHeight()};
         GameMap.fitWidhHeight(constraints);
         setMeasuredDimension(constraints[0], constraints[1]);

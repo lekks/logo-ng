@@ -8,39 +8,37 @@
     android:background="@drawable/vground"
     tools:context=".MainActivity" >
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:id="@+id/linearLayout2"
->
+        android:id="@+id/TextString"
+        >
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/timeLabelText"
             android:id="@+id/timeLabel"
             style="@style/game_text" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
         <TextView
             android:text="@string/level_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/levelLabel"
-            style="@style/game_text"  />
+            style="@style/game_text"
+            android:layout_gravity="right" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/fieldSurface"
-        android:layout_below="@+id/linearLayout2"
+        android:layout_below="@+id/TextString"
         android:layout_centerHorizontal="true"
         android:id="@+id/missionFrame">
 
