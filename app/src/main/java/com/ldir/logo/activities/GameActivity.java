@@ -76,10 +76,6 @@ public class GameActivity extends Activity {
             GamePlay.GameState state = (GamePlay.GameState) arg;
 
             switch (state) {
-                case GAME_OVER:
-                    finish();
-                    game.restartGame(0);
-                    break;
                 case GAME_LOST:
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
                     break;
@@ -117,13 +113,14 @@ public class GameActivity extends Activity {
                 game.nextLevel();
                 break;
             case GAME_WIN_ACTIVITY:
-                game.gameOver();
+                game.restartGame(0);
+                finish();
                 break;
             case GAME_LOST_ACTIVITY:
-                game.gameOver();
+                game.reset();
+                finish();
                 break;
             case GAME_OPT_ACTIVITY:
-//                game.exitOptScreen();
                 if (resultCode == RESULT_OK && data != null) {
                     int cmd = data.getIntExtra(GameOptActvity.CMD,0);
                     switch (cmd) {
@@ -295,6 +292,8 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Destroy");
         game.observedState.deleteObserver(onGameChange);
         game.missionChanged.deleteObserver(onMissionChange);
+        mGameField.setFieldPressHandler(null);
+
         mGameField.destroy();
         mLevelField.destroy();
     }

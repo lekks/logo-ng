@@ -53,9 +53,9 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
             setZOrderOnTop(true);
 
             //Нужно для бинарной прозрачности
-            getHolder().setFormat(PixelFormat.TRANSPARENT);
+//            getHolder().setFormat(PixelFormat.TRANSPARENT);
             //Нужно для плавной прозрачности
-//        getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
             getHolder().addCallback(this);
         }
     }
@@ -128,7 +128,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override //SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        Log.v("GameField", "surfaceDestroyed");
+        Log.v("GameField", "surfaceDestroying");
         boolean retry = true;
         // завершаем работу потока
         mRender.close();

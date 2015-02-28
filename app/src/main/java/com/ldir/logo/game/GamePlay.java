@@ -41,7 +41,6 @@ public class GamePlay {
         PLAYING,
         PAUSE,
         LEVEL_COMPLETE,
-        GAME_OVER,
         GAME_COMPLETE,
         GAME_LOST,
     }
@@ -140,10 +139,5 @@ public class GamePlay {
                 changeState(GameState.PAUSE);
         }
     }
-
-    public void gameOver() {
-        changeState(GameState.GAME_OVER);
-    }
-
 
 }

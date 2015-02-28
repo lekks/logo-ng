@@ -16,6 +16,7 @@ import com.ldir.logo.util.Observed;
 public class DynamicRender extends Thread {
     public Observed.Event transitionEndEvent = new Observed.Event();
 
+    private volatile boolean mRun;
     private final SurfaceHolder mSurfaceHolder;
     private Object mState_mon = new Object();
 //    private GameMap mMap;
@@ -78,7 +79,8 @@ public class DynamicRender extends Thread {
         boolean transFinished;
         boolean transitionEnded;
         Canvas canvas = null;
-        while (!isInterrupted()) {
+        mRun = true;
+        while (mRun) {
             transitionEnded = false;
             try {
                 // получаем объект Canvas и выполняем отрисовку
@@ -115,23 +117,24 @@ public class DynamicRender extends Thread {
             if (transitionEnded)
                 transitionEndEvent.update();
             try {
-                while (!isInterrupted() && (curTime() < updateTime + 20)) {
+                while (mRun && (curTime() < updateTime + 20)) {
                     sleep(4);
                 }
                 synchronized (mState_mon) {
-                    while ( !mTransitionStarted && !isInterrupted()) {
+                    while (mRun && !mTransitionStarted ) {
                         mState_mon.wait();
                     }
                 }
             } catch (InterruptedException e) {
-                interrupt();
+                e.printStackTrace();
+                mRun = false;
             }
         }
     }
 
     public void close() {
         synchronized (mState_mon) {
-            interrupt();
+            mRun = false;
             mState_mon.notify();
         }
         try {
@@ -141,5 +144,7 @@ public class DynamicRender extends Thread {
         for (int i = 0; i < mRows; i++)
             for (int j = 0; j < mCols; j++)
                 mCells[i][j].recycle();
+        Log.d("Render","Closed");
+
     }
 }
