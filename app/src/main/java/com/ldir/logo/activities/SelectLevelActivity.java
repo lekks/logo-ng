@@ -71,7 +71,7 @@ public class SelectLevelActivity extends Activity {
             }
             TextView textView =  (TextView) convertView.findViewById(R.id.listLevelItemLabel);
             textView.setTypeface(font);
-            textView.setText(getString(R.string.level_label)+Integer.toString(level+1));
+            textView.setText(Integer.toString(level+1));
 
             textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
 

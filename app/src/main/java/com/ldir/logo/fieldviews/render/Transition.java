@@ -26,7 +26,7 @@ public class Transition {
     private Rect mRect;
     private Rect mRectTmp = new Rect();
     private int mCX, mCY;
-    private int mSize, mHSize;
+    private int mHSize;
     private boolean mHorizontal;
     private static Random mRnd = new Random();
 
@@ -40,8 +40,7 @@ public class Transition {
         this.mRect = rect;
         mCX =rect.centerX();
         mCY =rect.centerY();
-        mSize = rect.width();
-        mHSize = mSize /2;
+        mHSize = rect.width() /2;
     }
 
     public final void setGoal(int goal,long sysTime)
