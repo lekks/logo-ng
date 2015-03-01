@@ -13,6 +13,7 @@ public class GameApp  extends Application{
 
     private static final String SHARED_SETTINGS = "com.ldir.logo";
     public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
+    public static final String SHARED_SETTINGS_SND_ENABLED = "SND_ENABLED";
     public static final String SHARED_SETTINGS_LEVELS_PROGRESS = "LEVELS_PROGRESS";
     public static final String SHARED_SETTINGS_CURRNT_LEVEL= "CURRENT_LEVEL";
 
@@ -28,9 +29,10 @@ public class GameApp  extends Application{
         GameApp.resources = getResources();
     }
 
-//    public static Context getAppContext() {
-//        return GameApp.context;
-//    }
+    public static Context getAppContext() {
+        return GameApp.context;
+    }
+
     public static Resources getAppResources() {
         return GameApp.resources;
     }

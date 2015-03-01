@@ -23,5 +23,9 @@
         <item name="android:layout_gravity">center|top</item>
     </style>
 
+    <style name="menu_toggle" parent="menu_button" >
+        <item name="android:background">@drawable/toggle_btn</item>
+    </style>
+
 
 </resources>

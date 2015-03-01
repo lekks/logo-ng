@@ -35,7 +35,6 @@ public class GameActivity extends Activity {
     private final int GAME_LOST_ACTIVITY = 3;
     private final int GAME_OPT_ACTIVITY = 4;
 
-    private GameSound clickSound;
     private static GamePlay game;
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -141,7 +140,7 @@ public class GameActivity extends Activity {
         @Override
         public void onPress(GameMap.Pos clickPos) {
             if(game.makeMove(clickPos)){
-                clickSound.play();
+                GameSound.play();
             };
         }
     }
@@ -203,8 +202,6 @@ public class GameActivity extends Activity {
         game.fieldChanged.addObserver(onFieldChange);
         mGameField.transitionEndEvent.addObserver(onFieldTransitionEnd);
         Music.setMusicOn(true);
-//        mGameField.transitionEndEvent.addObserver(this.onFieldTransitionEnd);
-
     }
 
     @Override
@@ -282,7 +279,8 @@ public class GameActivity extends Activity {
             updateMissionViews();
 
         mGameField.setMap(game.getGameMap());
-        clickSound = new GameSound(this);
+        GameSound.load();
+
     }
 
 
@@ -296,6 +294,8 @@ public class GameActivity extends Activity {
 
         mGameField.destroy();
         mLevelField.destroy();
+        GameSound.release();
+
     }
 
 }

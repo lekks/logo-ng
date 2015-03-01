@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import com.ldir.logo.R;
+import com.ldir.logo.sound.GameSound;
 import com.ldir.logo.sound.Music;
 
 public class GameOptActvity extends Activity {
@@ -15,15 +16,14 @@ public class GameOptActvity extends Activity {
         public final static int CMD_RESET=1;
         public final static int CMD_EXIT=2;
 
-    private ToggleButton mMusicTogglel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_opt_actvity);
-        mMusicTogglel = (ToggleButton) findViewById(R.id.musToggleButton);
-        mMusicTogglel.setChecked(Music.getMusicEnabled());
-
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.musToggleButton);
+        toggle.setChecked(Music.getMusicEnabled());
+        toggle = (ToggleButton) findViewById(R.id.sndToggleButton);
+        toggle.setChecked(GameSound.getSoundEnabled());
     }
 
     private void retCmd(int cmd) {
@@ -57,6 +57,15 @@ public class GameOptActvity extends Activity {
             Music.setMusicEnabled(true);
         } else {
             Music.setMusicEnabled(false);
+        }
+    }
+
+    public void onToggleSound(View v){
+        ToggleButton toggle = (ToggleButton)v;
+        if (toggle.isChecked()) {
+            GameSound.setSoundEnabled(true);
+        } else {
+            GameSound.setSoundEnabled(false);
         }
     }
 
