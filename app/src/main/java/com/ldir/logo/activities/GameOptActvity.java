@@ -64,6 +64,7 @@ public class GameOptActvity extends Activity {
         ToggleButton toggle = (ToggleButton)v;
         if (toggle.isChecked()) {
             GameSound.setSoundEnabled(true);
+            GameSound.load();
         } else {
             GameSound.setSoundEnabled(false);
         }

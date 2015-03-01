@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class IBXMPlayer extends Thread {
 
     private final static int BIT_RATE = 44100;
-    private final static int MIN_BUF_SIZE = BIT_RATE*4;
+    private final static int MIN_BUF_SIZE = BIT_RATE*2;
 	private boolean stopped = false;  // Тут мьютекс не принципиален
     private Module module;
 

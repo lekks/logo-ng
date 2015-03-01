@@ -42,8 +42,6 @@ public class GameSound {
         editor.commit();
         if (musicEnabled == false)
             release();
-        else
-            load();
 
     }
 
