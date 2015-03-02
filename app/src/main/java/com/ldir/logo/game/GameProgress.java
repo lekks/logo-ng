@@ -26,6 +26,15 @@ class GameProgress {
         return completed.get(level);
     }
 
+    boolean isCompletedTill(int level){
+        for(int i = 0; i<level; ++i){
+            if(!completed.get(i))
+                return false;
+        }
+        return true;
+    }
+
+
     private void tryOpenGroup(int level) {
         int gr = level/GROUP_SIZE;
         if(lastOpened > gr)

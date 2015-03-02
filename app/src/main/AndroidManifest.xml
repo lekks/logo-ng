@@ -52,6 +52,10 @@
             android:theme="@style/OptionsTheme" >
         </activity>
         <activity
+            android:name=".activities.MenuOptActvity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".activities.SelectLevelActivity"
             android:screenOrientation="portrait"
             android:noHistory="true"

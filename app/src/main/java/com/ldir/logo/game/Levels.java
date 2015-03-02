@@ -11,10 +11,12 @@ public class Levels {
     private static LevelsLoader mLevels;
     private static GameProgress mProgress;
 
+    final static String LevelsFile = "levels_test2.json";
+
     private static LevelsLoader levels()
     {
         if(mLevels == null) {
-            String json = getAssetAsString("levels.json");
+            String json = getAssetAsString(LevelsFile);
             mLevels = new LevelsLoader(json);
         }
         return mLevels;
@@ -32,7 +34,7 @@ public class Levels {
 
     public static void clearProgress() {
         progress().clearProgress();
-    }
+    } // For tests
 
     public static void setCompleted(int level){
         progress().setCompleted(level);
@@ -40,6 +42,10 @@ public class Levels {
     }
     public static boolean isCompleted(int level){
         return progress().isCompleted(level);
+    }
+
+    public static boolean isAllCompleted(){
+        return progress().isCompletedTill(levelsCount());
     }
 
     public static boolean isOpened(int level){

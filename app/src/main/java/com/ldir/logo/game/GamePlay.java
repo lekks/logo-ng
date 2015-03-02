@@ -26,7 +26,7 @@ public class GamePlay {
             case PLAYING: // TODO Сделать тоже самое при окончании таймера
                 if (gameMap.isEqual(gameLevel.map)) {
                     Levels.setCompleted(getCurrenLevel());
-                    if (lastLevel()) {
+                    if (Levels.isAllCompleted()) {
                         changeState(GameState.GAME_COMPLETE);
                     } else {
                         changeState(GameState.LEVEL_COMPLETE);
@@ -88,13 +88,6 @@ public class GamePlay {
         gameLevel = Levels.getLevel(level);
         missionChanged.update();
         reset();
-    }
-
-    private boolean lastLevel() {
-        if (level + 1 < Levels.levelsCount())
-            return false;
-        else
-            return true;
     }
 
     public boolean makeMove(GameMap.Pos clickPos) {

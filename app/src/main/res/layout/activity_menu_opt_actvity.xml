@@ -1,0 +1,41 @@
+
+<!--
+http://developer.android.com/guide/topics/ui/themes.html
+http://habrahabr.ru/post/133307/
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <ToggleButton
+            style="@style/menu_toggle"
+            android:text="Music"
+            android:onClick="onToggleMusic"
+            android:id="@+id/musToggleButton"
+            android:layout_gravity="center_vertical"
+            android:textOn="Music on"
+            android:textOff="Music off"
+            android:checked="true" />
+
+        <ToggleButton
+            style="@style/menu_toggle"
+            android:text="Sound"
+            android:onClick="onToggleSound"
+            android:id="@+id/sndToggleButton"
+            android:layout_gravity="center_vertical"
+            android:textOn="Sound on"
+            android:textOff="Sound off"
+            android:checked="true" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

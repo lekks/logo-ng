@@ -58,8 +58,8 @@
             <Button
                 style="@style/menu_button"
                 android:text="Options"
-                android:id="@+id/button2" />
-
+                android:onClick="onOptions"
+                android:id="@+id/OptButton" />
     <!--
             <View
                 android:layout_width="0dp"
