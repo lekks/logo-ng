@@ -25,8 +25,9 @@ public class GamePlay {
         switch (globalState) {
             case PLAYING: // TODO Сделать тоже самое при окончании таймера
                 if (gameMap.isEqual(gameLevel.map)) {
+                    boolean uncompleted = !Levels.isCompleted(getCurrenLevel());
                     Levels.setCompleted(getCurrenLevel());
-                    if (Levels.isAllCompleted()) {
+                    if (Levels.isAllCompleted() && uncompleted) {
                         changeState(GameState.GAME_COMPLETE);
                     } else {
                         changeState(GameState.LEVEL_COMPLETE);

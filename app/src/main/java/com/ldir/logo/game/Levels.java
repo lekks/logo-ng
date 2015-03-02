@@ -53,7 +53,14 @@ public class Levels {
     }
 
     public static int nextOpened(int current) {
-        return progress().nextOpened(current);
+        if(Levels.isAllCompleted())
+            current+=1;
+        else
+            current = progress().nextOpened(current);
+
+        if (current >= levelsCount())
+            current = 0;
+        return current;
     }
     public static int restoreCurrentLevel() {
         SharedPreferences sharedPrefs = GameApp.getGamePreferences();

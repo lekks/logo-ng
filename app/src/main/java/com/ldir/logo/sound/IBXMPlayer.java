@@ -80,7 +80,12 @@ public class IBXMPlayer extends Thread {
                 while(wpos<outIdx && !stopped)
                     wpos+=track.write( outBuf, wpos, outIdx-wpos);
             }
-		} catch (Throwable x) {
+            if(duration<=0)
+                Log.i("Mod", "Song ended");
+            if(stopped)
+                Log.i("Mod", "Song stopped");
+
+        } catch (Throwable x) {
             x.printStackTrace();
             throw new RuntimeException();
         } finally {
