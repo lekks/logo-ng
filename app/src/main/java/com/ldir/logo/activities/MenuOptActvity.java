@@ -52,4 +52,17 @@ public class MenuOptActvity extends Activity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Music.setMusicOn(Music.MENU_OPT_MUS,true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Music.setMusicOn(Music.MENU_OPT_MUS,false);
+    }
+
+
 }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.Levels;
+import com.ldir.logo.sound.Music;
 
 public class SelectLevelActivity extends Activity {
     private Typeface font;
@@ -88,5 +89,16 @@ public class SelectLevelActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Music.setMusicOn(Music.MENU_SEL_MUS, true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Music.setMusicOn(Music.MENU_SEL_MUS,false);
+    }
 
 }

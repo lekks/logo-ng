@@ -2,6 +2,7 @@ package com.ldir.logo.sound;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.ldir.logo.R;
 import com.ldir.logo.activities.GameApp;
@@ -13,8 +14,21 @@ import java.io.IOException;
  */
 public class Music {
     private static IBXMPlayer music;
+    private static String currentFile;
+    private static int musicFlags=0;
 
-    private static boolean isON = false;
+    public static final int GAME_MUS=0;
+    public static final int MENU_MUS=1;
+    public static final int MENU_OPT_MUS=2;
+    public static final int MENU_SEL_MUS=3;
+
+    public static void setFile(String name) {
+        if(currentFile!= null && !currentFile.equals(name))
+            close();
+        currentFile = name;
+        updade();
+    }
+
 
     private static void close() {
         if (music != null) {
@@ -29,28 +43,30 @@ public class Music {
     }
 
     private static void open(String name) {
-        try {
-            music = new IBXMPlayer(GameApp.getAsset(name));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+        if (music == null) {
+            try {
+                music = new IBXMPlayer(GameApp.getAsset(name));
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException();
+            }
         }
     }
 
 
     private static void updade() {
-        if(isON && getMusicEnabled()) {
-            if (music == null) {
-                String[] songs = GameApp.getAppResources().getStringArray(R.array.game_mus);
-                open(songs[0]);
-            }
+        if(getMusicEnabled() && currentFile != null && (musicFlags != 0) ) {
+            open(currentFile);
         } else {
             close();
         }
     }
 
-    public static void setMusicOn(boolean on) {
-        isON = on;
+    public static void setMusicOn(int menu, boolean on) {
+        if(on)
+            musicFlags |= (1<<menu);
+        else
+            musicFlags &= ~(1<<menu);
         updade();
     }
 

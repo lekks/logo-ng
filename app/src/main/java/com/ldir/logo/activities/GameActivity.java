@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.ldir.logo.R;
@@ -58,7 +55,7 @@ public class GameActivity extends Activity {
     private Observer onMissionChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            updateMissionViews();        }
+            changeMission();        }
     };
 
     private Observer onTimeChange = new Observer() {
@@ -88,11 +85,15 @@ public class GameActivity extends Activity {
         }
     };
 
-    public void updateMissionViews() {
+    public void changeMission() {
         Levels.saveCurrentLevel(game.getCurrenLevel());
         mLevelField.setLevel(game.getCurrenLevel());
         mLevelField.invalidate();
         mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
+
+        String[] songs = GameApp.getAppResources().getStringArray(R.array.game_mus);
+        int musNdx = game.getCurrenLevel() % songs.length;
+        Music.setFile(songs[musNdx]);
     }
 
 
@@ -201,7 +202,7 @@ public class GameActivity extends Activity {
         game.timerChanged.addObserver(onTimeChange);
         game.fieldChanged.addObserver(onFieldChange);
         mGameField.transitionEndEvent.addObserver(onFieldTransitionEnd);
-        Music.setMusicOn(true);
+        Music.setMusicOn(Music.GAME_MUS,true);
     }
 
     @Override
@@ -210,32 +211,8 @@ public class GameActivity extends Activity {
         Log.i("GameActivity", "Stop");
         game.fieldChanged.deleteObserver(onFieldChange);
         mGameField.transitionEndEvent.deleteObserver(onFieldTransitionEnd);
-        Music.setMusicOn(false);
+        Music.setMusicOn(Music.GAME_MUS,false);
     }
-
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.menu_undo:
-                game.undo();
-                return true;
-            case R.id.menu_reset:
-                game.reset();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-        return false;
-    }
-*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -276,7 +253,7 @@ public class GameActivity extends Activity {
             getIntent().removeExtra("from");
             game.restartGame(from_level);
         } else
-            updateMissionViews();
+            changeMission();
 
         mGameField.setMap(game.getGameMap());
         GameSound.load();
