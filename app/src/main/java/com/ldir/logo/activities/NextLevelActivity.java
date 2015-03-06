@@ -1,7 +1,6 @@
 package com.ldir.logo.activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
@@ -21,10 +20,6 @@ public class NextLevelActivity extends Activity {
         setContentView(R.layout.activity_next_level);
         setTitle("Level Complete!");
 
-        // Get the message from the intent
-        Intent intent = getIntent();
-        String message = intent.getStringExtra("level");
-//        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON,android.R.drawable.ic_dialog_alert);
     }
 
     @Override

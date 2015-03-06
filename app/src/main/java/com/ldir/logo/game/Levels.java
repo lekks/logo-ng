@@ -11,7 +11,7 @@ public class Levels {
     private static LevelsLoader mLevels;
     private static GameProgress mProgress;
 
-    final static String LevelsFile = "levels_test2.json";
+    private static final String LevelsFile = "levels_test2.json";
 
     private static LevelsLoader levels()
     {
@@ -64,13 +64,13 @@ public class Levels {
     }
     public static int restoreCurrentLevel() {
         SharedPreferences sharedPrefs = GameApp.getGamePreferences();
-        return sharedPrefs.getInt(GameApp.SHARED_SETTINGS_CURRNT_LEVEL, 0);
+        return sharedPrefs.getInt(GameApp.SHARED_SETTINGS_CURRENT_LEVEL, 0);
     }
 
     public static void saveCurrentLevel(int n) {
         SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
-        editor.putInt(GameApp.SHARED_SETTINGS_CURRNT_LEVEL, n);
-        editor.commit();
+        editor.putInt(GameApp.SHARED_SETTINGS_CURRENT_LEVEL, n);
+        editor.apply();
     }
 
     private static GameProgress progress()
@@ -90,24 +90,22 @@ public class Levels {
         if (mProgress  != null) {
             SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
             editor.putString(GameApp.SHARED_SETTINGS_LEVELS_PROGRESS, mProgress.bundleState());
-            editor.commit();
+            editor.apply();
         }
     }
     private static String getAssetAsString(String name) {
-        String str = null;
         try {
             InputStream is = GameApp.getAsset(name);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            str = new String(buffer, "UTF-8");
+            return new String(buffer, "UTF-8");
 
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new RuntimeException();
         }
-        return str;
     }
 
 

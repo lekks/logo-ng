@@ -10,7 +10,7 @@ import java.util.BitSet;
  * Created by Ldir on 08.02.2015.
  */
 class GameProgress {
-    private BitSet completed = new BitSet(32);
+    private final BitSet completed = new BitSet(32);
     public final static int GROUP_SIZE = 5; // для тестирования
     private int lastOpened = 0;
 

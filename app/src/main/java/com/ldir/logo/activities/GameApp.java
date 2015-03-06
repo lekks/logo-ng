@@ -15,7 +15,7 @@ public class GameApp  extends Application{
     public static final String SHARED_SETTINGS_MUS_ENABLED = "MUS_ENABLED";
     public static final String SHARED_SETTINGS_SND_ENABLED = "SND_ENABLED";
     public static final String SHARED_SETTINGS_LEVELS_PROGRESS = "LEVELS_PROGRESS";
-    public static final String SHARED_SETTINGS_CURRNT_LEVEL= "CURRENT_LEVEL";
+    public static final String SHARED_SETTINGS_CURRENT_LEVEL = "CURRENT_LEVEL";
 
     private static Context context;
     private static Resources resources;

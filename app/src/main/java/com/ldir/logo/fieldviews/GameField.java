@@ -17,16 +17,16 @@ import com.ldir.logo.util.Observed;
 /**
  * Created by Ldir on 27.09.13.
  */
-public class GameField extends SurfaceView implements SurfaceHolder.Callback {
+public final class GameField extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameMap mMap;
     private int mWidth = 1;
     private int mHeight = 1;
     private float mFSpan = 0; // Размер клетки точек
     private DynamicRender mRender;
-    private GameMap.Pos mClickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
+    private final GameMap.Pos mClickPos = new GameMap.Pos(); // Чтоб каждый раз не создавать
     private FieldPressHandler mFieldPressHandler;
-    public Observed.Event transitionEndEvent = new Observed.Event();
+    public final Observed.Event transitionEndEvent = new Observed.Event();
 
     public GameField(Context context) {
         super(context);
@@ -47,7 +47,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
         mFieldPressHandler = handler;
     }
 
-    protected void init() {
+    void init() {
         if(! isInEditMode() ) {
             //Для поднятием над фоном
             setZOrderOnTop(true);
@@ -65,7 +65,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
         this.mMap = map;
     }
 
-    public void destroy() {
+    public final void destroy() {
     }
 
     @Override
@@ -111,7 +111,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.v("GameField", "surfaceCreated");
         //getBackground();
-        createRender();//TODO стартовать рендер при создании и паузить его когда не нужен
+        createRender();
     }
 
 
@@ -129,7 +129,6 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
     @Override //SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         Log.v("GameField", "surfaceDestroying");
-        boolean retry = true;
         // завершаем работу потока
         mRender.close();
         mRender = null;
@@ -141,7 +140,7 @@ public class GameField extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public boolean findCell(float cX, float cY, GameMap.Pos retPos) {
+    private boolean findCell(float cX, float cY, GameMap.Pos retPos) {
         int row = (int) (cY / mFSpan);
         int col = (int) (cX / mFSpan);
         if (row < GameMap.ROWS && col < GameMap.COLS) {

@@ -18,7 +18,7 @@ http://habrahabr.ru/post/133307/
 
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="Music"
+            android:text="@string/music_on_off"
             android:onClick="onToggleMusic"
             android:id="@+id/musToggleButton"
             android:layout_gravity="center_vertical"
@@ -28,7 +28,7 @@ http://habrahabr.ru/post/133307/
 
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="Sound"
+            android:text="@string/sound_on_off"
             android:onClick="onToggleSound"
             android:id="@+id/sndToggleButton"
             android:layout_gravity="center_vertical"

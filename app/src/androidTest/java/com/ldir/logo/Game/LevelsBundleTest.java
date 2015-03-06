@@ -14,16 +14,6 @@ public class LevelsBundleTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    @Override
-    protected void setUp() throws Exception{
-        super.setUp();
-    }
-
-    @Override
-    protected void tearDown() throws Exception{
-        super.tearDown();
-    }
-
     public void testBundleComplete() {
         GameProgress progress = new GameProgress();
         progress.clearProgress();

@@ -40,25 +40,25 @@ public class GameActivity extends Activity {
     private LevelField mLevelField;
     private TextView mTimeLabel;
     private TextView mLevelLabel;
-    private Handler mUI_handler = new Handler();
+    private final Handler mUI_handler = new Handler();
 
     private void processFieldChange() {
         mGameField.drawField();
     }
 
-    private Observer onFieldChange = new Observer() {
+    private final Observer onFieldChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             processFieldChange();
         }
     };
-    private Observer onMissionChange = new Observer() {
+    private final Observer onMissionChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             changeMission();        }
     };
 
-    private Observer onTimeChange = new Observer() {
+    private final Observer onTimeChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             int levelTime = (Integer) arg;
@@ -66,7 +66,7 @@ public class GameActivity extends Activity {
         }
     };
 
-    public Observer onGameChange = new Observer() {
+    private final Observer onGameChange = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             GamePlay.GameState state = (GamePlay.GameState) arg;
@@ -85,7 +85,7 @@ public class GameActivity extends Activity {
         }
     };
 
-    public void changeMission() {
+    void changeMission() {
         Levels.saveCurrentLevel(game.getCurrenLevel());
         mLevelField.setLevel(game.getCurrenLevel());
         mLevelField.invalidate();
@@ -98,7 +98,7 @@ public class GameActivity extends Activity {
 
 
 
-    public Observer onFieldTransitionEnd = new Observer() {
+    private final Observer onFieldTransitionEnd = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
             game.moveCompleted();
@@ -142,7 +142,7 @@ public class GameActivity extends Activity {
         public void onPress(GameMap.Pos clickPos) {
             if(game.makeMove(clickPos)){
                 GameSound.play();
-            };
+            }
         }
     }
 
@@ -155,7 +155,6 @@ public class GameActivity extends Activity {
     }
 
     private void startTimer() { // Запуск таймера в текущем потоке
-        //TODO перейти на java 8 и lambda
         mTimerFuture = mTimerExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 mUI_handler.postDelayed(new Runnable() {

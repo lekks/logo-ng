@@ -15,8 +15,7 @@
         android:layout_height="fill_parent"
         android:gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="true"
-        android:measureWithLargestChild="true">
+        android:layout_centerHorizontal="true">
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -28,9 +27,7 @@
             android:id="@+id/imageView"
             android:src="@drawable/menu_logo"
             android:layout_gravity="center"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true" />
+            android:contentDescription="@string/logo" />
 
         <View
             android:layout_width="0dp"
@@ -41,27 +38,25 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
-            android:layout_centerHorizontal="true"
             android:baselineAligned="false">
 
 
             <Button
                 android:onClick="onStartGame"
-                android:text="Play"
+                android:text="@string/play_button"
                 android:id="@+id/goButton"
                 style="@style/menu_button"
                 android:layout_gravity="center_horizontal" />
 
             <Button
-                android:text="Levels"
+                android:text="@string/sel_level_butt"
                 style="@style/menu_button"
                 android:onClick="onSelectLevels"
                 android:id="@+id/levelsButton" />
 
             <Button
                 style="@style/menu_button"
-                android:text="Options"
+                android:text="@string/opt_menu_butt"
                 android:onClick="onOptions"
                 android:id="@+id/OptButton" />
 

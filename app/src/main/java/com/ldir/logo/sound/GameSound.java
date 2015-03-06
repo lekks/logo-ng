@@ -1,6 +1,5 @@
 package com.ldir.logo.sound;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -39,8 +38,8 @@ public class GameSound {
     public static void setSoundEnabled(boolean musicEnabled) {
         SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
         editor.putBoolean(GameApp.SHARED_SETTINGS_SND_ENABLED, musicEnabled);
-        editor.commit();
-        if (musicEnabled == false)
+        editor.apply();
+        if (!musicEnabled)
             release();
 
     }

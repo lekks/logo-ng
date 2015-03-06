@@ -14,11 +14,11 @@ import com.ldir.logo.util.Observed;
  * Created by Ldir on 27.09.13.
  */
 public class DynamicRender extends Thread {
-    public Observed.Event transitionEndEvent = new Observed.Event();
+    public final Observed.Event transitionEndEvent = new Observed.Event();
 
     private volatile boolean mRun;
     private final SurfaceHolder mSurfaceHolder;
-    private Object mState_mon = new Object();
+    private final Object mState_mon = new Object();
 //    private GameMap mMap;
     private final float mCSize;
     private final int mCols, mRows;
@@ -28,10 +28,8 @@ public class DynamicRender extends Thread {
 
     private boolean mTransitionStarted = false;
 
-    private final long curTime() {
-        long t = System.currentTimeMillis();
-//        Log.d("Render","Time "+t);
-        return t;
+    private long curTime() {
+        return System.currentTimeMillis();
     }
 
 
@@ -140,6 +138,7 @@ public class DynamicRender extends Thread {
         try {
             join();
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         for (int i = 0; i < mRows; i++)
             for (int j = 0; j < mCols; j++)

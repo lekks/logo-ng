@@ -14,7 +14,7 @@ import com.ldir.logo.game.Levels;
 
 
 public class LevelField extends android.view.View {
-    private LevelRender mRender=new LevelRender();
+    private final LevelRender mRender=new LevelRender();
 
 	// Для инициализации чере XML, в других случаях другой инициализатор
 	public LevelField(Context context, AttributeSet attrs) {
@@ -58,11 +58,11 @@ class LevelRender {
     private boolean mDisabled=true;
     private GameLevel mGameLevel;
     private float mCellSize;
-    private Bitmap[] mSprites=new Bitmap[5];
+    private final Bitmap[] mSprites=new Bitmap[5];
     private Bitmap mUnderlayer;
-    private Rect rect = new Rect();
+    private final Rect rect = new Rect();
 
-    private static Paint paint = new Paint();
+    private static final Paint paint = new Paint();
 
     public void setSize(int size) {
         mCellSize = GameMap.calcCellSize(size,size);

@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.LevelField;
@@ -36,7 +35,7 @@ public class SelectLevelActivity extends Activity {
 
     }
 
-    class LevelStarter implements AdapterView.OnItemClickListener {
+    private class LevelStarter implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int level = position;
@@ -50,7 +49,7 @@ public class SelectLevelActivity extends Activity {
     }
 
 
-    class LevelsListAdapter extends BaseAdapter {
+    private class LevelsListAdapter extends BaseAdapter {
         @Override
         public int getCount() {
             return Levels.levelsCount();

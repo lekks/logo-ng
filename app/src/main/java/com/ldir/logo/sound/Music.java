@@ -1,10 +1,7 @@
 package com.ldir.logo.sound;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.util.Log;
 
-import com.ldir.logo.R;
 import com.ldir.logo.activities.GameApp;
 
 import java.io.IOException;
@@ -73,7 +70,7 @@ public class Music {
     public static void setMusicEnabled(boolean musicEnabled) {
         SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
         editor.putBoolean(GameApp.SHARED_SETTINGS_MUS_ENABLED, musicEnabled);
-        editor.commit();
+        editor.apply();
         updade();
     }
 

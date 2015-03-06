@@ -17,15 +17,6 @@ public class SpritesTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    @Override
-    protected void setUp() throws Exception{
-        super.setUp();
-    }
-
-    @Override
-    protected void tearDown() throws Exception{
-        super.tearDown();
-    }
 
     public void testSprite() {
         Log.i("Test", "Sprites test 1");

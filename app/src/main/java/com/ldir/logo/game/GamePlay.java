@@ -6,24 +6,23 @@ import com.ldir.logo.util.Observed;
 
 // Тут состредоточим всю логику
 
-// TODO попрятать всё что можно
 public class GamePlay {
 
-    public Observed.Event fieldChanged = new Observed.Event();
-    public Observed.Event missionChanged = new Observed.Event();
-    public Observed.Value<Integer> timerChanged = new Observed.Value<>();
-    public Observed.Value<GameState> observedState = new Observed.Value<>();
+    public final Observed.Event fieldChanged = new Observed.Event();
+    public final Observed.Event missionChanged = new Observed.Event();
+    public final Observed.Value<Integer> timerChanged = new Observed.Value<>();
+    public final Observed.Value<GameState> observedState = new Observed.Value<>();
 
     private GameLevel gameLevel = new GameLevel();
-    private GameMap gameMap = new GameMap();
+    private final GameMap gameMap = new GameMap();
     private int levelTime;
     private int level;
-    private MapHistory history = new MapHistory();
+    private final MapHistory history = new MapHistory();
 
 
     public void moveCompleted() {
         switch (globalState) {
-            case PLAYING: // TODO Сделать тоже самое при окончании таймера
+            case PLAYING:
                 if (gameMap.isEqual(gameLevel.map)) {
                     boolean uncompleted = !Levels.isCompleted(getCurrenLevel());
                     Levels.setCompleted(getCurrenLevel());
@@ -54,7 +53,7 @@ public class GamePlay {
             timerChanged.update(levelTime);
             changeState(GameState.GAME_LOST);
         }
-    };
+    }
 
     private GameState globalState = GameState.UNDEFINED;
 

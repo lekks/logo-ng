@@ -2,14 +2,9 @@ package com.ldir.logo.game;
 
 import android.util.Log;
 
-import com.ldir.logo.activities.GameApp;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by Ldir on 14.02.2015.

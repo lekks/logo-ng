@@ -5,29 +5,29 @@ import java.util.ArrayList;
 /**
  * Created by Ldir on 06.02.2015.
  */
-public class MapHistory {
-    ArrayList<GameMap> stack = new ArrayList<GameMap>(8);
-    int count=0;
+class MapHistory {
+    private final ArrayList<GameMap> stack = new ArrayList<>(8);
+    private int mCount =0;
 
     void clear(){
-        count=0;
+        mCount =0;
         stack.clear();
     }
 
     void push(GameMap map){
-        count+=1;
-        while(stack.size() < count) {
+        mCount +=1;
+        while(stack.size() < mCount) {
             stack.add(new GameMap());
         }
-        stack.get(count-1).assign(map);
+        stack.get(mCount -1).assign(map);
     }
 
     GameMap pop(){
-        if(count == 0)
+        if(mCount == 0)
             return null;
-        count-=1;
-        return stack.get(count);
-//        stack.remove(count);
+        mCount -=1;
+        return stack.get(mCount);
+//        stack.remove(mCount);
     }
 
 

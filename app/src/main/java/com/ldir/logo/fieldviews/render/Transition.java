@@ -16,7 +16,7 @@ import java.util.Random;
 
  */
 
-public class Transition {
+class Transition {
 
     private int mGoal;
     private int mCurrent;
@@ -30,10 +30,10 @@ public class Transition {
     private boolean mHorizontal;
     private static Random mRnd = new Random();
 
-    final static int TRANS_STATE_FIX=0;
-    final static int TRANS_STATE_GO=1;
-    final static int TRANS_STATE_FADE_OUT =2;
-    final static int TRANS_STATE_FADE_IN =3;
+    private final static int TRANS_STATE_FIX=0;
+    private final static int TRANS_STATE_GO=1;
+    private final static int TRANS_STATE_FADE_OUT =2;
+    private final static int TRANS_STATE_FADE_IN =3;
 
     public Transition(Rect rect, Bitmap[] sprites) {
         this.mSprites = sprites;

@@ -17,20 +17,20 @@ http://habrahabr.ru/post/133307/
 
         <Button
             style="@style/menu_button"
-            android:text="Clear Field"
+            android:text="@string/clear_field"
             android:onClick="onResetButton"
             android:layout_gravity="center_vertical" />
 
         <Button
             style="@style/menu_button"
-            android:text="Exit game"
+            android:text="@string/exit_game"
             android:onClick="onExitButton"
             android:layout_gravity="center_vertical" />
 
 
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="Music"
+            android:text="@string/music_on_off"
             android:onClick="onToggleMusic"
             android:id="@+id/musToggleButton"
             android:layout_gravity="center_vertical"
@@ -40,7 +40,7 @@ http://habrahabr.ru/post/133307/
 
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="Sound"
+            android:text="@string/sound_on_off"
             android:onClick="onToggleSound"
             android:id="@+id/sndToggleButton"
             android:layout_gravity="center_vertical"

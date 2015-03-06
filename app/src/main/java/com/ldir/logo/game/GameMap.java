@@ -4,9 +4,8 @@ package com.ldir.logo.game;
  * Created by Ldir on 18.09.13.
  */
 public class GameMap {
-    private byte map[][];
+    private final byte map[][];
 
-    // TODO Переделать в методы
     public static final int COLS =7;
     public static final int ROWS =7;
 
@@ -44,9 +43,7 @@ public class GameMap {
 
     public void assign(GameMap other) {
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                map[i][j] = other.map[i][j]; // убрать внутренний цикл? System.arrayCopy
-            }
+            System.arraycopy(other.map[i], 0, map[i], 0, COLS);
         }
     }
 

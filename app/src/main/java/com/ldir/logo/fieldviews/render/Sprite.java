@@ -19,7 +19,7 @@ import com.ldir.logo.activities.GameApp;
 public class Sprite {
 
 
-    private static SparseArray<SparseArray<Bitmap>> cache = new SparseArray<SparseArray<Bitmap>>();
+    private final static SparseArray<SparseArray<Bitmap>> cache = new SparseArray<>();
 
     public static int countCacheForTest()  {
         int cnt=0;
@@ -40,7 +40,7 @@ public class Sprite {
     }
 
 
-
+/*
     private Bitmap createPreScaled(int id,int size) {
         //Decode image size
         BitmapFactory.Options o = new BitmapFactory.Options();
@@ -61,6 +61,7 @@ public class Sprite {
         Bitmap orig = BitmapFactory.decodeResource(GameApp.getAppResources(), id, o2);
         return orig;
     }
+*/
 
     private static Bitmap makeBitmap(int id,int size) // can throw NullPointerException
     {
@@ -82,12 +83,11 @@ public class Sprite {
         if no, creates sprite, cache it and return;
      */
     public static Bitmap get(int id, int size) {
-        Bitmap pic;
+        Bitmap pic = null;
         SparseArray<Bitmap> sizes = cache.get(id);
         if (sizes == null) { // we have id
             sizes = new SparseArray<>();
             cache.put(id,sizes);
-            pic = null;
         } else {
             pic = sizes.get(size);
             if(pic != null)
