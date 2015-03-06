@@ -19,7 +19,7 @@ public class GameSound {
     public static void load() {
         if(mSoundPool == null) {
             mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-            mSound = mSoundPool.load(GameApp.getAppContext(), R.raw.laser_s, 1);
+            mSound = mSoundPool.load(GameApp.getAppContext(), R.raw.ball, 1);
         }
     }
 
@@ -32,7 +32,7 @@ public class GameSound {
 
     public static void play(){
         if (getSoundEnabled() && mSoundPool != null) {
-            mSoundPool.play(mSound, 0.3f, 0.3f, 0, 0, 1.0f);
+            mSoundPool.play(mSound, 0.5f, 0.5f, 0, 0, 1.0f);
         }
     }
 

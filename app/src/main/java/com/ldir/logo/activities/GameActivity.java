@@ -271,7 +271,7 @@ public class GameActivity extends Activity {
 
         mGameField.destroy();
         mLevelField.destroy();
-        GameSound.release();
+//        GameSound.release();
 
     }
 

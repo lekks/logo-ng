@@ -44,7 +44,7 @@ public class MenuActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.i("GameMenu", "Start");
-        Music.setFile("mus/menu/popcorn.s3m");
+        Music.setFile(GameApp.getAppResources().getString(R.string.menu_mus));
         Music.setMusicOn(Music.MENU_MUS,true);
     }
 
