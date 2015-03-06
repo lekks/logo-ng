@@ -27,25 +27,22 @@ http://habrahabr.ru/post/133307/
             android:onClick="onExitButton"
             android:layout_gravity="center_vertical" />
 
-
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="@string/music_on_off"
             android:onClick="onToggleMusic"
             android:id="@+id/musToggleButton"
             android:layout_gravity="center_vertical"
-            android:textOn="Music on"
-            android:textOff="Music off"
+            android:textOn="@string/music_on_off"
+            android:textOff="@string/music_on_off"
             android:checked="true" />
 
         <ToggleButton
             style="@style/menu_toggle"
-            android:text="@string/sound_on_off"
+            android:textOn="@string/sound_on_off"
+            android:textOff="@string/sound_on_off"
             android:onClick="onToggleSound"
             android:id="@+id/sndToggleButton"
             android:layout_gravity="center_vertical"
-            android:textOn="Sound on"
-            android:textOff="Sound off"
             android:checked="true" />
 
     </LinearLayout>

@@ -9,14 +9,14 @@
     <string name="timeLabelText">"TIME "</string>
     <string name="select_level">Select Level</string>
     <string name="level_label">"LEVEL "</string>
-    <string name="congratulation">Congratulations!</string>
-    <string name="time_is_out">Time is out</string>
-    <string name="clear_field">Clear Field</string>
-    <string name="exit_game">Exit game</string>
-    <string name="music_on_off">Music</string>
-    <string name="sound_on_off">Sound</string>
-    <string name="play_button">Play</string>
-    <string name="sel_level_butt">Levels</string>
-    <string name="opt_menu_butt">Options</string>
+    <string name="congratulation">Ура!</string>
+    <string name="time_is_out">Время вышло</string>
+    <string name="clear_field">Очистить</string>
+    <string name="exit_game">Выйти</string>
+    <string name="music_on_off">Музыка</string>
+    <string name="sound_on_off">Звуки</string>
+    <string name="play_button">Игра</string>
+    <string name="sel_level_butt">Уровни</string>
+    <string name="opt_menu_butt">Настройки</string>
 
 </resources>
