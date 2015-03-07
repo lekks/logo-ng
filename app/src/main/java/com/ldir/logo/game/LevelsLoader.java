@@ -31,7 +31,7 @@ class LevelsLoader {
                 for (int j = 0; j < jmap.length(); j++) {
                     String row = jmap.getString(j);
                     for (int k = 0; k < row.length(); k++) {
-                        map.set(j,k,(byte)Character.getNumericValue(row.charAt(k)));
+                        map.set(j,k,Character.getNumericValue(row.charAt(k)));
                     }
                 }
             }

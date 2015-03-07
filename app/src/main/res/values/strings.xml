@@ -20,5 +20,8 @@
     <string name="play_button">Play</string>
     <string name="sel_level_butt">Levels</string>
     <string name="opt_menu_butt">Options</string>
+    <string name="next_level">Level complete</string>
+
+
 
 </resources>

@@ -18,5 +18,6 @@
     <string name="play_button">Игра</string>
     <string name="sel_level_butt">Уровни</string>
     <string name="opt_menu_butt">Настройки</string>
+    <string name="next_level">Уровень пройден</string>
 
 </resources>

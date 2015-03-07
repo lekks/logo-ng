@@ -18,7 +18,7 @@ public class NextLevelActivity extends Activity {
 
 //        requestWindowFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.activity_next_level);
-        setTitle("Level Complete!");
+//        setTitle("Level Complete!");
 
     }
 

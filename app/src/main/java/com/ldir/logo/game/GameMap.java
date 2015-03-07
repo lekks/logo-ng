@@ -59,8 +59,8 @@ public class GameMap {
         return map[x][y];
     }
 
-    public void set(int x,int y, byte v ) {
-        map[x][y] = v;
+    public void set(int x,int y, int v ) {
+        map[x][y] = (byte)v;
     }
 
     public void resetField() {
