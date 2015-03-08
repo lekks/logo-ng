@@ -42,36 +42,13 @@ public class GameActivity extends Activity {
     private TextView mLevelLabel;
     private final Handler mUI_handler = new Handler();
 
-    private void processFieldChange() {
-        mGameField.drawField();
-    }
 
-    private final Observer onFieldChange = new Observer() {
+    private final Observer onGameEvent = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
-            processFieldChange();
-        }
-    };
-    private final Observer onMissionChange = new Observer() {
-        @Override
-        public void update(Observable observable, Object arg) {
-            changeMission();        }
-    };
+            GamePlay.GameEvent event = (GamePlay.GameEvent) arg;
 
-    private final Observer onTimeChange = new Observer() {
-        @Override
-        public void update(Observable observable, Object arg) {
-            int levelTime = (Integer) arg;
-            mTimeLabel.setText(getString(R.string.timeLabelText) + String.format("%02d:%02d", levelTime / 60, levelTime % 60));
-        }
-    };
-
-    private final Observer onGameChange = new Observer() {
-        @Override
-        public void update(Observable observable, Object arg) {
-            GamePlay.GameState state = (GamePlay.GameState) arg;
-
-            switch (state) {
+            switch (event) {
                 case GAME_LOST:
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
                     break;
@@ -81,11 +58,21 @@ public class GameActivity extends Activity {
                 case LEVEL_COMPLETE:
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
+
+                case FIELD_CHANGED:
+                    updateField();
+                    break;
+                case TIMER_CHANGED:
+                    mTimeLabel.setText(getString(R.string.timeLabelText) + game.getTimeString());
+                    break;
+                case LEVEL_CHANGED:
+                    updateMission();
+                    break;
             }
         }
     };
 
-    void changeMission() {
+    void updateMission() {
         Levels.saveCurrentLevel(game.getCurrenLevel());
         mLevelField.setLevel(game.getCurrenLevel());
         mLevelField.invalidate();
@@ -96,6 +83,9 @@ public class GameActivity extends Activity {
         Music.setFile(songs[musNdx]);
     }
 
+    private void updateField() {
+        mGameField.drawField();
+    }
 
 
     private final Observer onFieldTransitionEnd = new Observer() {
@@ -146,8 +136,6 @@ public class GameActivity extends Activity {
         }
     }
 
-
-
     @Override
     public void onBackPressed() {
         if(!game.undo())
@@ -175,7 +163,6 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Log.i("GameActivity", "Resume");
-        game.enterPlayground();
         startTimer();
     }
 
@@ -190,7 +177,6 @@ public class GameActivity extends Activity {
         super.onPause();
         Log.i("GameActivity", "Pause");
         stopTimer();
-        game.exitPlayground();
     }
 
 
@@ -198,8 +184,6 @@ public class GameActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.i("GameActivity", "Start");
-        game.timerChanged.addObserver(onTimeChange);
-        game.fieldChanged.addObserver(onFieldChange);
         mGameField.transitionEndEvent.addObserver(onFieldTransitionEnd);
         Music.setMusicOn(Music.GAME_MUS,true);
     }
@@ -208,7 +192,6 @@ public class GameActivity extends Activity {
     protected void onStop() {
         super.onStop();
         Log.i("GameActivity", "Stop");
-        game.fieldChanged.deleteObserver(onFieldChange);
         mGameField.transitionEndEvent.deleteObserver(onFieldTransitionEnd);
         Music.setMusicOn(Music.GAME_MUS,false);
     }
@@ -242,8 +225,7 @@ public class GameActivity extends Activity {
 
         if(game == null)
             game = new GamePlay();
-        game.missionChanged.addObserver(onMissionChange);
-        game.observedState.addObserver(onGameChange);
+        game.gameEvent.addObserver(onGameEvent);
 
         if(getIntent().hasExtra("from")) {
             Log.i("GameActivity", "Extra from");
@@ -252,7 +234,7 @@ public class GameActivity extends Activity {
             getIntent().removeExtra("from");
             game.restartGame(from_level);
         } else
-            changeMission();
+            updateMission();
 
         mGameField.setMap(game.getGameMap());
         GameSound.load();
@@ -264,8 +246,7 @@ public class GameActivity extends Activity {
     public void onDestroy(){
         super.onDestroy();
         Log.i("GameActivity", "Destroy");
-        game.observedState.deleteObserver(onGameChange);
-        game.missionChanged.deleteObserver(onMissionChange);
+        game.gameEvent.deleteObserver(onGameEvent);
         mGameField.setFieldPressHandler(null);
 
         mGameField.destroy();

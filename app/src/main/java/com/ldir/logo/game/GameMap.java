@@ -63,6 +63,11 @@ public class GameMap {
         map[x][y] = (byte)v;
     }
 
+    public void set(int x,int y, byte v ) {
+        map[x][y] = (byte)v;
+    }
+
+
     public void resetField() {
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLS;j++)

@@ -8,10 +8,7 @@ import com.ldir.logo.util.Observed;
 
 public class GamePlay {
 
-    public final Observed.Event fieldChanged = new Observed.Event();
-    public final Observed.Event missionChanged = new Observed.Event();
-    public final Observed.Value<Integer> timerChanged = new Observed.Value<>();
-    public final Observed.Value<GameState> observedState = new Observed.Value<>();
+    public final Observed.Value<GameEvent> gameEvent = new Observed.Value<>();
 
     private GameLevel gameLevel = new GameLevel();
     private final GameMap gameMap = new GameMap();
@@ -21,41 +18,38 @@ public class GamePlay {
 
 
     public void moveCompleted() {
-        switch (globalState) {
-            case PLAYING:
-                if (gameMap.isEqual(gameLevel.map)) {
-                    boolean uncompleted = !Levels.isCompleted(getCurrenLevel());
-                    Levels.setCompleted(getCurrenLevel());
-                    if (Levels.isAllCompleted() && uncompleted) {
-                        changeState(GameState.GAME_COMPLETE);
-                    } else {
-                        changeState(GameState.LEVEL_COMPLETE);
-                    }
-                }
-                break;
+        if (gameMap.isEqual(gameLevel.map)) {
+            boolean uncompleted = !Levels.isCompleted(getCurrenLevel());
+            Levels.setCompleted(getCurrenLevel());
+            if (Levels.isAllCompleted() && uncompleted) {
+                emitEvent(GameEvent.GAME_COMPLETE);
+            } else {
+                emitEvent(GameEvent.LEVEL_COMPLETE);
+            }
         }
     }
 
-    public enum GameState {
-        UNDEFINED,
-        PLAYING,
-        PAUSE,
+    public enum GameEvent {
+        TIMER_CHANGED,
+        FIELD_CHANGED,
+        LEVEL_CHANGED,
         LEVEL_COMPLETE,
         GAME_COMPLETE,
-        GAME_LOST,
+        GAME_LOST
+    }
+
+    public String getTimeString() {
+        return String.format("%02d:%02d", levelTime / 60, levelTime % 60);
     }
 
     public void onSecondTimer() {
         if (levelTime > 0) {
             --levelTime;
-            timerChanged.update(levelTime);
+            emitEvent(GameEvent.TIMER_CHANGED);
         } else {
-            timerChanged.update(levelTime);
-            changeState(GameState.GAME_LOST);
+            emitEvent(GameEvent.GAME_LOST);
         }
     }
-
-    private GameState globalState = GameState.UNDEFINED;
 
     public int getCurrenLevel() {
         return level;
@@ -69,7 +63,7 @@ public class GamePlay {
         GameMap last = history.pop();
         if (last != null) {
             gameMap.assign(last);
-            fieldChanged.update();
+            emitEvent(GameEvent.FIELD_CHANGED);
             return true;
         } else
             return false;
@@ -80,13 +74,13 @@ public class GamePlay {
         levelTime = gameLevel.time + 1;
         gameMap.resetField();
         history.clear();
-        fieldChanged.update();
+        emitEvent(GameEvent.FIELD_CHANGED);
     }
 
     public void nextLevel() {
         level = Levels.nextOpened(level);
         gameLevel = Levels.getLevel(level);
-        missionChanged.update();
+        emitEvent(GameEvent.LEVEL_CHANGED);
         reset();
     }
 
@@ -94,7 +88,7 @@ public class GamePlay {
 
         history.push(gameMap);
         if (gameMap.gameMove(clickPos.row, clickPos.col)) {
-            fieldChanged.update();
+            emitEvent(GameEvent.FIELD_CHANGED);
             return true;
         } else {
             history.pop();
@@ -106,31 +100,12 @@ public class GamePlay {
         Log.i("Game restart","From "+level);
         level = from_level;
         gameLevel = Levels.getLevel(level);
-        missionChanged.update();
+        emitEvent(GameEvent.LEVEL_CHANGED);
         reset();
     }
 
-    private synchronized void changeState(GameState newState) {
-        if (!globalState.equals(newState)) {
-            Log.i("State changed", "From " + globalState + " to " + newState);
-            globalState = newState;
-            observedState.update(newState);
-        }
+    private synchronized void emitEvent(GameEvent event) {
+        Log.i("Game vent", event.toString());
+        gameEvent.update(event);
     }
-
-    public void enterPlayground() {
-        changeState(GameState.PLAYING);
-        moveCompleted();
-    }
-
-    public void exitPlayground() {
-        switch (globalState) {
-            case GAME_COMPLETE:
-            case LEVEL_COMPLETE:
-                break;
-            default:
-                changeState(GameState.PAUSE);
-        }
-    }
-
 }
