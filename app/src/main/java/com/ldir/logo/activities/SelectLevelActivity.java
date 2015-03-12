@@ -83,7 +83,7 @@ public class SelectLevelActivity extends Activity {
                 textView.setText("Closed");
 
             LevelField levelField =  (LevelField ) convertView.findViewById(R.id.levelListField);
-            levelField.setLevel(level);
+            levelField.setLevel(Levels.getLevel(level));
             return convertView;
         }
     }

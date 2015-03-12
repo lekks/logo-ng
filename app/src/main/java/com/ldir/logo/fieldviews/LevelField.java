@@ -28,8 +28,8 @@ public class LevelField extends android.view.View {
 	}
 
 
-    public void setLevel(int level) {
-        mRender.loadLevel(level);
+    public void setLevel(GameLevel level) {
+        mRender.loadLevel(level.map);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LevelField extends android.view.View {
 
 class LevelRender {
     private boolean mDisabled=true;
-    private GameLevel mGameLevel;
+    private GameMap mGameMap;
     private float mCellSize;
     private final Bitmap[] mSprites=new Bitmap[5];
     private Bitmap mUnderlayer;
@@ -72,19 +72,19 @@ class LevelRender {
         }
     }
 
-    public void loadLevel(int level) {
-        mGameLevel = Levels.getLevel(level);
+    public void loadLevel(GameMap map) {
+        mGameMap = map;
     }
 
     public void paint(Canvas canvas) {
         if(mCellSize == 0) // бывает и такое
             return;
         canvas.drawBitmap(mUnderlayer, 0, 0, paint);
-        if (mGameLevel == null)
+        if (mGameMap == null)
             return;
         for(int i=0;i< GameMap.ROWS;i++){
             for(int j=0;j< GameMap.COLS;j++){
-                int val = mGameLevel.map.get(i, j);
+                int val = mGameMap.get(i, j);
                 FieldGraphics.placeRect(rect,i,j,mCellSize);
                 if(val>0 && mSprites[val] != null) {
                     canvas.drawBitmap(mSprites[val], rect.left, rect.top, paint);

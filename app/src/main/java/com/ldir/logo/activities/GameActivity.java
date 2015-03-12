@@ -14,6 +14,8 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
+import com.ldir.logo.game.GamePlayGenerated;
+import com.ldir.logo.game.GamePlayPatterned;
 import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.GameSound;
 import com.ldir.logo.sound.Music;
@@ -36,6 +38,7 @@ public class GameActivity extends Activity {
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
+    private int mLevelNumer;
     private GameField mGameField;
     private LevelField mLevelField;
     private TextView mTimeLabel;
@@ -73,13 +76,13 @@ public class GameActivity extends Activity {
     };
 
     void updateMission() {
-        Levels.saveCurrentLevel(game.getCurrenLevel());
-        mLevelField.setLevel(game.getCurrenLevel());
+        Levels.saveCurrentLevel(mLevelNumer);
+        mLevelField.setLevel(game.getCurrentLevel());
         mLevelField.invalidate();
-        mLevelLabel.setText("Level "+Integer.toString(game.getCurrenLevel()+1));
+        mLevelLabel.setText("Level "+Integer.toString(mLevelNumer+1));
 
         String[] songs = GameApp.getAppResources().getStringArray(R.array.game_mus);
-        int musNdx = game.getCurrenLevel() % songs.length;
+        int musNdx = mLevelNumer % songs.length;
         Music.setFile(songs[musNdx]);
     }
 
@@ -224,8 +227,9 @@ public class GameActivity extends Activity {
         mLevelLabel.setTypeface(font);
 
         if(game == null)
-            game = new GamePlay();
+            game = new GamePlayPatterned();
         game.gameEvent.addObserver(onGameEvent);
+        game.restartGame(0);
 
         if(getIntent().hasExtra("from")) {
             Log.i("GameActivity", "Extra from");

@@ -10,6 +10,7 @@ public class LevelMaker {
             for(int j=0;j<GameMap.COLS;j++)
                 level.map.gameMove(i,j);
         }
+        level.time=120;
         return level;
     }
 
