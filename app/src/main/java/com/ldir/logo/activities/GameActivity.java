@@ -14,7 +14,6 @@ import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
-import com.ldir.logo.game.GamePlayGenerated;
 import com.ldir.logo.game.GamePlayPatterned;
 import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.GameSound;
@@ -34,11 +33,10 @@ public class GameActivity extends Activity {
     private final int GAME_LOST_ACTIVITY = 3;
     private final int GAME_OPT_ACTIVITY = 4;
 
-    private static GamePlay game;
+    private static GamePlayPatterned game;
     private ScheduledFuture mTimerFuture;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
 
-    private int mLevelNumer;
     private GameField mGameField;
     private LevelField mLevelField;
     private TextView mTimeLabel;
@@ -76,13 +74,13 @@ public class GameActivity extends Activity {
     };
 
     void updateMission() {
-        Levels.saveCurrentLevel(mLevelNumer);
+        Levels.saveCurrentLevel(game.getLevelId());
         mLevelField.setLevel(game.getCurrentLevel());
         mLevelField.invalidate();
-        mLevelLabel.setText("Level "+Integer.toString(mLevelNumer+1));
+        mLevelLabel.setText("Level "+Integer.toString(game.getLevelId()+1));
 
         String[] songs = GameApp.getAppResources().getStringArray(R.array.game_mus);
-        int musNdx = mLevelNumer % songs.length;
+        int musNdx = game.getLevelId() % songs.length;
         Music.setFile(songs[musNdx]);
     }
 
@@ -231,12 +229,14 @@ public class GameActivity extends Activity {
         game.gameEvent.addObserver(onGameEvent);
         game.restartGame(0);
 
-        if(getIntent().hasExtra("from")) {
-            Log.i("GameActivity", "Extra from");
+        if(getIntent().hasExtra("level")) {
+            Log.i("GameActivity", "Create from level ");
             int from_level;
-            from_level = getIntent().getIntExtra("from", 0);
-            getIntent().removeExtra("from");
+            from_level = getIntent().getIntExtra("level", 0);
+            getIntent().removeExtra("level"); // same request going again after flipping the screen or the activity being brought back to the foreground.
             game.restartGame(from_level);
+        } else if(getIntent().hasExtra("generated")) {
+            getIntent().removeExtra("generated"); // same request going again after flipping the screen or the activity being brought back to the foreground.
         } else
             updateMission();
 

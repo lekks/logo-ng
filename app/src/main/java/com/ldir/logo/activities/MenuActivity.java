@@ -24,15 +24,15 @@ public class MenuActivity extends Activity {
 
     public void onStartGame(View v){
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("from", Levels.restoreCurrentLevel());
+        intent.putExtra("level", Levels.restoreCurrentLevel());
         startActivity(intent);
-
     }
 
     public void onSelectLevels(View v){
         Intent intent = new Intent(this, SelectLevelActivity.class);
         startActivity(intent);
     }
+
 
     public void onOptions(View v){
         Intent intent = new Intent(this, MenuOptActvity.class);

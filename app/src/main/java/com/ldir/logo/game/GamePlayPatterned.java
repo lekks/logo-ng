@@ -4,12 +4,13 @@ import android.util.Log;
 
 import com.ldir.logo.util.Observed;
 
-// Тут состредоточим всю логику
-
 public class GamePlayPatterned extends GamePlay{
 
     private int level;
 
+    public int getLevelId(){
+        return level;
+    }
 
     public void moveCompleted() {
         if (gameMap.isEqual(gameLevel.map)) {

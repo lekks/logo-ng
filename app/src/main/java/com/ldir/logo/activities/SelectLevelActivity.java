@@ -42,7 +42,7 @@ public class SelectLevelActivity extends Activity {
 //            Toast.makeText(SelectLevelActivity.this, "" + level, Toast.LENGTH_SHORT).show();
             if(level == 0 || Levels.isCompleted(level) || Levels.isOpened(level) ) {
                 Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
-                intent.putExtra("from", level);
+                intent.putExtra("level", level);
                 startActivity(intent);
             }
         }

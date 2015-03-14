@@ -23,7 +23,7 @@ public abstract class GamePlay {
 
     protected final MapHistory history = new MapHistory();
 
-    public abstract void moveCompleted();
+//    public abstract void moveCompleted();
 
 
     public String getTimeString() {
@@ -66,10 +66,6 @@ public abstract class GamePlay {
         history.clear();
         emitEvent(GameEvent.FIELD_CHANGED);
     }
-
-    public abstract void nextLevel();
-    public abstract void restartGame(int from_level); //FIXME Сделать конструктором?
-
 
     public boolean makeMove(GameMap.Pos clickPos) {
 
