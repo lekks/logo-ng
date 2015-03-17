@@ -37,15 +37,15 @@ public class Levels {
     } // For tests
 
     public static void setCompleted(int level){
-        progress().setCompleted(level);
+        progress().setComplete(level);
         saveProgress();
     }
     public static boolean isCompleted(int level){
-        return progress().isCompleted(level);
+        return progress().isComplete(level);
     }
 
     public static boolean isAllCompleted(){
-        return progress().isCompletedTill(levelsCount());
+        return progress().isAllComplete();
     }
 
     public static boolean isOpened(int level){
@@ -76,7 +76,7 @@ public class Levels {
     private static GameProgress progress()
     {
         if (mProgress  == null) {
-            mProgress = new GameProgress();
+            mProgress = new GameProgress(levelsCount());
             SharedPreferences sharedPrefs = GameApp.getGamePreferences();
             String progressBundle =  sharedPrefs.getString(GameApp.SHARED_SETTINGS_LEVELS_PROGRESS, null);
             if (progressBundle != null)

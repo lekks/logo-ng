@@ -4,74 +4,86 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.BitSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
- * Created by Ldir on 08.02.2015.
+ * Created by Ldir on 15.03.2015.
  */
-class GameProgress {
-    private final BitSet completed = new BitSet(32);
-    public final static int GROUP_SIZE = 5; // для тестирования
-    private int lastOpened = 0;
+public class GameProgress {
+    public final static int OPEN_GROUP = 5;
+    public int mLevelsCount = 1000;
 
-    void clearProgress() {
-        completed.clear();
-        lastOpened = 0;
-    }
-    void setCompleted(int level){
-        completed.set(level);
-        tryOpenGroup(level);
-    }
-    boolean isCompleted(int level){
-        return completed.get(level);
+    private final ArrayList<Integer> incomplete = new ArrayList<>();
+    private int mOpened = 0;
+
+    GameProgress(int levels){
+        mLevelsCount = levels;
+        clearProgress();
     }
 
-    boolean isCompletedTill(int level){
-        for(int i = 0; i<level; ++i){
-            if(!completed.get(i))
-                return false;
-        }
+    public void setLevelsCount(int levels){
+        mLevelsCount = levels;
+    }
+
+    public void clearProgress() {
+        incomplete.clear();
+        mOpened = OPEN_GROUP;
+        for (int i = 0; i < mOpened; ++i)
+            incomplete.add(i);
+
+    }
+
+    public boolean isComplete(int level) {
+        if (!isOpened( level))
+            return false;
+        if (incomplete.contains(level))
+            return false;
         return true;
+
+    }
+
+    public boolean isOpened(int level) {
+        if (level >= mOpened)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean isAllComplete(){
+        return incomplete.isEmpty();
     }
 
 
-    private void tryOpenGroup(int level) {
-        int gr = level/GROUP_SIZE;
-        if(lastOpened > gr)
-            return;
-        int cnt = 0;
-        for (int i = gr*GROUP_SIZE; i < (gr+1)*GROUP_SIZE; ++i){
-            if(isCompleted(i))
-                ++cnt;
+    public void setComplete(int level){
+        incomplete.remove((Object)level);
+        int opened = mOpened;
+        if(incomplete.isEmpty()) {
+            mOpened += OPEN_GROUP;
+            if (mOpened > mLevelsCount)
+                mOpened = mLevelsCount;
+            for (int i = opened; i < mOpened; ++i)
+                incomplete.add(i);
         }
-        if(cnt == GROUP_SIZE){
-            lastOpened=gr+1;
-        }
-    }
-
-    boolean isOpened(int level){
-        return level/GROUP_SIZE <= lastOpened;
     }
 
     int nextOpened(int current) {
-        if (isOpened(current + 1) && !isCompleted(current + 1)) {
+        if (isOpened(current + 1) && !isComplete(current + 1)) {
             return current + 1;
         }
-        for (int i = 0; i < (lastOpened + 1) * GROUP_SIZE; ++i) {
-            if (isOpened(i) && !isCompleted(i))
-                return i;
-        }
-        return 0;
+        return Collections.min(incomplete);
     }
+
 
     String bundleState() {
         JSONObject json = new JSONObject();
         JSONArray jcompl = new JSONArray ();
         try {
-            for (int i = completed.nextSetBit(0); i >= 0; i = completed.nextSetBit(i + 1))
+            for (Integer i : incomplete) {
                 jcompl.put(i);
-            json.put("completed",jcompl);
-            json.put("opened_group",lastOpened);
+            }
+            json.put("incomplete",jcompl);
+            json.put("opened",mOpened);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -83,13 +95,19 @@ class GameProgress {
         clearProgress();
         try {
             JSONObject obj = new JSONObject(bundle);
-            lastOpened  = obj.optInt("opened_group",0);
-            JSONArray jlevels = obj.getJSONArray("completed");
-            for (int i = 0; i < jlevels.length(); i++)
-                setCompleted(jlevels.getInt(i));
+            if (obj.has("incomplete")) {
+                JSONArray jlevels = obj.getJSONArray("incomplete");
+                incomplete.clear();
+                for (int i = 0; i < jlevels.length(); i++)
+                    incomplete.add(jlevels.getInt(i));
+                mOpened  = obj.optInt("opened_group",OPEN_GROUP);
+            } else {
+                clearProgress();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
+
 }
