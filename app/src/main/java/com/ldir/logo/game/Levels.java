@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 public class Levels {
     private static LevelsLoader mLevels;
+    private static LevelMaker mMaker = new LevelMaker();
     private static GameProgress mProgress;
 
     private static final String LevelsFile = "levels_test2.json";
@@ -28,7 +29,8 @@ public class Levels {
 
     public static GameLevel getLevel(int n)
     {
-        return levels().get(n);
+//        return levels().get(n);
+        return mMaker.getLevel(n);
     }
 
 
