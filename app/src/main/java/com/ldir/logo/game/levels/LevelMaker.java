@@ -1,14 +1,17 @@
-package com.ldir.logo.game;
+package com.ldir.logo.game.levels;
 
 import android.util.SparseArray;
 import android.util.SparseIntArray;
+
+import com.ldir.logo.game.GameLevel;
+import com.ldir.logo.game.GameMap;
 
 import java.util.Random;
 
 /**
  * Created by Ldir on 07.03.2015.
  */
-class LevelMaker {
+public class LevelMaker {
     Random rnd = new Random();
     SparseArray<GameLevel> mCache = new SparseArray<>();
 
@@ -26,7 +29,7 @@ class LevelMaker {
     }
 
 
-    GameLevel getLevel(int id){
+    public GameLevel getLevel(int id){
         return makeLevel(id);
     }
 //    GameLevel getLevel(int id){

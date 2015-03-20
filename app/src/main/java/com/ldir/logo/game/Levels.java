@@ -3,6 +3,8 @@ package com.ldir.logo.game;
 import android.content.SharedPreferences;
 
 import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.game.levels.LevelMaker;
+import com.ldir.logo.game.levels.LevelsLoader;
 
 import java.io.IOException;
 import java.io.InputStream;

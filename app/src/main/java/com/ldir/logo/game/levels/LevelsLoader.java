@@ -1,6 +1,9 @@
-package com.ldir.logo.game;
+package com.ldir.logo.game.levels;
 
 import android.util.Log;
+
+import com.ldir.logo.game.GameLevel;
+import com.ldir.logo.game.GameMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,10 +12,10 @@ import org.json.JSONObject;
 /**
  * Created by Ldir on 14.02.2015.
  */
-class LevelsLoader {
+public class LevelsLoader {
     private GameLevel[] levels;
 
-    LevelsLoader(String filename) {
+    public LevelsLoader(String filename) {
         loadLevels(filename);
     }
 
