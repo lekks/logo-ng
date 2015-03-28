@@ -29,7 +29,6 @@ public class GameMap {
         if (size[1] > t) size[1] = t;
         t = size[1] * GameMap.COLS / GameMap.ROWS;
         if (size[0] > t) size[0] = t;
-
     }
 
 
@@ -123,5 +122,15 @@ public class GameMap {
             return false;
     }
 
+    public String dump(){
+        StringBuilder str = new StringBuilder(64);
+        for(int i=0;i<ROWS;i++){
+            for(int j=0;j<COLS;j++){
+                str.append(map[i][j]);
+            }
+            str.append("\n");
+        }
+        return str.toString();
+    }
 
 }

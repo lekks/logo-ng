@@ -11,15 +11,16 @@ import java.io.InputStream;
 
 public class Levels {
     private static LevelsLoader mLevels;
-    private static LevelMaker mMaker = new LevelMaker();
+    private static LevelMaker mMaker;
     private static GameProgress mProgress;
 
     private static final String LevelsFile = "levels_test2.json";
+    private static final String PatternsFile = "patterns.json";
 
     private static LevelsLoader levels()
     {
         if(mLevels == null) {
-            String json = getAssetAsString(LevelsFile);
+            String json = GameApp.getAssetAsString(LevelsFile);
             mLevels = new LevelsLoader(json);
         }
         return mLevels;
@@ -95,20 +96,6 @@ public class Levels {
             SharedPreferences.Editor editor =  GameApp.getGamePreferences().edit();
             editor.putString(GameApp.SHARED_SETTINGS_LEVELS_PROGRESS, mProgress.bundleState());
             editor.apply();
-        }
-    }
-    private static String getAssetAsString(String name) {
-        try {
-            InputStream is = GameApp.getAsset(name);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            return new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException();
         }
     }
 

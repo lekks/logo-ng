@@ -15,8 +15,8 @@ import org.json.JSONObject;
 public class LevelsLoader {
     private GameLevel[] levels;
 
-    public LevelsLoader(String filename) {
-        loadLevels(filename);
+    public LevelsLoader(String json) {
+        loadLevels(json);
     }
 
     private void loadLevels(String json) {

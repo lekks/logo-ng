@@ -44,4 +44,19 @@ public class GameApp  extends Application{
 
     }
 
+    public static String getAssetAsString(String name) {
+        try {
+            InputStream is = getAsset(name);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            return new String(buffer, "UTF-8");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
 }
