@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ldir.logo.R;
+import com.ldir.logo.game.GameProgress;
 import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.Music;
 
@@ -24,7 +25,7 @@ public class MenuActivity extends Activity {
 
     public void onStartGame(View v){
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("level", Levels.restoreCurrentLevel());
+        intent.putExtra("level", GameProgress.restoreCurrentLevel());
         startActivity(intent);
     }
 

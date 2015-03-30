@@ -5,29 +5,42 @@ import android.test.ApplicationTestCase;
 import android.util.Log;
 
 import com.ldir.logo.activities.GameApp;
-import com.ldir.logo.game.levels.LevelMaker;
+import com.ldir.logo.game.GameMap;
 
 /**
  * Created by Ldir on 20.03.2015.
  */
 public class LevelGeneratorTest extends ApplicationTestCase<Application> {
-
+    LevelMaker maker;
+    String json;
 
     public LevelGeneratorTest() {
         super(Application.class);
     }
 
-
     public void testGenerator() {
-        String json = GameApp.getAssetAsString("patterns.json");
 
-//        Log.d("Patterns",json);
+        json = GameApp.getAssetAsString("patterns.json");
+        maker = new LevelMaker(json);
+        GameMap map = new GameMap();
 
-        LevelMaker maker = new LevelMaker(json);
-        Log.d("Patterns",maker.patterns[0].dump());
+        Log.d("Patterns",maker.patterns[0].map.dump());
 
-//        for(int i=0;i<maker.patterns.length;++i){
-//
-//        }
+        for(int i = 0; i<5; ++i){
+            maker.generateLevel(map,i, maker.patterns[1].map, 80);
+            Log.d("Level",map.dump());
+        }
+        maker.generateLevel(map, 0, maker.fullPatt, 100);
+        Log.d("Level full",map.dump());
+
+        long time = System.currentTimeMillis();
+        int count = 0;
+        while(System.currentTimeMillis()<time+1000) {
+            maker.generateLevel(map, 0, maker.fullPatt, 100);
+            count++;
+        }
+        Log.d("Level bench",Integer.toString(count));
+
     }
+
 }

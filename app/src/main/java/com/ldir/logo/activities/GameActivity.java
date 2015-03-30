@@ -15,6 +15,7 @@ import com.ldir.logo.fieldviews.LevelField;
 import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.game.GamePlayPatterned;
+import com.ldir.logo.game.GameProgress;
 import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.GameSound;
 import com.ldir.logo.sound.Music;
@@ -74,7 +75,7 @@ public class GameActivity extends Activity {
     };
 
     void updateMission() {
-        Levels.saveCurrentLevel(game.getLevelId());
+        GameProgress.saveCurrentLevel(game.getLevelId());
         mLevelField.setLevel(game.getCurrentLevel());
         mLevelField.invalidate();
         mLevelLabel.setText("Level "+Integer.toString(game.getLevelId()+1));

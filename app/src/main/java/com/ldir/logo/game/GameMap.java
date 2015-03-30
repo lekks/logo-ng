@@ -1,5 +1,7 @@
 package com.ldir.logo.game;
 
+import java.util.Arrays;
+
 /**
  * Created by Ldir on 18.09.13.
  */
@@ -17,7 +19,6 @@ public class GameMap {
             col = j;
         }
     }
-
 
     static public float calcCellSize(int fieldWidth, int fieldHeight) {
         return Math.min((float)fieldWidth/(float)COLS, (float)fieldHeight/(float)ROWS);
@@ -43,6 +44,12 @@ public class GameMap {
     public void assign(GameMap other) {
         for (int i = 0; i < ROWS; i++) {
             System.arraycopy(other.map[i], 0, map[i], 0, COLS);
+        }
+    }
+
+    public void fill(int x) {
+        for (int i = 0; i < ROWS; i++) {
+            Arrays.fill(map[i], (byte)x);
         }
     }
 
@@ -131,6 +138,17 @@ public class GameMap {
             str.append("\n");
         }
         return str.toString();
+    }
+
+    public int count(){
+        int res = 0;
+        for(int i=0;i<ROWS;i++){
+            for(int j=0;j<COLS;j++){
+                if(map[i][j] > 0)
+                    ++res;
+            }
+        }
+        return res;
     }
 
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.LevelField;
+import com.ldir.logo.game.GameProgress;
 import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.Music;
 
@@ -40,7 +41,7 @@ public class SelectLevelActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int level = position;
 //            Toast.makeText(SelectLevelActivity.this, "" + level, Toast.LENGTH_SHORT).show();
-            if(level == 0 || Levels.isCompleted(level) || Levels.isOpened(level) ) {
+            if(level == 0 || GameProgress.isCompleted(level) || GameProgress.isOpened(level) ) {
                 Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
                 intent.putExtra("level", level);
                 startActivity(intent);
@@ -75,9 +76,9 @@ public class SelectLevelActivity extends Activity {
 
             textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
 
-            if(Levels.isCompleted(level))
+            if(GameProgress.isCompleted(level))
                 textView.setText("Complete");
-            else if(Levels.isOpened(level))
+            else if(GameProgress.isOpened(level))
                 textView.setText("Openened");
             else
                 textView.setText("Closed");

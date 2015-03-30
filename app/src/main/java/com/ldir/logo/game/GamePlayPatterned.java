@@ -14,9 +14,9 @@ public class GamePlayPatterned extends GamePlay{
 
     public void moveCompleted() {
         if (gameMap.isEqual(gameLevel.map)) {
-            boolean uncompleted = !Levels.isCompleted(level);
-            Levels.setCompleted(level);
-            if (Levels.isAllCompleted() && uncompleted) {
+            boolean uncompleted = !GameProgress.isCompleted(level);
+            GameProgress.setCompleted(level);
+            if (GameProgress.isAllCompleted() && uncompleted) {
                 emitEvent(GameEvent.GAME_COMPLETE);
             } else {
                 emitEvent(GameEvent.LEVEL_COMPLETE);
@@ -25,7 +25,7 @@ public class GamePlayPatterned extends GamePlay{
     }
 
     public void nextLevel() {
-        level = Levels.nextOpened(level);
+        level = GameProgress.nextOpened(level);
         gameLevel = Levels.getLevel(level);
         emitEvent(GameEvent.LEVEL_CHANGED);
         reset();
