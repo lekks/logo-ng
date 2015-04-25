@@ -100,7 +100,7 @@ public class Progress {
                 incomplete.clear();
                 for (int i = 0; i < jlevels.length(); i++)
                     incomplete.add(jlevels.getInt(i));
-                mOpened  = obj.optInt("opened_group",OPEN_GROUP);
+                mOpened  = obj.optInt("opened",OPEN_GROUP);
             } else {
                 clearProgress();
             }

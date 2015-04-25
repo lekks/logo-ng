@@ -30,13 +30,13 @@ public class LevelGeneratorTest extends ApplicationTestCase<Application> {
             maker.generateLevel(map,i, maker.patterns[1].map, 80);
             Log.d("Level",map.dump());
         }
-        maker.generateLevel(map, 0, maker.fullPatt, 100);
+        maker.generateLevel(map, 0, maker.fullPatt.map, 100);
         Log.d("Level full",map.dump());
 
         long time = System.currentTimeMillis();
         int count = 0;
         while(System.currentTimeMillis()<time+1000) {
-            maker.generateLevel(map, 0, maker.fullPatt, 100);
+            maker.generateLevel(map, 0, maker.fullPatt.map, 100);
             count++;
         }
         Log.d("Level bench",Integer.toString(count));

@@ -22,11 +22,10 @@ public class LevelMaker {
         byte col;
     }
 
-
     Random rnd = new Random();
 //    SparseArray<GameLevel> mCache = new SparseArray<>();
     Pattern[] patterns;
-    final GameMap fullPatt = new GameMap();
+    final Pattern fullPatt;
     private static Pos cellsList[] = new Pos[GameMap.ROWS*GameMap.COLS];
 
     public LevelMaker(String json) {
@@ -34,21 +33,24 @@ public class LevelMaker {
         for(int i=0;i<cellsList.length;++i) {
             cellsList[i] = new Pos();
         }
-        fullPatt.fill(1);
+
+        GameMap map = new GameMap();
+        map.fill(1);
+        fullPatt = new Pattern(map);
     }
 
-    private GameLevel makeLevel(int id) {
-        rnd.setSeed(id);
-        GameLevel level = new GameLevel();
-        int chips = rnd.nextInt(30) + 20;
-        for (int i = 0; i < chips; ++i) {
-            int row = rnd.nextInt(GameMap.ROWS);
-            int col = rnd.nextInt(GameMap.COLS);
-            level.map.gameMove(row, col);
-        }
-        level.time = 120;
-        return level;
-    }
+//    private GameLevel makeLevel(int id) {
+//        rnd.setSeed(id);
+//        GameLevel level = new GameLevel();
+//        int chips = rnd.nextInt(30) + 20;
+//        for (int i = 0; i < chips; ++i) {
+//            int row = rnd.nextInt(GameMap.ROWS);
+//            int col = rnd.nextInt(GameMap.COLS);
+//            level.map.gameMove(row, col);
+//        }
+//        level.time = 120;
+//        return level;
+//    }
 
 
 
@@ -89,18 +91,18 @@ public class LevelMaker {
 
 
     public GameLevel getLevel(int id){
-        return makeLevel(id);
+        GameLevel level = new GameLevel();
+        Pattern pattern;
+        if(id<patterns.length) {
+            pattern = patterns[id];
+        } else {
+            pattern = fullPatt;
+
+        }
+        generateLevel(level.map,id, pattern.map, 100);
+        level.time = pattern.count*3;
+        return level;
     }
-//    GameLevel getLevel(int id){
-//        GameLevel level = mCache.get(id);
-//        if(level == null) {
-//            level = makeLevel(id);
-//            mCache.append(id,level);
-//            return level;
-//        } else {
-//            return level;
-//        }
-//    }
 
     void loadPatterns(String json) {
         try {

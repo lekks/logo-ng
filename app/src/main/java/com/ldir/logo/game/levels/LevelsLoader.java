@@ -28,7 +28,7 @@ public class LevelsLoader {
             for (int i = 0; i < jlevels.length(); i++) {
                 levels[i]=new GameLevel();
                 JSONObject level = jlevels.getJSONObject(i);
-                levels[i].time = level.getInt("time");
+                levels[i].time = level.optInt("time",0);
                 JSONArray jmap = level.getJSONArray("map");
                 GameMap map = levels[i].map;
                 for (int j = 0; j < jmap.length(); j++) {
