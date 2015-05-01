@@ -47,9 +47,9 @@ public class GameApp  extends Application{
 
     }
 
-    public Bundle getMetaBundle(){
+    public static Bundle getMetaBundle(){
         try {
-            ApplicationInfo ai = getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             return ai.metaData;
         } catch (PackageManager.NameNotFoundException e) {
             Log.e("GetMeta", "Failed to load meta-data, NameNotFound: " + e.getMessage());

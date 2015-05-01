@@ -8,7 +8,7 @@ public class Levels {
     private static LevelsLoader mLevels;
     private static LevelMaker mMaker;
 
-    private static final String LevelsFile = "levels_test2.json";
+    private static final String LevelsFile = "levels.json";
     private static final String PatternsFile = "patterns.json";
 
     private static LevelsLoader levels()
@@ -30,14 +30,14 @@ public class Levels {
     }
 
     public static int levelsCount(){
-        return 10000;
-//        return levels().length();
+//        return 10000;
+        return levels().length();
     }
 
     public static GameLevel getLevel(int n)
     {
-//        return levels().get(n);
-        return generator().getLevel(n);
+        return levels().get(n);
+//        return generator().getLevel(n);
     }
 
 

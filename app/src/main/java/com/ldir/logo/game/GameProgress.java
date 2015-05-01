@@ -9,25 +9,35 @@ import com.ldir.logo.GameApp;
  */
 public class GameProgress {
     private static Progress mProgress;
+    private static Boolean allOpened;
 
     public static void clearProgress() {
         progress().clearProgress();
     } // For tests
 
+    private final static boolean isAllOpened() {
+        if(allOpened == null) {
+            allOpened = GameApp.getMetaBundle().getBoolean("levels_debug",false);
+        }
+        return allOpened;
+    }
+
     public static void setCompleted(int level){
-        progress().setComplete(level);
-        saveProgress();
+        if( !isAllOpened()) {
+            progress().setComplete(level);
+            saveProgress();
+        }
     }
     public static boolean isCompleted(int level){
-        return progress().isComplete(level);
+        return isAllOpened() || progress().isComplete(level);
     }
 
     public static boolean isAllCompleted(){
-        return progress().isAllComplete();
+        return isAllOpened() || progress().isAllComplete();
     }
 
     public static boolean isOpened(int level){
-        return progress().isOpened(level);
+        return isAllOpened() ||  progress().isOpened(level);
     }
 
     public static int nextOpened(int current) {

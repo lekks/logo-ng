@@ -78,7 +78,11 @@ public class GameActivity extends Activity {
         GameProgress.saveCurrentLevel(game.getLevelId());
         mLevelField.setLevel(game.getCurrentLevel());
         mLevelField.invalidate();
-        mLevelLabel.setText("Level "+Integer.toString(game.getLevelId()+1));
+
+        if(game.getCurrentLevel().tag != null) {
+            mLevelLabel.setText("Level "+Integer.toString(game.getLevelId()+1)+"("+game.getCurrentLevel().tag+")");
+        } else
+            mLevelLabel.setText("Level "+Integer.toString(game.getLevelId()+1));
 
         String[] songs = GameApp.getAppResources().getStringArray(R.array.game_mus);
         int musNdx = game.getLevelId() % songs.length;

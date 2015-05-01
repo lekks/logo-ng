@@ -28,7 +28,6 @@ public class LevelsLoader {
             for (int i = 0; i < jlevels.length(); i++) {
                 levels[i]=new GameLevel();
                 JSONObject level = jlevels.getJSONObject(i);
-                levels[i].time = level.optInt("time",0);
                 JSONArray jmap = level.getJSONArray("map");
                 GameMap map = levels[i].map;
                 for (int j = 0; j < jmap.length(); j++) {
@@ -37,6 +36,12 @@ public class LevelsLoader {
                         map.set(j,k,Character.getNumericValue(row.charAt(k)));
                     }
                 }
+                levels[i].tag = level.optString("tag", null);
+                levels[i].time = level.optInt("time",0);
+
+                if(levels[i].time == 0 )
+                    levels[i].time = map.count()*2; //fixme unify
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

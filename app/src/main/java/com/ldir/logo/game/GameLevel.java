@@ -6,4 +6,5 @@ package com.ldir.logo.game;
 public class GameLevel {
     public final GameMap map=new GameMap();
     public int time;
+    public String tag;
 }
