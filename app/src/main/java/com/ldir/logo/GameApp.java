@@ -1,9 +1,12 @@
-package com.ldir.logo.activities;
+package com.ldir.logo;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.io.IOException;
@@ -43,6 +46,19 @@ public class GameApp  extends Application{
         return GameApp.context.getSharedPreferences(SHARED_SETTINGS, MODE_PRIVATE);
 
     }
+
+    public Bundle getMetaBundle(){
+        try {
+            ApplicationInfo ai = getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("GetMeta", "Failed to load meta-data, NameNotFound: " + e.getMessage());
+        } catch (NullPointerException e) {
+            Log.e("GetMeta", "Failed to load meta-data, NullPointer: " + e.getMessage());
+        }
+        return null;
+    }
+
 
     public static String getAssetAsString(String name) {
         try {

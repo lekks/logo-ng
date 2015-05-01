@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
+import com.ldir.logo.GameApp;
 import com.ldir.logo.R;
 import com.ldir.logo.fieldviews.GameField;
 import com.ldir.logo.fieldviews.LevelField;
@@ -16,7 +17,6 @@ import com.ldir.logo.game.GamePlay;
 import com.ldir.logo.game.GameMap;
 import com.ldir.logo.game.GamePlayPatterned;
 import com.ldir.logo.game.GameProgress;
-import com.ldir.logo.game.Levels;
 import com.ldir.logo.sound.GameSound;
 import com.ldir.logo.sound.Music;
 

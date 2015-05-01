@@ -2,7 +2,7 @@ package com.ldir.logo.sound;
 
 import android.content.SharedPreferences;
 
-import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.GameApp;
 
 import java.io.IOException;
 

@@ -5,7 +5,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 
 import com.ldir.logo.R;
-import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.GameApp;
 
 /**
  * Created by Ldir on 20.02.2015.

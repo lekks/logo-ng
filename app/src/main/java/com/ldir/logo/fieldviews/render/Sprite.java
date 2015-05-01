@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.GameApp;
 
 /**
  * Created by Ldir on 24.01.2015.

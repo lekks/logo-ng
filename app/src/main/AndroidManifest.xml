@@ -12,11 +12,13 @@
     android:largeHeap="true"
     -->
     <application
-        android:name=".activities.GameApp"
+        android:name=".GameApp"
         android:icon="@drawable/l_icon"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar"
         android:allowBackup="true">
+        <meta-data android:name="levels_debug" android:value="true" />
+
         <activity
             android:name=".activities.MenuActivity"
             android:screenOrientation="portrait"

@@ -4,7 +4,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 
-import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.GameApp;
 import com.ldir.logo.game.GameMap;
 
 /**

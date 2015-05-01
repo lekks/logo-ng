@@ -2,7 +2,7 @@ package com.ldir.logo.game;
 
 import android.content.SharedPreferences;
 
-import com.ldir.logo.activities.GameApp;
+import com.ldir.logo.GameApp;
 
 /**
  * Created by Ldir on 30.03.2015.
