@@ -71,7 +71,7 @@ public class GameApp  extends Application{
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             File dir = new File(log_dir);
-            Log.e("Log dir", log_dir);
+            Log.i("Log dir", log_dir);
             if(dir.exists() || dir.mkdirs()) {
                 File file = new File(log_dir,log_name);
                 FileWriter out = new FileWriter(file, true);

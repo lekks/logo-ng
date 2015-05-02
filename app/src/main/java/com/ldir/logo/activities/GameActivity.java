@@ -48,11 +48,12 @@ public class GameActivity extends Activity {
     private TextView mLevelLabel;
     private final Handler mUI_handler = new Handler();
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private void log(String msg){
         try {
-            String currentDateandTime = dateFormat.format(new Date());
-            Log.i("Log saved", GameApp.Log(String.format("%s;%s\n",currentDateandTime,msg)));
+            String tm = dateFormat.format(new Date());
+            String str = String.format("%s;%s;%d;%d;%s\n",tm,game.getCurrentLevel().tag,game.getCurrentLevel().map.count(),game.timeElapsed(),msg);
+            Log.i("Log saved", GameApp.Log(str));
         } catch (IOException e) {
 //            Toast.makeText(this, "Can`t create file", Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -67,7 +68,7 @@ public class GameActivity extends Activity {
 
             switch (event) {
                 case GAME_LOST:
-                    log(String.format("%s;%d;lost",game.getCurrentLevel().tag,game.timeElapsed()));
+                    log("lost");
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
                     break;
                 case GAME_COMPLETE:
@@ -75,7 +76,7 @@ public class GameActivity extends Activity {
                     startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class), GAME_WIN_ACTIVITY);
                     break;
                 case LEVEL_COMPLETE:
-                    log(String.format("%s;%d;complete",game.getCurrentLevel().tag,game.timeElapsed()));
+                    log("complete");
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
 

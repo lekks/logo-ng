@@ -41,12 +41,12 @@ public abstract class GamePlay {
     }
 
 
-    public GameLevel getCurrentLevel() {
+    public final GameLevel getCurrentLevel() {
         return gameLevel;
     }
 
 
-    public GameMap getGameMap() {
+    public final GameMap getGameMap() {
         return gameMap;
     }
 
