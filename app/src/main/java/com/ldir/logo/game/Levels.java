@@ -36,7 +36,10 @@ public class Levels {
 
     public static GameLevel getLevel(int n)
     {
-        return levels().get(n);
+        GameLevel level = levels().get(n);
+        if(GameProgress.isAllOpened())
+            level.time = 1000;
+        return level;
 //        return generator().getLevel(n);
     }
 

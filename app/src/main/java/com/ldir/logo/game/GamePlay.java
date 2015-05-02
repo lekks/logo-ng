@@ -20,6 +20,7 @@ public abstract class GamePlay {
     protected GameLevel gameLevel = new GameLevel();
     protected final GameMap gameMap = new GameMap();
     protected int levelTime;
+    private long timeStart;
 
     protected final MapHistory history = new MapHistory();
 
@@ -59,9 +60,14 @@ public abstract class GamePlay {
             return false;
     }
 
+    public long timeElapsed(){
+        return ( System.currentTimeMillis() - timeStart)/1000;
+    }
+
     public void reset() {
         Log.i("Game reset","");
         levelTime = gameLevel.time + 1;
+        timeStart = System.currentTimeMillis();
         gameMap.resetField();
         history.clear();
         emitEvent(GameEvent.FIELD_CHANGED);
@@ -80,7 +86,8 @@ public abstract class GamePlay {
     }
 
     protected synchronized void emitEvent(GameEvent event) {
-        Log.i("Game vent", event.toString());
+        if(event != GameEvent.TIMER_CHANGED)
+            Log.i("Game vent", event.toString());
         gameEvent.update(event);
     }
 }

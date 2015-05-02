@@ -7,8 +7,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,6 +26,8 @@ public class GameApp  extends Application{
     private static Context context;
     private static Resources resources;
 //    private static Application app;
+    private static final String log_dir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "logo_ng";
+
 
     @Override
     public void onCreate(){
@@ -59,6 +64,27 @@ public class GameApp  extends Application{
         return null;
     }
 
+
+    public static String Log(String str) throws IOException {
+        final String log_name = /*File.separator + */"logo_log.txt";
+
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            File dir = new File(log_dir);
+            Log.e("Log dir", log_dir);
+            if(dir.exists() || dir.mkdirs()) {
+                File file = new File(log_dir,log_name);
+                FileWriter out = new FileWriter(file, true);
+                out.write(str);
+                out.close();
+                return file.getCanonicalPath();
+            } else {
+                throw new IOException("Can`t create dir");
+            }
+        } else {
+            throw new IOException("No sd-card");
+        }
+    }
 
     public static String getAssetAsString(String name) {
         try {

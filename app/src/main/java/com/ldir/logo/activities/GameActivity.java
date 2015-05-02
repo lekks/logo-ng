@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ldir.logo.GameApp;
 import com.ldir.logo.R;
@@ -20,6 +21,9 @@ import com.ldir.logo.game.GameProgress;
 import com.ldir.logo.sound.GameSound;
 import com.ldir.logo.sound.Music;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Executors;
@@ -44,7 +48,18 @@ public class GameActivity extends Activity {
     private TextView mLevelLabel;
     private final Handler mUI_handler = new Handler();
 
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private void log(String msg){
+        try {
+            String currentDateandTime = dateFormat.format(new Date());
+            Log.i("Log saved", GameApp.Log(String.format("%s;%s\n",currentDateandTime,msg)));
+        } catch (IOException e) {
+//            Toast.makeText(this, "Can`t create file", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
 
+    // Запускается в другом потоке!
     private final Observer onGameEvent = new Observer() {
         @Override
         public void update(Observable observable, Object arg) {
@@ -52,12 +67,15 @@ public class GameActivity extends Activity {
 
             switch (event) {
                 case GAME_LOST:
+                    log(String.format("%s;%d;lost",game.getCurrentLevel().tag,game.timeElapsed()));
                     startActivityForResult(new Intent(GameActivity.this, TimeoutActivity.class), GAME_LOST_ACTIVITY);
                     break;
                 case GAME_COMPLETE:
+                    log("Game complete");
                     startActivityForResult(new Intent(GameActivity.this, GameWinActivity.class), GAME_WIN_ACTIVITY);
                     break;
                 case LEVEL_COMPLETE:
+                    log(String.format("%s;%d;complete",game.getCurrentLevel().tag,game.timeElapsed()));
                     startActivityForResult(new Intent(GameActivity.this, NextLevelActivity.class), NEXT_LEVEL_ACTIVITY);
                     break;
 
