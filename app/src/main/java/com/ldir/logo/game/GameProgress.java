@@ -15,7 +15,7 @@ public class GameProgress {
         progress().clearProgress();
     } // For tests
 
-    public final static boolean isAllOpened() {
+    public final static boolean isLevelsDebug() {
         if(allOpened == null) {
             allOpened = GameApp.getMetaBundle().getBoolean("levels_debug",false);
         }
@@ -23,21 +23,21 @@ public class GameProgress {
     }
 
     public static void setCompleted(int level){
-        if( !isAllOpened()) {
+        if( !isLevelsDebug()) {
             progress().setComplete(level);
             saveProgress();
         }
     }
     public static boolean isCompleted(int level){
-        return isAllOpened() || progress().isComplete(level);
+        return isLevelsDebug() || progress().isComplete(level);
     }
 
     public static boolean isAllCompleted(){
-        return isAllOpened() || progress().isAllComplete();
+        return isLevelsDebug() || progress().isAllComplete();
     }
 
     public static boolean isOpened(int level){
-        return isAllOpened() ||  progress().isOpened(level);
+        return isLevelsDebug() ||  progress().isOpened(level);
     }
 
     public static int nextOpened(int current) {
