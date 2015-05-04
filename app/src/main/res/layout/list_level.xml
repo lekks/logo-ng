@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/frame"
+    android:padding="5dp"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="123"
+            android:layout_gravity="left"
+            android:id="@+id/listLevelItemLabel"
+            android:textSize="15sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listLevelStatus"
+            android:text=""
+            android:layout_gravity="right"  />
+
+    </FrameLayout>
+
+
 
     <com.ldir.logo.fieldviews.LevelField
         android:id="@+id/levelListField"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
         android:minHeight="120dp"
         android:minWidth="120dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listLevelStatus"
-        android:text=""
-        android:layout_gravity="bottom"
-        android:layout_margin="5dp" />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/listLevelItemLabel"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:textSize="15sp" />
-
-
-</FrameLayout>
