@@ -143,6 +143,7 @@ public class GameActivity extends Activity {
                             finish();
                             break;
                         case GameOptActvity.CMD_RESET:
+                            log("restart");
                             game.reset();
                             break;
                     }

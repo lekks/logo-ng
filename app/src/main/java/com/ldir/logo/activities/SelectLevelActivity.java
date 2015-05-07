@@ -31,9 +31,6 @@ public class SelectLevelActivity extends Activity {
         grid.setAdapter(adapter);
 
         grid.setOnItemClickListener(new LevelStarter());
-        TextView textView =  (TextView) findViewById(R.id.selectLevel);
-        textView.setTypeface(font);
-
     }
 
     private class LevelStarter implements AdapterView.OnItemClickListener {
@@ -77,11 +74,11 @@ public class SelectLevelActivity extends Activity {
             textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
 
             if(GameProgress.isCompleted(level))
-                textView.setText("Complete");
+                textView.setText("*");
             else if(GameProgress.isOpened(level))
-                textView.setText("Openened");
+                textView.setText("");
             else
-                textView.setText("Closed");
+                textView.setText("#");
 
             LevelField levelField =  (LevelField ) convertView.findViewById(R.id.levelListField);
             levelField.setLevel(Levels.getLevel(level));

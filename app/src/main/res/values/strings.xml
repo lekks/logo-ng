@@ -13,7 +13,7 @@
     <string name="level_label">"LEVEL "</string>
     <string name="congratulation">Congratulations!</string>
     <string name="time_is_out">Time is out</string>
-    <string name="clear_field">Clear</string>
+    <string name="clear_field">Restart</string>
     <string name="exit_game">Exit</string>
     <string name="music_on_off">Music</string>
     <string name="sound_on_off">Sound</string>

@@ -11,7 +11,7 @@
     <string name="level_label">"LEVEL "</string>
     <string name="congratulation">Ура!</string>
     <string name="time_is_out">Время вышло</string>
-    <string name="clear_field">Очистить</string>
+    <string name="clear_field">Заново</string>
     <string name="exit_game">Выйти</string>
     <string name="music_on_off">Музыка</string>
     <string name="sound_on_off">Звуки</string>
