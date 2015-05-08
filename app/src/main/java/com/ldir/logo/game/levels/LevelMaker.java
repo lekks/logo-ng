@@ -36,22 +36,8 @@ public class LevelMaker {
 
         GameMap map = new GameMap();
         map.fill(1);
-        fullPatt = new Pattern(map);
+        fullPatt = new Pattern(map,"full");
     }
-
-//    private GameLevel makeLevel(int id) {
-//        rnd.setSeed(id);
-//        GameLevel level = new GameLevel();
-//        int chips = rnd.nextInt(30) + 20;
-//        for (int i = 0; i < chips; ++i) {
-//            int row = rnd.nextInt(GameMap.ROWS);
-//            int col = rnd.nextInt(GameMap.COLS);
-//            level.map.gameMove(row, col);
-//        }
-//        level.time = 120;
-//        return level;
-//    }
-
 
 
     // Implementing Fisher–Yates shuffle
@@ -99,8 +85,9 @@ public class LevelMaker {
             pattern = fullPatt;
 
         }
-        generateLevel(level.map,id, pattern.map, 100);
-        level.time = pattern.count*3;
+        generateLevel(level.map, id, pattern.map, 100);
+        level.tag = "S"+id+pattern.tag;
+        level.time = pattern.count*4;
         return level;
     }
 
@@ -124,7 +111,8 @@ public class LevelMaker {
                             map.set(j,k,1);
                     }
                 }
-                patterns[i] = new Pattern(map);
+                String tag = level.optString("tag", null);
+                patterns[i] = new Pattern(map,tag);
             }
             Arrays.sort(patterns);
         } catch (JSONException e) {
@@ -137,10 +125,12 @@ public class LevelMaker {
 
 class Pattern implements Comparable<Pattern>{
     GameMap map;
+    String tag;
     int count;
-    Pattern(GameMap map)
+    Pattern(GameMap map,String tag)
     {
         this.map = map;
+        this.tag = tag;
         count = map.count();
     }
 
