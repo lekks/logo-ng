@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldir.logo.R;
@@ -37,7 +38,6 @@ public class SelectLevelActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int level = position;
-//            Toast.makeText(SelectLevelActivity.this, "" + level, Toast.LENGTH_SHORT).show();
             if(level == 0 || GameProgress.isCompleted(level) || GameProgress.isOpened(level) ) {
                 Intent intent = new Intent(SelectLevelActivity.this, GameActivity.class);
                 intent.putExtra("level", level);
@@ -63,25 +63,29 @@ public class SelectLevelActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             int level = position;
-            if(convertView==null) {
+            if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(SelectLevelActivity.this);
-                convertView = inflater.inflate(R.layout.list_level, parent,false);
+                convertView = inflater.inflate(R.layout.list_level, parent, false);
             }
-            TextView textView =  (TextView) convertView.findViewById(R.id.listLevelItemLabel);
+            TextView textView = (TextView) convertView.findViewById(R.id.listLevelItemLabel);
             textView.setTypeface(font);
-            textView.setText(Integer.toString(level+1));
+            textView.setText(Integer.toString(level + 1));
 
-            textView =  (TextView) convertView.findViewById(R.id.listLevelStatus);
+            ImageView star = (ImageView) convertView.findViewById(R.id.star);
+            LevelField levelField = (LevelField) convertView.findViewById(R.id.levelListField);
 
-            if(GameProgress.isCompleted(level))
-                textView.setText("*");
-            else if(GameProgress.isOpened(level))
-                textView.setText("");
-            else
-                textView.setText("#");
 
-            LevelField levelField =  (LevelField ) convertView.findViewById(R.id.levelListField);
-            levelField.setLevel(Levels.getLevel(level));
+            if (GameProgress.isCompleted(level)) {
+                star.setVisibility(View.VISIBLE);
+                levelField.setLevel(Levels.getLevel(level));
+            }else if(GameProgress.isOpened(level)) {
+                levelField.setLevel(Levels.getLevel(level));
+                star.setVisibility(View.INVISIBLE);
+            } else {
+                star.setVisibility(View.INVISIBLE);
+                levelField.setLevel(null);
+            }
+
             return convertView;
         }
     }

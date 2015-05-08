@@ -17,7 +17,7 @@ public class GameProgress {
 
     public final static boolean isLevelsDebug() {
         if(allOpened == null) {
-            allOpened = GameApp.getMetaBundle().getBoolean("levels_debug",false);
+            allOpened = GameApp.getMetaBundle().getBoolean("all_opened",false);
         }
         return allOpened;
     }

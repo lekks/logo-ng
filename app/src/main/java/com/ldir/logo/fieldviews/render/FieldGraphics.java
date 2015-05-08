@@ -18,6 +18,9 @@ public class FieldGraphics {
     public static Bitmap makeUnderlayer(int size){
         return Sprite.get(R.drawable.fon, size);
     }
+    public static Bitmap makeLock(int size){
+        return Sprite.get(R.drawable.lock, size);
+    }
 
     public static Bitmap[] makeStrites(float size, Bitmap[] sprites){
         if (sprites == null)

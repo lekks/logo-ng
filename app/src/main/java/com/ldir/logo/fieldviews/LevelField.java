@@ -29,7 +29,7 @@ public class LevelField extends android.view.View {
 
 
     public void setLevel(GameLevel level) {
-        mRender.loadLevel(level.map);
+        mRender.loadLevel(level != null ?level.map: null);
     }
 
     @Override
@@ -60,6 +60,7 @@ class LevelRender {
     private float mCellSize;
     private final Bitmap[] mSprites=new Bitmap[5];
     private Bitmap mUnderlayer;
+    private Bitmap mLock;
     private final Rect rect = new Rect();
 
     private static final Paint paint = new Paint();
@@ -69,6 +70,7 @@ class LevelRender {
         if(size>0) {
             FieldGraphics.makeStrites(mCellSize, mSprites);
             mUnderlayer = FieldGraphics.makeUnderlayer(size);
+            mLock = FieldGraphics.makeLock(size);
         }
     }
 
@@ -79,9 +81,11 @@ class LevelRender {
     public void paint(Canvas canvas) {
         if(mCellSize == 0) // бывает и такое
             return;
-        canvas.drawBitmap(mUnderlayer, 0, 0, paint);
-        if (mGameMap == null)
+        if (mGameMap == null) {
+            canvas.drawBitmap(mLock, 0, 0, paint);
             return;
+        }
+        canvas.drawBitmap(mUnderlayer, 0, 0, paint);
         for(int i=0;i< GameMap.ROWS;i++){
             for(int j=0;j< GameMap.COLS;j++){
                 int val = mGameMap.get(i, j);

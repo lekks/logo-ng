@@ -18,7 +18,7 @@
         android:theme="@android:style/Theme.NoTitleBar"
         android:allowBackup="true">
 
-        <meta-data android:name="levels_debug" android:value="true" />
+        <meta-data android:name="all_opened" android:value="false" />
 
         <activity
             android:name=".activities.MenuActivity"

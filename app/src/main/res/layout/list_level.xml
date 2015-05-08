@@ -6,7 +6,7 @@
     android:background="@drawable/frame"
     android:padding="5dp"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="wrap_content">
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -20,12 +20,13 @@
             android:layout_gravity="left"
             android:id="@+id/listLevelItemLabel"
             android:textSize="15sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listLevelStatus"
-            android:text=""
-            android:layout_gravity="right"  />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_horizontal|right"
+            android:id="@+id/star"
+            android:src="@drawable/star" />
 
     </FrameLayout>
 
