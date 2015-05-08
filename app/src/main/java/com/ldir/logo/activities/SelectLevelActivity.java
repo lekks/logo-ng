@@ -20,6 +20,7 @@ import com.ldir.logo.sound.Music;
 
 public class SelectLevelActivity extends Activity {
     private Typeface font;
+    GridView grid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,8 @@ public class SelectLevelActivity extends Activity {
         setContentView(R.layout.activity_select_level);
         font = Typeface.createFromAsset(getAssets(),"zebulon.ttf");
         LevelsListAdapter adapter = new LevelsListAdapter();
-        final GridView grid = (GridView) findViewById(R.id.levelsGrid);
+        grid  = (GridView) findViewById(R.id.levelsGrid);
         grid.setAdapter(adapter);
-
         grid.setOnItemClickListener(new LevelStarter());
     }
 
@@ -89,6 +89,7 @@ public class SelectLevelActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        grid.setSelection(GameProgress.restoreCurrentLevel());
         Music.setMusicOn(Music.MENU_SEL_MUS, true);
     }
 
